@@ -85,13 +85,18 @@
     }
 
     .filters {
+      display: flex;
+      gap: 0.5rem;
       margin-bottom: 1.5rem;
+      flex-wrap: wrap;
     }
 
     .filters button {
-      margin-right: 0.5rem;
-      padding: 0.5rem 1rem;
+      flex: 1;
+      min-width: 100px;
+      padding: 0.5rem 0.75rem;
       font-size: 0.875rem;
+      text-align: center;
       background: none;
       border: 2px solid var(--muted);
       color: var(--text);
@@ -210,12 +215,6 @@
         font-size: 1.25rem;
       }
 
-      .filters {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-      }
-
       .filters button {
         flex: 1 0 auto;
       }
@@ -233,12 +232,12 @@
   <h3 class="section-title">Projects</h3>
 
   <div class="filters">
-    <button class="active">All</button>
-    <button>Design</button>
-    <button>Web</button>
-    <button>Brand</button>
-    <button>UX</button>
-    <button>AI</button>
+    <button class="active" onclick="selectFilter(this)">All</button>
+    <button onclick="selectFilter(this)">Design</button>
+    <button onclick="selectFilter(this)">Web</button>
+    <button onclick="selectFilter(this)">Brand</button>
+    <button onclick="selectFilter(this)">UX</button>
+    <button onclick="selectFilter(this)">AI</button>
   </div>
 
   <div class="grid">
@@ -285,6 +284,11 @@
     function toggleTheme() {
       const currentTheme = document.documentElement.getAttribute('data-theme');
       document.documentElement.setAttribute('data-theme', currentTheme === 'dark' ? 'light' : 'dark');
+    }
+
+    function selectFilter(button) {
+      document.querySelectorAll('.filters button').forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
     }
   </script>
 </body>
