@@ -91,6 +91,12 @@
       flex-wrap: wrap;
     }
 
+    .filter-label {
+      font-size: 0.875rem;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+    
     .filters button {
       flex: 1;
       min-width: 100px;
@@ -237,6 +243,8 @@
   <h3 class="section-title">Projects</h3>
 
   <!-- ====== FILTER BUTTONS ====== -->
+  <p class="filter-label">Filter by type</p>
+  
   <div class="filters">
     <button class="active" onclick="selectFilter(this)">All</button>
     <button onclick="selectFilter(this)">AI</button>
