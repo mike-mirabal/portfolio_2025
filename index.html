@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mike Mirabal Portfolio</title>
+  <title>Mike Mirabal's Portfolio</title>
   <style>
     :root {
       --bg: #ffffff;
@@ -220,16 +220,23 @@
     }
   </style>
 </head>
+
+ <!-- ====== BEGIN BODY ====== -->  
 <body>
+
+   <!-- ====== HEADER ====== -->
   <div class="header">
     <h1>Mike Mirabal</h1>
     <div class="theme-switch" onclick="toggleTheme()"></div>
   </div>
-
+  
+   <!-- ====== SUBHEADING ====== -->
   <h2 class="subheading">Designing clear, useful creative systems and visuals.</h2>
 
+  <!-- ====== BEGIN PROJECTS SECTION ====== -->
   <h3 class="section-title">Projects</h3>
 
+  <!-- ====== FILTER BUTTONS ====== -->
   <div class="filters">
     <button class="active" onclick="selectFilter(this)">All</button>
     <button onclick="selectFilter(this)">Design</button>
@@ -238,7 +245,10 @@
     <button onclick="selectFilter(this)">UX</button>
     <button onclick="selectFilter(this)">AI</button>
   </div>
+  
+<!-- ====== PROJECT CARDS ====== -->
 
+  <!-- ====== GHOST DONKEY ====== -->
   <div class="grid">
     <a href="project.html?slug=ghost-donkey" class="card">
       <img class="icon" src="assets/icons/icon_social_3B82F6.svg" alt="Social Icon" />
@@ -250,6 +260,8 @@
         <span>Service Design</span><span>Visual</span><span>Social</span>
       </div>
     </a>
+
+    <!-- ====== SIDEWORK ====== -->
     <a href="project.html?slug=sidework" class="card">
       <img class="icon" src="assets/icons/icon_brand_3B82F6.svg" alt="Brand Icon" />
       <div class="meta-inline">
@@ -260,6 +272,8 @@
         <span>Brand</span><span>Design</span><span>Apparel</span>
       </div>
     </a>
+
+    <!-- ====== TRIPP'S BBQ ====== -->
     <a href="project.html?slug=tripps-bbq" class="card">
       <img class="icon" src="assets/icons/icon_design_3B82F6.svg" alt="Design Icon" />
       <div class="meta-inline">
@@ -270,25 +284,37 @@
         <span>Brand</span><span>Logo</span><span>Print</span>
       </div>
     </a>
-  </div>
 
+     <!-- ====== INSERT NEW CARD HERE ====== -->
+    
+  </div>
+  
+<!-- ====== END PROJECTS SECTION ====== -->
+
+<!-- ====== FOOTER ====== -->
   <footer>
     <hr>
     <a href="https://linkedin.com/in/mikemirabal" target="_blank">LinkedIn</a>
-    <a href="mailto:mikemirabal360@gmail.com">Email</a>
+    <a href="mailto:mikemirabal.ux@gmail.com">Email</a>
     <div class="footer-bottom">© Mike Mirabal 2025</div>
   </footer>
 
+<!-- ====== SCRIPTS  ====== -->
+
   <script>
+// Toggle Light / Dark Theme
     function toggleTheme() {
       const currentTheme = document.documentElement.getAttribute('data-theme');
       document.documentElement.setAttribute('data-theme', currentTheme === 'dark' ? 'light' : 'dark');
     }
-
+    
+// Select Filter Button
     function selectFilter(button) {
       document.querySelectorAll('.filters button').forEach(btn => btn.classList.remove('active'));
       button.classList.add('active');
     }
   </script>
+
+  
 </body>
 </html>
