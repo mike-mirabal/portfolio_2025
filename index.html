@@ -84,6 +84,13 @@
       margin-bottom: 0.75rem;
     }
 
+    .filter-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
     .filters {
       display: flex;
       gap: 0.5rem;
@@ -91,13 +98,6 @@
       flex-wrap: wrap;
     }
 
-    .filter-label {
-      font-size: 0.75rem;
-      color: var(--muted);
-      margin-bottom: 0.5rem;
-      font-weight: 500;
-    }
-    
     .filters button {
       flex: 1;
       min-width: 100px;
@@ -122,12 +122,16 @@
       font-weight: 600;
     }
 
+    .main-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 1.5rem;
-      max-width: 900px;
-      margin: 0 auto;
     }
 
     .card {
@@ -230,95 +234,74 @@
   </style>
 </head>
 
- <!-- ====== BEGIN BODY ====== -->  
 <body>
 
-   <!-- ====== HEADER ====== -->
+  <!-- ====== HEADER ====== -->
   <div class="header">
     <h1>Mike Mirabal</h1>
     <div class="theme-switch" onclick="toggleTheme()"></div>
   </div>
-  
-   <!-- ====== SUBHEADING ====== -->
-  <h2 class="subheading">Driving growth and impact through innovative solutions across design, technology, hospitality, and wellness.</h2>
 
-  <!-- ====== BEGIN PROJECTS SECTION ====== -->
-  <h3 class="section-title">Projects</h3>
+  <!-- ====== SUBHEADING ====== -->
+  <h2 class="subheading">
+    Driving growth and impact through innovative solutions across design, technology, hospitality, and wellness.
+  </h2>
 
-  <!-- ====== FILTER BUTTONS ====== -->
-  <p class="filter-label">↑↓ Filter by type</p>
-  
-  <div class="filters">
-    <button class="active" onclick="selectFilter(this)">All</button>
-    <button onclick="selectFilter(this)">AI</button>
-    <button onclick="selectFilter(this)">Art</button>
-    <button onclick="selectFilter(this)">Brand</button>
-    <button onclick="selectFilter(this)">Design</button>
-    <button onclick="selectFilter(this)">Social</button>
-    <button onclick="selectFilter(this)">Strategy</button>
-    <button onclick="selectFilter(this)">UX</button>
-    <button onclick="selectFilter(this)">Web</button>
+  <!-- ====== MAIN CONTENT ====== -->
+  <div class="main-container">
+    <h3 class="section-title">Projects</h3>
+    <p class="filter-label">↑↓ Filter by type</p>
+
+    <div class="filters">
+      <button class="active" onclick="selectFilter(this)">All</button>
+      <button onclick="selectFilter(this)">AI</button>
+      <button onclick="selectFilter(this)">Art</button>
+      <button onclick="selectFilter(this)">Brand</button>
+      <button onclick="selectFilter(this)">Design</button>
+      <button onclick="selectFilter(this)">Social</button>
+      <button onclick="selectFilter(this)">Strategy</button>
+      <button onclick="selectFilter(this)">UX</button>
+      <button onclick="selectFilter(this)">Web</button>
+    </div>
+
+    <div class="grid">
+
+      <!-- ====== UXRS ====== -->
+      <a href="project.html?slug=uxrs" class="card" data-tags="ux,systems,strategy,design,social">
+        <img class="icon" src="assets/icons/icon_ux_3B82F6.svg" alt="UX Icon" />
+        <div class="meta-inline"><span>UX Research & Strategy 501(c)3</span><span>2021</span></div>
+        <div class="title">Empowering a Nonprofit with a Scalable Design System</div>
+        <div class="tags"><span>UX</span><span>Systems</span><span>Social</span></div>
+      </a>
+
+      <!-- ====== GHOST DONKEY ====== -->
+      <a href="project.html?slug=ghost-donkey" class="card" data-tags="design,strategy,social,video">
+        <img class="icon" src="assets/icons/icon_social_3B82F6.svg" alt="Social Icon" />
+        <div class="meta-inline"><span>Ghost Donkey</span><span>2024</span></div>
+        <div class="title">Creating a scalable bar layout and drink marketing plan</div>
+        <div class="tags"><span>Service Design</span><span>Visual</span><span>Social</span></div>
+      </a>
+
+      <!-- ====== SIDEWORK ====== -->
+      <a href="project.html?slug=sidework" class="card" data-tags="brand,art,design,social">
+        <img class="icon" src="assets/icons/icon_brand_3B82F6.svg" alt="Brand Icon" />
+        <div class="meta-inline"><span>Sidework</span><span>2024</span></div>
+        <div class="title">Streetwear-inspired brand for hospitality culture</div>
+        <div class="tags"><span>Brand</span><span>Design</span><span>Apparel</span></div>
+      </a>
+
+      <!-- ====== TRIPP'S BBQ ====== -->
+      <a href="project.html?slug=tripps-bbq" class="card" data-tags="brand,design">
+        <img class="icon" src="assets/icons/icon_design_3B82F6.svg" alt="Design Icon" />
+        <div class="meta-inline"><span>Tripp's BBQ</span><span>2023</span></div>
+        <div class="title">Rustic Texas BBQ brand identity and logo</div>
+        <div class="tags"><span>Brand</span><span>Logo</span><span>Print</span></div>
+      </a>
+
+    </div>
   </div>
-  
-<!-- ====== PROJECT CARDS ====== -->
 
- <!-- ====== UXRS ====== -->
-  <div class="grid">
-    <a href="project.html?slug=uxrs" class="card" data-tags="ux,systems,strategy,design,social">
-      <img class="icon" src="assets/icons/icon_ux_3B82F6.svg" alt="UX Icon" />
-      <div class="meta-inline">
-        <span>UX Research & Strategy 501(c)3</span><span>2021</span>
-      </div>
-      <div class="title">Empowering a Nonprofit with a Scalable Design System</div>
-      <div class="tags">
-        <span>UX</span><span>Systems</span><span>Social</span>
-      </div>
-    </a>
-  
-  <!-- ====== GHOST DONKEY ====== -->
-  <div class="grid">
-    <a href="project.html?slug=ghost-donkey" class="card" data-tags="design,strategy,social,video">
-      <img class="icon" src="assets/icons/icon_social_3B82F6.svg" alt="Social Icon" />
-      <div class="meta-inline">
-        <span>Ghost Donkey</span><span>2024</span>
-      </div>
-      <div class="title">Creating a scalable bar layout and drink marketing plan</div>
-      <div class="tags">
-        <span>Service Design</span><span>Visual</span><span>Social</span>
-      </div>
-    </a>
-
-    <!-- ====== SIDEWORK ====== -->
-    <a href="project.html?slug=sidework" class="card" data-tags="brand,art,design,social">
-      <img class="icon" src="assets/icons/icon_brand_3B82F6.svg" alt="Brand Icon" />
-      <div class="meta-inline">
-        <span>Sidework</span><span>2024</span>
-      </div>
-      <div class="title">Streetwear-inspired brand for hospitality culture</div>
-      <div class="tags">
-        <span>Brand</span><span>Design</span><span>Apparel</span>
-      </div>
-    </a>
-
-    <!-- ====== TRIPP'S BBQ ====== -->
-    <a href="project.html?slug=tripps-bbq" class="card" data-tags="brand,design">
-      <img class="icon" src="assets/icons/icon_design_3B82F6.svg" alt="Design Icon" />
-      <div class="meta-inline">
-        <span>Tripp's BBQ</span><span>2023</span>
-      </div>
-      <div class="title">Rustic Texas BBQ brand identity and logo</div>
-      <div class="tags">
-        <span>Brand</span><span>Logo</span><span>Print</span>
-      </div>
-    </a>
-
-     <!-- ====== INSERT NEW CARD HERE ====== -->
-    
-  </div>
-  
-<!-- ====== END PROJECTS SECTION ====== -->
-
-<!-- ====== FOOTER ====== -->
+  <!-- ====== FOOTER ====== -->
   <footer>
     <hr>
     <a href="https://linkedin.com/in/mikemirabal" target="_blank">LinkedIn</a>
@@ -326,22 +309,18 @@
     <div class="footer-bottom">© Mike Mirabal 2025</div>
   </footer>
 
-<!-- ====== SCRIPTS  ====== -->
-
+  <!-- ====== SCRIPT ====== -->
   <script>
-// Toggle Light / Dark Theme
     function toggleTheme() {
       const currentTheme = document.documentElement.getAttribute('data-theme');
       document.documentElement.setAttribute('data-theme', currentTheme === 'dark' ? 'light' : 'dark');
     }
-    
-// Select Filter Button
+
     function selectFilter(button) {
       document.querySelectorAll('.filters button').forEach(btn => btn.classList.remove('active'));
       button.classList.add('active');
+      // Future filtering logic goes here
     }
   </script>
-
-  
 </body>
 </html>
