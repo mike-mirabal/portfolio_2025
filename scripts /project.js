@@ -10,6 +10,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const entries = rows.map(r => Object.fromEntries(headers.map((h,i) => [h, r[i] || ""])));
       const project = entries.find(p => p.slug === slug);
 
+      // Debug logging
+      console.log("Loaded entries:", entries);
+      console.log("Looking for slug:", slug);
+      console.log("Matched project:", project);
+
       if (!project) {
         document.querySelector(".main-container").innerHTML = "<p>404 – Project not found.</p>";
         return;
