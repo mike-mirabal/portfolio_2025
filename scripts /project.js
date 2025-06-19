@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
+      
       document.getElementById("project-icon").src = project.icon;
       document.getElementById("project-tags").innerHTML = project.tags.split(",").map(t => `<span>${t}</span>`).join("");
       document.getElementById("project-title").textContent = project.title;
