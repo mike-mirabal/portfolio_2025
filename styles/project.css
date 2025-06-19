@@ -67,6 +67,11 @@
       margin: 0 auto;
     }
 
+h1 {
+      font-size: 1.25rem;
+      font-weight: bold;
+    }
+
     .icon-tags {
       display: flex;
       justify-content: space-between;
