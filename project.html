@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Project Page – Mike Mirabal</title>
-  <!-- Load index styles for consistent header spacing -->
+  <!-- Base styles for header spacing -->
   <link rel="stylesheet" href="styles/index.css" />
   <!-- Project-specific styles -->
   <link rel="stylesheet" href="styles/project.css" />
@@ -16,12 +16,81 @@
     <div class="theme-switch" onclick="toggleTheme()"></div>
   </div>
 
-  <!-- ====== PROJECT DETAIL CONTAINER ====== -->
-  <div id="project-detail" class="main-container"></div>
+  <!-- ====== PROJECT DETAIL (WIRE FRAME LAYOUT) ====== -->
+  <div class="main-container" id="project-detail">
+
+    <!-- Project Title & Meta -->
+    <div class="project-header">
+      <div class="icon-tags">
+        <img id="project-icon" class="icon" src="" alt="Project Icon" />
+        <div id="project-meta" class="meta"></div>
+      </div>
+      <h2 id="project-title"></h2>
+      <div id="project-tags" class="tags"></div>
+    </div>
+
+    <!-- Section Navigation -->
+    <nav class="subnav">
+      <button onclick="scrollToSection('problem')">Problem</button>
+      <button onclick="scrollToSection('process')">Process</button>
+      <button onclick="scrollToSection('solution')">Solution</button>
+      <button onclick="scrollToSection('results')">Results</button>
+    </nav>
+
+    <!-- Content Sections -->
+    <div class="project-content">
+      <section id="hero">
+        <figure>
+          <img id="hero-img" src="" alt="Hero Image" />
+          <figcaption id="hero-caption"></figcaption>
+        </figure>
+      </section>
+
+      <section id="problem">
+        <h3>Problem</h3>
+        <p id="problem-copy"></p>
+      </section>
+
+      <section id="process">
+        <h3>Process</h3>
+        <p id="process-copy"></p>
+        <div class="image-grid">
+          <figure>
+            <img id="process-img-1" src="" alt="Process Image 1" />
+            <figcaption id="process-caption-1"></figcaption>
+          </figure>
+          <figure>
+            <img id="process-img-2" src="" alt="Process Image 2" />
+            <figcaption id="process-caption-2"></figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="solution">
+        <h3>Solution</h3>
+        <p id="solution-copy"></p>
+      </section>
+
+      <section id="results">
+        <h3>Results</h3>
+        <p id="results-copy"></p>
+        <figure>
+          <img id="outcome-img" src="" alt="Outcome Image" />
+          <figcaption id="outcome-caption"></figcaption>
+        </figure>
+      </section>
+
+      <!-- View All button -->
+      <div class="filters">
+        <button onclick="window.location='index.html'" class="active">← View All Projects</button>
+      </div>
+    </div>
+
+  </div>
 
   <!-- ====== FOOTER ====== -->
   <footer>
-    <hr>
+    <hr />
     <a href="https://linkedin.com/in/mikemirabal" target="_blank">LinkedIn</a>
     <a href="mailto:mikemirabal.ux@gmail.com">Email</a>
     <div class="footer-bottom">© Mike Mirabal 2025</div>
@@ -32,6 +101,9 @@
     function toggleTheme() {
       const current = document.documentElement.getAttribute('data-theme');
       document.documentElement.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+    }
+    function scrollToSection(id) {
+      document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
     }
   </script>
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
