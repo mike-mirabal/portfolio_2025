@@ -4,19 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Project Page – Mike Mirabal</title>
-  <!-- Consistent header spacing and base styles -->
+  <!-- Load index styles for consistent header spacing -->
   <link rel="stylesheet" href="styles/index.css" />
-  <!-- Project-specific overrides -->
+  <!-- Project-specific styles -->
   <link rel="stylesheet" href="styles/project.css" />
 </head>
 <body>
+  <!-- ====== HEADER ====== -->
   <div class="header">
     <h1><a href="index.html" style="color: inherit; text-decoration: none;">Mike Mirabal</a></h1>
     <div class="theme-switch" onclick="toggleTheme()"></div>
   </div>
 
+  <!-- ====== PROJECT DETAIL CONTAINER ====== -->
   <div id="project-detail" class="main-container"></div>
 
+  <!-- ====== FOOTER ====== -->
   <footer>
     <hr>
     <a href="https://linkedin.com/in/mikemirabal" target="_blank">LinkedIn</a>
@@ -24,6 +27,7 @@
     <div class="footer-bottom">© Mike Mirabal 2025</div>
   </footer>
 
+  <!-- ====== SCRIPTS ====== -->
   <script>
     function toggleTheme() {
       const current = document.documentElement.getAttribute('data-theme');
