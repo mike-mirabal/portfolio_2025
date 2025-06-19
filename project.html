@@ -4,26 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Project Page – Mike Mirabal</title>
+  <!-- Consistent header spacing and base styles -->
+  <link rel="stylesheet" href="styles/index.css" />
+  <!-- Project-specific overrides -->
   <link rel="stylesheet" href="styles/project.css" />
 </head>
 <body>
-  <!-- ====== HEADER (matches index.html) ====== -->
   <div class="header">
-    <h1>Mike Mirabal</h1>
+    <h1><a href="index.html" style="color: inherit; text-decoration: none;">Mike Mirabal</a></h1>
     <div class="theme-switch" onclick="toggleTheme()"></div>
   </div>
 
-  <!-- ====== DYNAMIC PROJECT DETAIL ====== -->
-  <div id="project-detail" class="main-container">
-    <!-- project.js will inject:
-         - icon & tags
-         - title & meta (company | year)
-         - hero image + caption
-         - Problem / Process / Solution / Results sections
-    -->
-  </div>
+  <div id="project-detail" class="main-container"></div>
 
-  <!-- ====== FOOTER ====== -->
   <footer>
     <hr>
     <a href="https://linkedin.com/in/mikemirabal" target="_blank">LinkedIn</a>
@@ -31,16 +24,13 @@
     <div class="footer-bottom">© Mike Mirabal 2025</div>
   </footer>
 
-  <!-- ====== SCRIPTS ====== -->
   <script>
     function toggleTheme() {
       const current = document.documentElement.getAttribute('data-theme');
       document.documentElement.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
     }
   </script>
-  <!-- PapaParse for CSV parsing -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-  <!-- Project loader script (ensure this matches your deployed path) -->
   <script src="project.js"></script>
 </body>
 </html>
