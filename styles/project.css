@@ -3,7 +3,7 @@
   --text: #1c1c1c;
   --accent: #3e7bfa;
   --muted: #6c6c6c;
-  --tag-bg: #f0f0f0;
+  --tag-bg: #f0f0f0; 
   --hover-border: #3e7bfa66;
 }
 
@@ -157,6 +157,17 @@ body {
 .project-content section {
   margin-bottom: 2rem;
 }
+
+/* Make the project title (“Empowering a Nonprofit…”) big */
+.project-title {
+  /* Smallest it can be */  
+  font-size: 3rem;
+  /* Scales with viewport: 8% of screen width */  
+  font-size: clamp(3rem, 8vw, 5rem);
+  font-weight: bold;
+  margin: 0 0 1.5rem;
+}
+
 
 .project-content h3 {
   font-size: 1rem;
