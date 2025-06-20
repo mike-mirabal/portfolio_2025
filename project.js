@@ -65,48 +65,62 @@ function renderProjects(projects, container) {
 
 /**
  * renderDetail: injects full project detail into container
+ * Tags have been removed for a cleaner layout
  */
 function renderDetail(p, container) {
-  // build tag spans
-  const tagsHtml = (p.tags || '').split(',').map(t => `<span>${t.trim()}</span>`).join('');
-
   container.innerHTML = `
-    <img id="project-icon" src="${p.icon}" alt="${p.company} icon" />
-    <div id="project-tags" class="tags">${tagsHtml}</div>
-    <h1 id="project-title">${p.title}</h1>
+    <!-- Project Header -->
+    <div class="icon-tags">
+      <img id="project-icon" class="icon" src="${p.icon}" alt="${p.company} icon" />
+    </div>
     <p id="project-meta">${p.company} | ${p.year}</p>
+    <h1 id="project-title">${p.title}</h1>
 
+    <!-- Hero Section -->
     <section>
       <img id="hero-img" src="${p.hero_img}" alt="Hero image of ${p.title}" />
       <figcaption id="hero-caption">${p.hero_caption}</figcaption>
     </section>
 
+    <!-- Problem Section -->
     <section>
       <h3>Problem</h3>
       <p id="problem-copy">${p.problem}</p>
     </section>
 
+    <!-- Process Section -->
     <section>
       <h3>Process</h3>
       <p id="process-copy">${p.process}</p>
-      <img id="process-img-1" src="${p.process_img_1}" alt="Process image 1" />
-      <figcaption id="process-caption-1">${p.process_caption_1}</figcaption>
-      <img id="process-img-2" src="${p.process_img_2}" alt="Process image 2" />
-      <figcaption id="process-caption-2">${p.process_caption_2}</figcaption>
+      <div class="image-grid">
+        <figure>
+          <img id="process-img-1" src="${p.process_img_1}" alt="Process image 1" />
+          <figcaption id="process-caption-1">${p.process_caption_1}</figcaption>
+        </figure>
+        <figure>
+          <img id="process-img-2" src="${p.process_img_2}" alt="Process image 2" />
+          <figcaption id="process-caption-2">${p.process_caption_2}</figcaption>
+        </figure>
+      </div>
     </section>
 
+    <!-- Solution Section -->
     <section>
       <h3>Solution</h3>
       <p id="solution-copy">${p.solution}</p>
     </section>
 
+    <!-- Results Section -->
     <section>
       <h3>Results</h3>
       <p id="results-copy">${p.results}</p>
-      <img id="outcome-img" src="${p.outcome_img}" alt="Outcome image" />
-      <figcaption id="outcome-caption">${p.outcome_caption}</figcaption>
+      <figure>
+        <img id="outcome-img" src="${p.outcome_img}" alt="Outcome image" />
+        <figcaption id="outcome-caption">${p.outcome_caption}</figcaption>
+      </figure>
     </section>
 
+    <!-- View All Projects Button -->
     <p><a href="index.html">← View All Projects</a></p>
   `;
 }
