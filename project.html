@@ -1,58 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-   <!-- ====== HEAD ====== -->
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Project Page – Mike Mirabal</title>
-  <!-- Base styles for header spacing -->
+  <!-- Base index styles for header spacing -->
   <link rel="stylesheet" href="styles/index.css" />
   <!-- Project-specific styles -->
   <link rel="stylesheet" href="styles/project.css" />
+
+  <!-- Force project title size -->
+<style>
+  #project-title {
+  /* match index.html subheading */
+  font-size: clamp(1.5rem, 5vw, 3rem) !important;
+  font-weight: 800 !important;
+  line-height: 1.2 !important;
+  margin-block-start: 0.5rem !important;
+  margin-block-end:   1.5rem !important;
+}
+</style>
+
 </head>
-  <!-- ====== BODY ====== -->
 <body>
-  <!-- ====== HEADER ====== -->
+  <!-- ====== SITE HEADER ====== -->
   <div class="header">
-    <h1><a href="index.html" style="color: inherit; text-decoration: none;">Mike Mirabal</a></h1>
+    <!-- Changed site name from H1 to H2 to allow page title as H1 -->
+    <h2 class="site-title"><a href="index.html" style="color: inherit; text-decoration: none;">Mike Mirabal</a></h2>
     <div class="theme-switch" onclick="toggleTheme()"></div>
   </div>
 
-  <!-- ====== PROJECT DETAIL (WIRE FRAME LAYOUT) ====== -->
-  <div class="main-container" id="project-detail">
 
-    <!-- Project Title & Meta -->
-    <div class="project-header">
-      <div class="icon-tags">
-        <img id="project-icon" class="icon" src="" alt="Project Icon" />
-        <div id="project-meta" class="meta"></div>
-      </div>
-      <h2 id="project-title" class="project-title"></h2>
-      <div id="project-tags" class="tags"></div>
-    </div>
 
-    <!-- Section Navigation -->
-    <nav class="subnav">
-      <button onclick="scrollToSection('problem')">Problem</button>
-      <button onclick="scrollToSection('process')">Process</button>
-      <button onclick="scrollToSection('solution')">Solution</button>
-      <button onclick="scrollToSection('results')">Results</button>
-    </nav>
+  <!-- ====== PROJECT DETAIL ====== -->
+  <div id="project-detail" class="main-container">
 
-    <!-- Content Sections -->
+  <div class="project-header">
+  <div class="icon-tags">
+    <img id="project-icon" class="icon" src="" alt="Project Icon" />
+  </div>
+  <p id="project-meta" class="meta"></p>
+  <h1 id="project-title" class="project-title"></h1>
+</div>
+
+
+    <!-- ====== CONTENT SECTIONS ====== -->
     <div class="project-content">
+      <!-- Hero Section -->
       <section id="hero">
+      <div class="image-grid single"></div>  
         <figure>
           <img id="hero-img" src="" alt="Hero Image" />
           <figcaption id="hero-caption"></figcaption>
         </figure>
+      </div>
       </section>
 
+      <!-- Problem Section -->
       <section id="problem">
         <h3>Problem</h3>
         <p id="problem-copy"></p>
       </section>
 
+      <!-- Process Section -->
       <section id="process">
         <h3>Process</h3>
         <p id="process-copy"></p>
@@ -68,23 +78,27 @@
         </div>
       </section>
 
+      <!-- Solution Section -->
       <section id="solution">
         <h3>Solution</h3>
         <p id="solution-copy"></p>
       </section>
 
+      <!-- Results Section -->
       <section id="results">
         <h3>Results</h3>
         <p id="results-copy"></p>
+        <div class="image-grid single"></div>
         <figure>
           <img id="outcome-img" src="" alt="Outcome Image" />
           <figcaption id="outcome-caption"></figcaption>
         </figure>
+        </div>
       </section>
 
-      <!-- View All button -->
-      <div class="filters">
-        <button onclick="window.location='index.html'" class="active">← View All Projects</button>
+      <!-- View All Projects Button -->
+      <div class="filters bottom">
+        <a href="index.html" class="filter-btn">← View All Projects</a>
       </div>
     </div>
 
@@ -103,9 +117,6 @@
     function toggleTheme() {
       const current = document.documentElement.getAttribute('data-theme');
       document.documentElement.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
-    }
-    function scrollToSection(id) {
-      document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
     }
   </script>
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
