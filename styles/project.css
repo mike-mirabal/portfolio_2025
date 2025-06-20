@@ -102,6 +102,11 @@ body {
   padding: 0.2rem 0.5rem;
 }
 
+.h1 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
 /* Company | Year meta line */
 .meta {
   font-size: 0.875rem;
