@@ -101,12 +101,6 @@ body {
   border-radius: 0.25rem;
   padding: 0.2rem 0.5rem;
 }
-/*
-.h1 {
-  font-size: 2rem;
-  font-weight: bold;
-}
-*/
 
 /* Company | Year meta line */
 .meta {
@@ -115,15 +109,8 @@ body {
   margin: 0 0 1rem;
 }
 
-/* Project title styling */
-.project-title {
-  font-size: clamp(2rem, 6vw, 3.5rem);
-  /*  Old Smaller Text
-  font-size: clamp(1.5rem, 5vw, 2.5rem);
-  */
-  font-weight: bold;
-  margin: 0 0 1.5rem;
-}
+
+
 
 /* Section navigation buttons */
 .filters {
@@ -153,6 +140,31 @@ body {
   color: var(--accent);
 }
 
+
+/* make the subnav buttons look like the index filter buttons */
+.subnav button {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  background: none;
+  border: 2px solid var(--accent);
+  border-radius: 0.25rem;
+  color: var(--accent);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+/* hover state */
+.subnav button:hover {
+  background: var(--hover-border);
+}
+
+/* if you want an “active” style (e.g. for the View All Projects button) */
+.subnav button.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+
 /* Content sections */
 .project-content section {
   margin-bottom: 2rem;
@@ -169,14 +181,6 @@ body {
   margin-bottom: 1rem;
 }
 
-/* Make the project title roughly the same size as index H1, slightly smaller */
-.project-title {
-  /* fallback if clamp isn’t supported */
-  font-size: 3rem !important;
-  /* fluid scaling between 3rem and 4rem */
-  font-size: clamp(3rem, 6vw, 4rem) !important;
-  margin: 0 0 1.5rem;
-}
 
 
 /* Caption styling for all figcaption */
@@ -211,6 +215,10 @@ body {
   margin: 0;
 }
 
+
+
+
+
 /* View All Projects button at bottom */
 .filters.bottom {
   margin-top: 2rem;
@@ -227,4 +235,43 @@ body {
   .image-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* pull the icon left so it lines up with the header */
+.icon-tags {
+  /* cancel the 1rem left-padding from .main-container */
+  margin-left: -1rem;
+ 
+  /* shrink the gap below the icon */
+  margin-bottom: -1rem;  /* tweak this value up/down to taste */
+}
+
+/* Style the meta line under your project header */
+#project-meta {
+  /* Tighten margins above/below */
+  margin: 0.25rem 0 0.25rem;
+  /* Smaller, responsive font size */
+  font-size: clamp(0.75rem, 2.5vw, 1rem);
+  /* Lighter color to match index cards */
+  color: var(--muted);
+  /* Optional: adjust line-height for compactness */
+  line-height: 1.4;
+}
+
+/* Make single‐figure wrappers behave like the 2‐col grid (flush left) */
+.image-grid.single {
+  display: grid;
+  grid-template-columns: 1fr;  /* single column */
+  gap: 0;                      /* no gap on the sides */
+  margin: 0 0 1.5rem;          /* bottom spacing for rhythm */
+}
+
+/* Normalize all captions */
+.image-grid.single figcaption,
+.image-grid figcaption {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  line-height: 1.4;
 }
