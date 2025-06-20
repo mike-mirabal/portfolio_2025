@@ -75,16 +75,14 @@ body {
   height: 48px;
   object-fit: contain;
   max-width: none;
-  margin: 0;
   flex-shrink: 0;
 }
 
-/* Icon + tags grid: two columns */
+/* Icon + tags row: flex layout */
 .icon-tags {
-  display: grid;
-  grid-template-columns: auto 1fr;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 1rem;
   margin-bottom: 0.5rem;
 }
 
@@ -92,7 +90,6 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  justify-content: end;
 }
 
 .tags span {
@@ -194,7 +191,7 @@ body {
   margin: 0;
 }
 
-/* Adjust bottom button container */
+/* View All Projects button at bottom */
 .filters.bottom {
   margin-top: 2rem;
 }
