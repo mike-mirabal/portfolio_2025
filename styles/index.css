@@ -132,6 +132,11 @@
     }
 
     .card {
+      /* Make the card a column flexbox and spread its children vertically */
+      display: flex;
+      flex-direction: column;
+      /* this ensures the card stays a consistent height if you want, e.g.: */
+      /* min-height: 300px; */
       border: 2px solid var(--accent);
       padding: 1rem;
       border-radius: 0.75rem;
@@ -139,6 +144,15 @@
       background: var(--bg);
       text-decoration: none;
       color: inherit;
+    }
+
+      /* Push the tags container to the bottom of the card */
+    .card .tags {
+      /* margin-top:auto takes up all available space above */
+      margin-top: auto;
+      display: flex;           /* if you want the tags themselves side by side */
+      flex-wrap: wrap;         /* wrap on small screens */
+      gap: 0.5rem;             /* space between each tag */
     }
 
     .card:hover {
