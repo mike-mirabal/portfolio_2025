@@ -101,11 +101,12 @@ body {
   border-radius: 0.25rem;
   padding: 0.2rem 0.5rem;
 }
-
+/*
 .h1 {
   font-size: 2rem;
   font-weight: bold;
 }
+*/
 
 /* Company | Year meta line */
 .meta {
@@ -116,7 +117,10 @@ body {
 
 /* Project title styling */
 .project-title {
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  /*  Old Smaller Text
   font-size: clamp(1.5rem, 5vw, 2.5rem);
+  */
   font-weight: bold;
   margin: 0 0 1.5rem;
 }
