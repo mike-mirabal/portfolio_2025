@@ -158,17 +158,6 @@ body {
   margin-bottom: 2rem;
 }
 
-/* Make the project title (“Empowering a Nonprofit…”) big */
-.project-title {
-  /* Smallest it can be */  
-  font-size: 3rem;
-  /* Scales with viewport: 8% of screen width */  
-  font-size: clamp(3rem, 8vw, 5rem);
-  font-weight: bold;
-  margin: 0 0 1.5rem;
-}
-
-
 .project-content h3 {
   font-size: 1rem;
   font-weight: bold;
@@ -179,6 +168,16 @@ body {
   line-height: 1.6;
   margin-bottom: 1rem;
 }
+
+/* Make the project title roughly the same size as index H1, slightly smaller */
+.project-title {
+  /* fallback if clamp isn’t supported */
+  font-size: 3rem !important;
+  /* fluid scaling between 3rem and 4rem */
+  font-size: clamp(3rem, 6vw, 4rem) !important;
+  margin: 0 0 1.5rem;
+}
+
 
 /* Caption styling for all figcaption */
 .project-content figcaption,
