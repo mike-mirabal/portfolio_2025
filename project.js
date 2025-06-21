@@ -24,13 +24,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (gridContainer) {
         renderProjects(projects, gridContainer);
-        initFilters();  // attach filter logic
+        initFilters();
       }
       if (detailContainer) {
         const slug = new URLSearchParams(window.location.search).get('slug');
         const project = projects.find(p => String(p.slug) === slug);
         if (project) {
-          // apply fade-out initial state
           detailContainer.style.opacity = '0';
           renderDetail(project, detailContainer);
         } else {
@@ -54,14 +53,13 @@ function renderProjects(projects, container) {
     card.className = 'card';
     card.dataset.tags = (p.tags || '').toLowerCase();
 
-    // build tags HTML
     const tagsHtml = (p.tags || '')
       .split(',')
       .map(t => `<span>${t.trim()}</span>`)
       .join('');
 
     card.innerHTML = `
-      <img class="icon" src="${p.icon}" alt="${p.title} icon" />
+      <img class="icon" src="${p.icon || 'assets/placeholder.png'}" alt="${p.title} icon" />
       <div class="meta-inline">
         <span>${p.company}</span><span>${p.year}</span>
       </div>
@@ -94,14 +92,13 @@ function initFilters() {
 
 /**
  * renderDetail: injects full project detail into container
- * Wrap hero, process, and outcome images uniformly in .image-grid
+ * Wrap hero, process, and results images uniformly in .image-grid
  * Updates document title and social share meta tags
  * Fades content in after injection
  */
 function renderDetail(p, container) {
-  // Set dynamic page title and meta tags
   document.title = `${p.title} | Mike Mirabal`;
-  const socialImg = p.hero_img || 'https://example.com/placeholder-social.jpg';
+  const socialImg = p.hero_img || 'assets/placeholder.png';
   setMetaTag('og:image', socialImg);
   setMetaTag('twitter:image', socialImg);
   setMetaTag('og:title', p.title);
@@ -110,10 +107,14 @@ function renderDetail(p, container) {
   setMetaTag('og:url', window.location.href);
   setMetaTag('twitter:card', 'summary_large_image');
 
+  // Fallback for results caption
+  const resultsCaption = p.results_caption || p.outcome_caption || '';
+  const resultsImg = p.results_img || p.outcome_img || 'assets/placeholder.png';
+
   container.innerHTML = `
     <div class="project-header">
       <div class="icon-tags">
-        <img id="project-icon" class="icon" src="${p.icon}" alt="${p.company} icon" />
+        <img id="project-icon" class="icon" src="${p.icon || 'assets/placeholder.png'}" alt="${p.company} icon" />
       </div>
       <p id="project-meta">${p.company} | ${p.year}</p>
       <h1 id="project-title">${p.title}</h1>
@@ -121,7 +122,7 @@ function renderDetail(p, container) {
     <section id="hero">
       <div class="image-grid single">
         <figure>
-          <img id="hero-img" src="${p.hero_img}" alt="Hero image" />
+          <img id="hero-img" src="${p.hero_img || 'assets/placeholder.png'}" alt="Hero image" />
           <figcaption id="hero-caption">${p.hero_caption}</figcaption>
         </figure>
       </div>
@@ -135,11 +136,11 @@ function renderDetail(p, container) {
       <p id="process-copy">${p.process}</p>
       <div class="image-grid">
         <figure>
-          <img id="process-img-1" src="${p.process_img_1}" alt="Process image 1" />
+          <img id="process-img-1" src="${p.process_img_1 || 'assets/placeholder.png'}" alt="Process image 1" />
           <figcaption id="process-caption-1">${p.process_caption_1}</figcaption>
         </figure>
         <figure>
-          <img id="process-img-2" src="${p.process_img_2}" alt="Process image 2" />
+          <img id="process-img-2" src="${p.process_img_2 || 'assets/placeholder.png'}" alt="Process image 2" />
           <figcaption id="process-caption-2">${p.process_caption_2}</figcaption>
         </figure>
       </div>
@@ -153,19 +154,17 @@ function renderDetail(p, container) {
       <p id="results-copy">${p.results}</p>
       <div class="image-grid single">
         <figure>
-          <img id="outcome-img" src="${p.outcome_img}" alt="Outcome image" />
-          <figcaption id="outcome-caption">${p.outcome_caption}</figcaption>
+          <img id="results-img" src="${resultsImg}" alt="Results image" />
+          <figcaption id="results-caption">${resultsCaption}</figcaption>
         </figure>
       </div>
     </section>
     <div class="filters bottom">
       <a href="index.html" class="filter-btn">← View All Projects</a>
     </div>
-    <!-- Back to Top Link injected by JS -->
     <p class="back-to-top"><a href="#top">Back to top ↑</a></p>
   `;
 
-  // Fade in content
   requestAnimationFrame(() => {
     container.style.transition = 'opacity 0.3s ease';
     container.style.opacity = '1';
