@@ -324,3 +324,18 @@ body {
 footer {
   padding-bottom: 2rem; /* adjust up/down as you like */
 }
+
+/* Make all project‐page images fit their containers */
+.image-grid img,
+.image-grid.single img,
+#project-detail img {
+  max-width: 100%;
+  height: auto;
+  display: block;    /* removes any inline whitespace */
+}
+
+/* If your figures or wrappers have negative margins or padding: */
+.image-grid,
+.image-grid.single {
+  overflow: hidden;  /* ensure no bleed */
+}
