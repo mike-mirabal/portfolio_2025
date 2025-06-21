@@ -110,8 +110,6 @@ body {
 }
 
 
-
-
 /* Section navigation buttons */
 .filters {
   display: flex;
@@ -276,3 +274,53 @@ body {
   line-height: 1.4;
 }
 
+
+/* —— View All Projects Button Styling —— */
+
+/* Base button style */
+.filters.bottom .filter-btn {
+  display: inline-block;       /* allow width control */
+  width: auto;                 /* default */
+  text-decoration: none;       /* remove underline */
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.25rem;
+  text-align: center;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+/* Hover */
+.filters.bottom .filter-btn:hover {
+  background: var(--hover-border);
+}
+
+/* Full-width on mobile */
+@media (max-width: 768px) {
+  .filters.bottom .filter-btn {
+    display: block;
+    width: 100%;
+  }
+}
+
+/* —— Back to Top Link Container —— */
+.back-to-top {
+  /* lock to your main-container width & center */
+  max-width: 900px;
+  margin: 2rem auto 0.5rem;   /* 2rem above, 0.5rem below */
+  padding: 0;            /* same gutter as your content */
+  text-align: left;           /* align to the left edge of that container */
+}
+
+@media (max-width: 768px) {
+  .back-to-top {
+    padding: 0;               /* remove side gutter on narrow screens */
+    text-align: center;       /* center the link on mobile */
+  }
+}
+
+
+/* Give the footer some space from the viewport bottom */
+footer {
+  padding-bottom: 2rem; /* adjust up/down as you like */
+}
