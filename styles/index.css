@@ -102,7 +102,7 @@
 /* —— Intro CTA Container —— */
 .intro-cta {
   max-width: 900px;           /* match your .main-container width */
-  margin: 1.5rem auto 1rem;   /* vertically spaced, auto-centered */
+  margin: -1rem auto 3rem;   /* vertically spaced, auto-centered */
   padding: 0;            /* same gutter as your content */
   text-align: left;           /* left-align the button within that box */
 }
@@ -189,6 +189,9 @@
       color: var(--accent);
       font-weight: 600;
     }
+
+
+
 
     .grid {
       display: grid;
@@ -360,3 +363,6 @@ footer {
   padding-bottom: 2rem; /* adjust up/down as you like */
   margin-top: -3rem;        /* shrink the space above the footer */
 }
+
+
+
