@@ -165,10 +165,26 @@
     .card .tags {
       /* margin-top:auto takes up all available space above */
       margin-top: auto;
+      padding-top: 1rem;
       display: flex;           /* if you want the tags themselves side by side */
       flex-wrap: wrap;         /* wrap on small screens */
       gap: 0.5rem;             /* space between each tag */
     }
+
+    /* Make card tags lighter & smaller */
+.card .tags span {
+  font-size: 0.5rem;        /* smaller than the default 0.75rem */
+  color: var(--muted);        /* use the muted color var */
+  background: transparent;    /* if you want no background */
+  border-color: var(--muted); /* tone down the border */
+  /* opacity: 0.75;              /* slightly faded */
+}
+
+/* Optional: reduce padding inside each tag */
+.card .tags span {
+  padding: 0.15rem 0.4rem;    /* tighter top/bottom and left/right */
+}
+
 
     .card:hover {
       transform: translateY(-4px);
@@ -260,4 +276,37 @@
       }
     }
 
+/* —— Back to Top Link Styling —— */
 
+/* Container positioning */
+.back-to-top {
+  text-align: left;        /* left align on desktop */
+  margin: 2rem 0 ;     /* space above/below */
+}
+
+/* Link appearance */
+.back-to-top a {
+  color: var(--accent);         /* blue text */
+  text-decoration: underline;    /* underlined */
+  font-weight: normal;           /* normal weight */
+}
+
+/* Optional hover state */
+.back-to-top a:hover {
+  color: var(--accent);
+  text-decoration: none;         /* remove underline on hover */
+}
+
+/* Mobile: center the link */
+@media (max-width: 768px) {
+  .back-to-top {
+    text-align: center;
+    padding: 0;                  /* let it sit flush */
+  }
+}
+
+/* Give the footer some space from the viewport bottom */
+footer {
+  padding-bottom: 2rem; /* adjust up/down as you like */
+  margin-top: -3rem;        /* shrink the space above the footer */
+}
