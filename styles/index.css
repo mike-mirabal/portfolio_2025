@@ -98,6 +98,56 @@
       padding: 0 1rem;
     }
 
+/* —— Primary CTA Button —— */
+/* —— Intro CTA Container —— */
+.intro-cta {
+  max-width: 900px;           /* match your .main-container width */
+  margin: 1.5rem auto 1rem;   /* vertically spaced, auto-centered */
+  padding: 0;            /* same gutter as your content */
+  text-align: left;           /* left-align the button within that box */
+}
+
+@media (max-width: 768px) {
+  .intro-cta {
+    padding: 0;               /* full width on mobile */
+    text-align: center;       /* center button text */
+  }
+}
+
+/* —— Primary CTA Button —— */
+.btn-primary {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  background-color: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--selected-border);
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+@media (max-width: 768px) {
+  .intro-cta {
+    padding: 0;           /* full-bleed wrapper */
+    text-align: center;
+  }
+  .intro-cta .btn-primary {
+    display: block;       
+    max-width: 100%;           
+    margin: 0;      
+    box-sizing: border-box;  /* include any padding/border in the width */
+  }
+}
+
+
+
     .section-title {
       font-size: 1rem;
       font-weight: bold;
