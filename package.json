@@ -1,4 +1,7 @@
 {
+  "name": "mikemirabal-portfolio",
+  "version": "1.0.0",
+  "type": "module",
   "dependencies": {
     "node-fetch": "^3.3.2",
     "openai": "^5.7.0",
