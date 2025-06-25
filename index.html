@@ -145,27 +145,32 @@
     const chatForm   = document.getElementById("chat-form");
     const chatInput  = document.getElementById("chat-input");
 
+    function renderBotMessage(text) {
+      const botDiv = document.createElement("div");
+      botDiv.className = "message bot";
+      const htmlReply = text
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>')
+        .replace(/\n/g, '<br>');
+      botDiv.innerHTML = `<span class="avatar">🤖</span><div class="bubble-text">${htmlReply}</div>`;
+      chatWindow.appendChild(botDiv);
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+
+    function renderUserMessage(text) {
+      const userDiv = document.createElement("div");
+      userDiv.className = "message user";
+      userDiv.innerHTML = `<div class="bubble-text">${text}</div><span class="avatar">🙂</span>`;
+      chatWindow.appendChild(userDiv);
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+
     function typeWriterLines(lines, wordDelay = 100, lineDelay = 400) {
       let lineIdx = 0;
       function nextLine() {
         if (lineIdx >= lines.length) return;
-        const words = lines[lineIdx].split(" ");
-        let w = 0;
-        const lineEl = document.createElement("div");
-        lineEl.className = "message bot";
-        chatWindow.appendChild(lineEl);
-        function nextWord() {
-          if (w < words.length) {
-            lineEl.textContent += (w ? " " : "") + words[w];
-            chatWindow.scrollTop = chatWindow.scrollHeight;
-            w++;
-            setTimeout(nextWord, wordDelay);
-          } else {
-            lineIdx++;
-            setTimeout(nextLine, lineDelay);
-          }
-        }
-        nextWord();
+        renderBotMessage(lines[lineIdx]);
+        lineIdx++;
+        setTimeout(nextLine, lineDelay + lines[lineIdx - 1].split(" ").length * wordDelay);
       }
       nextLine();
     }
@@ -178,12 +183,7 @@
       e.preventDefault();
       const userText = chatInput.value.trim();
       if (!userText) return;
-
-      const userDiv = document.createElement("div");
-      userDiv.className = "message user";
-      userDiv.textContent = userText;
-      chatWindow.appendChild(userDiv);
-      chatWindow.scrollTop = chatWindow.scrollHeight;
+      renderUserMessage(userText);
       chatInput.value = "";
 
       try {
@@ -195,17 +195,7 @@
 
         const json = await resp.json();
         console.log("💬 [api/chat] returned:", json);
-        const { reply } = json;
-
-        const botDiv = document.createElement("div");
-        botDiv.className = "message bot";
-        const htmlReply = reply
-          .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>')
-          .replace(/\n/g, '<br>');
-        botDiv.innerHTML = `<span class="avatar">🤖</span><div class="bubble-text">${htmlReply}</div>`;
-        chatWindow.appendChild(botDiv);
-        chatWindow.scrollTop = chatWindow.scrollHeight;
-
+        renderBotMessage(json.reply);
       } catch (err) {
         console.error("Chat request failed:", err);
       }
