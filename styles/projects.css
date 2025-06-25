@@ -1,0 +1,177 @@
+/* ─── REUSE VARIABLES & BODY FROM index.css ─── */
+
+/* ─── MAIN CONTAINER ─── */
+.main-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* SECTION TITLES */
+.section-title {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 0.75rem;
+}
+
+/* ─── SORT + FILTER ROW ─── */
+.filter-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding: 0 1rem;
+}
+@media (max-width: 768px) {
+  .filter-row {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+/* unified label style */
+.label {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-weight: 500;
+  margin: 0;
+}
+
+/* sort control */
+.sort-control {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.sort-select {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border: 2px solid var(--muted);
+  border-radius: 0.25rem;
+  background: none;
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.sort-select:hover,
+.sort-select:focus {
+  border-color: var(--hover-border);
+}
+
+/* ─── FILTER BUTTONS ─── */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+.filters button {
+  flex: 1 1 0%;
+  text-align: center;
+  background: transparent;
+  border: 1px solid var(--muted);
+  color: var(--text);
+  border-radius: 0.25rem;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.filters button:hover {
+  background: var(--hover-border);
+  border-color: var(--hover-border);
+}
+.filters button.active {
+  border-color: var(--selected-border);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ─── PROJECT GRID & CARDS ─── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 1.5rem;
+}
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid var(--accent);
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background: var(--bg);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+/* icon at top */
+.card .icon {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 1rem;
+}
+
+/* company | year */
+.card .meta-inline {
+  font-size: 0.875rem;
+  color: var(--muted);
+  margin-bottom: 0.25rem;
+}
+.card .meta-inline span:not(:last-child)::after {
+  content: " | ";
+  padding: 0 0.4rem;
+}
+
+/* project title */
+.card .title {
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* tag badges at bottom */
+.card .tags {
+  margin-top: auto;
+  display: flex;
+  gap: 0.5rem;
+  padding-top: 1rem;
+  flex-wrap: wrap;
+}
+.card .tags span {
+  font-size: 0.5rem;
+  color: var(--muted);
+  padding: 0.15rem 0.4rem;
+  border: 1px solid var(--muted);
+  border-radius: 0.25rem;
+  background: transparent;
+}
+
+/* ─── BACK TO TOP ─── */
+.back-to-top {
+  text-align: left;
+  margin: 2rem 0;
+  padding: 0 1rem;
+}
+.back-to-top a {
+  color: var(--accent);
+  text-decoration: underline;
+}
+@media (max-width: 768px) {
+  .back-to-top {
+    text-align: center;
+    padding: 0;
+  }
+}

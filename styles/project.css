@@ -1,0 +1,342 @@
+:root {
+  --bg: #ffffff;
+  --text: #1c1c1c;
+  --accent: #3e7bfa;
+  --muted: #6c6c6c;
+  --tag-bg: #f0f0f0; 
+  --hover-border: #3e7bfa66;
+}
+
+[data-theme="dark"] {
+  --bg: #1c1c1c;
+  --text: #ffffff;
+  --accent: #3e7bfa;
+  --muted: #bbbbbb;
+  --tag-bg: #333333;
+}
+
+/* Base reset and layout */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Header spacing & alignment */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 900px;
+  margin: 0 auto 0;
+  padding: 0 1rem;
+}
+
+/* Theme toggle switch */
+.theme-switch {
+  width: 40px;
+  height: 20px;
+  background: var(--muted);
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+}
+
+.theme-switch::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background: var(--bg);
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+[data-theme="dark"] .theme-switch::after {
+  transform: translateX(20px);
+}
+
+/* Main container to match index page, slight top adjust */
+.main-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem 1rem 2rem;
+}
+
+
+/* Icon sizing override */
+.icon,
+#project-icon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  max-width: none;
+  flex-shrink: 0;
+}
+
+/* Icon + tags row: flex layout */
+.icon-tags {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 900px;
+  margin: 0 auto 0;
+  padding: 0 1rem;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: nowrap; /* prevent stacking */
+  gap: 0.5rem;
+}
+
+.tags span {
+  font-size: 0.75rem;
+  color: var(--text);
+  background: var(--tag-bg);
+  border-radius: 0.25rem;
+  padding: 0.2rem 0.5rem;
+}
+
+/* Company | Year meta line */
+.meta {
+  font-size: 0.875rem;
+  color: var(--muted);
+  margin: 0 0 1rem;
+}
+
+
+/* Section navigation buttons */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.filter-btn {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  background: none;
+  border: 2px solid var(--muted);
+  border-radius: 0.25rem;
+  color: var(--text);
+  cursor: pointer;
+  transition: border 0.2s ease, color 0.2s ease;
+}
+
+.filter-btn:hover {
+  border-color: var(--hover-border);
+}
+
+.filter-btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+
+/* make the subnav buttons look like the index filter buttons */
+.subnav button {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  background: none;
+  border: 2px solid var(--accent);
+  border-radius: 0.25rem;
+  color: var(--accent);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+/* hover state */
+.subnav button:hover {
+  background: var(--hover-border);
+}
+
+/* if you want an “active” style (e.g. for the View All Projects button) */
+.subnav button.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+
+/* Content sections */
+.project-content section {
+  margin-bottom: 2rem;
+}
+
+.project-content h3 {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 0.75rem;
+}
+
+.project-content p {
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+
+
+/* Caption styling for all figcaption */
+.project-content figcaption,
+.image-grid figcaption {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin: 0.5rem 0 1rem;
+}
+
+/* Hero image and container */
+.project-content figure {
+  margin: 2rem 0;
+  max-width: 100%;
+}
+
+.project-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Process images grid */
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.image-grid figure {
+  margin: 0;
+}
+
+
+
+
+
+/* View All Projects button at bottom */
+.filters.bottom {
+  margin-top: 2rem;
+}
+
+/* Responsive full width & stacking */
+@media (max-width: 768px) {
+  .filters {
+    flex-direction: column;
+  }
+  .filter-btn {
+    width: 100%;
+  }
+  .image-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* pull the icon left so it lines up with the header */
+.icon-tags {
+  /* cancel the 1rem left-padding from .main-container */
+  margin-left: -1rem;
+ 
+  /* shrink the gap below the icon */
+  margin-bottom: -1rem;  /* tweak this value up/down to taste */
+}
+
+/* Style the meta line under your project header */
+#project-meta {
+  /* Tighten margins above/below */
+  margin: 0.25rem 0 0.25rem;
+  /* Smaller, responsive font size */
+  font-size: clamp(0.75rem, 2.5vw, 1rem);
+  /* Lighter color to match index cards */
+  color: var(--muted);
+  /* Optional: adjust line-height for compactness */
+  line-height: 1.4;
+}
+
+/* Make single‐figure wrappers behave like the 2‐col grid (flush left) */
+.image-grid.single {
+  display: grid;
+  grid-template-columns: 1fr;  /* single column */
+  gap: 0;                      /* no gap on the sides */
+  margin: 0 0 1.5rem;          /* bottom spacing for rhythm */
+}
+
+/* Normalize all captions */
+.image-grid.single figcaption,
+.image-grid figcaption {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+
+/* —— View All Projects Button Styling —— */
+
+/* Base button style */
+.filters.bottom .filter-btn {
+  display: inline-block;       /* allow width control */
+  width: auto;                 /* default */
+  text-decoration: none;       /* remove underline */
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.25rem;
+  text-align: center;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+/* Hover */
+.filters.bottom .filter-btn:hover {
+  background: var(--hover-border);
+}
+
+/* Full-width on mobile */
+@media (max-width: 768px) {
+  .filters.bottom .filter-btn {
+    display: block;
+    width: 100%;
+  }
+}
+
+/* —— Back to Top Link Container —— */
+.back-to-top {
+  /* lock to your main-container width & center */
+  max-width: 900px;
+  margin: 2rem auto 0.5rem;   /* 2rem above, 0.5rem below */
+  padding: 0;            /* same gutter as your content */
+  text-align: left;           /* align to the left edge of that container */
+}
+
+@media (max-width: 768px) {
+  .back-to-top {
+    padding: 0;               /* remove side gutter on narrow screens */
+    text-align: center;       /* center the link on mobile */
+  }
+}
+
+
+/* Give the footer some space from the viewport bottom */
+footer {
+  padding-bottom: 2rem; /* adjust up/down as you like */
+}
+
+/* Make all project‐page images fit their containers */
+.image-grid img,
+.image-grid.single img,
+#project-detail img {
+  max-width: 100%;
+  height: auto;
+  display: block;    /* removes any inline whitespace */
+}
+
+/* If your figures or wrappers have negative margins or padding: */
+.image-grid,
+.image-grid.single {
+  overflow: hidden;  /* ensure no bleed */
+}

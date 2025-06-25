@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="styles/index.css" />
+  <link rel="icon" href="/assets/favicon.png" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mike Mirabal</title>
+</head>
+<body id="top" class="no-scroll">
+
+  <!-- ─── SIDE NAV PANEL ─── -->
+  <nav id="sideNav" class="side-nav" aria-hidden="true">
+    <ul class="nav-list">
+      <li><a href="index.html">New Chat</a></li>
+      <li class="has-sub">
+        <button class="sub-toggle">Contact Mike</button>
+        <ul class="sub-list">
+          <li><a href="mailto:info@mikemirabal.com">Email</a></li>
+          <li><a href="https://linkedin.com/in/mikemirabal" target="_blank">LinkedIn</a></li>
+        </ul>
+      </li>
+      <li class="has-sub">
+        <button class="sub-toggle">Projects</button>
+        <ul class="sub-list">
+          <li><a href="projects.html?filter=all">View All</a></li>
+          <li><a href="projects.html?filter=ai">AI</a></li>
+          <li><a href="projects.html?filter=art">Art</a></li>
+          <li><a href="projects.html?filter=brand">Brand</a></li>
+          <li><a href="projects.html?filter=design">Design</a></li>
+          <li><a href="projects.html?filter=social">Social</a></li>
+          <li><a href="projects.html?filter=marketing">Marketing</a></li>
+          <li><a href="projects.html?filter=strategy">Strategy</a></li>
+          <li><a href="projects.html?filter=systems">Systems</a></li>
+          <li><a href="projects.html?filter=ux">UX</a></li>
+          <li><a href="projects.html?filter=web">Web</a></li>
+          <li><a href="projects.html?filter=xr">XR</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- ====== HEADER ====== -->
+  <div class="header">
+    <button id="navToggle" class="nav-toggle" aria-label="Toggle navigation">☰</button>
+    <div class="theme-switch" onclick="toggleTheme()"></div>
+  </div>
+  
+  <!-- ====== HERO CHAT ====== -->
+  <div id="pageContent">
+    <div class="hero-chat">
+      <h2 class="chat-heading">Chat with<br>Mike's AI Assistant</h2>
+      <div id="chat-window" class="chat-window"></div>
+      <form id="chat-form" class="chat-form">
+        <input
+          id="chat-input"
+          type="text"
+          placeholder="Ask me anything about Mike…"
+          autocomplete="off"
+          required
+        />
+        <button type="submit" class="btn-send">↑</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ====== FOOTER ====== -->
+  <footer class="compact-footer">
+    Mike Mirabal © 2025 | Powered by Aigentask
+  </footer>
+
+   <!-- ====== SCRIPTS ====== -->
+  <script>
+    // ──────────────────────────────────────────────────────────────────────────
+    // THEME PERSISTENCE: apply saved theme on load, then toggle+save
+    // ──────────────────────────────────────────────────────────────────────────
+
+    // Immediately read localStorage and set the theme before anything else renders
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const theme = saved === 'dark' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+
+    /**
+     * toggleTheme()
+     * Flips data-theme between 'light' and 'dark', and saves the choice.
+     */
+    function toggleTheme() {
+      const root    = document.documentElement;
+      const current = root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+      const next    = current === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+
+    // ──────────────────────────────────────────────────────────────────────────
+    // SIDE-NAV OPEN/CLOSE + AUTO-COLLAPSE SUBMENUS
+    // ──────────────────────────────────────────────────────────────────────────
+    ;(function() {
+      const nav    = document.getElementById('sideNav');
+      const toggle = document.getElementById('navToggle');
+      const page   = document.getElementById('pageContent');
+
+      toggle.addEventListener('click', e => {
+        e.stopPropagation();
+        nav.classList.toggle('open');
+        const isOpen = nav.classList.contains('open');
+        nav.setAttribute('aria-hidden', !isOpen);
+        if (!isOpen) {
+          document
+            .querySelectorAll('.side-nav .has-sub.open')
+            .forEach(li => li.classList.remove('open'));
+        }
+      });
+
+      page.addEventListener('click', () => {
+        if (nav.classList.contains('open')) closeNav();
+      });
+
+      function closeNav() {
+        nav.classList.remove('open');
+        nav.setAttribute('aria-hidden', 'true');
+        document
+          .querySelectorAll('.side-nav .has-sub.open')
+          .forEach(li => li.classList.remove('open'));
+      }
+
+      document.querySelectorAll('.sub-toggle').forEach(btn => {
+        btn.addEventListener('click', e => {
+          e.stopPropagation();
+          btn.parentElement.classList.toggle('open');
+        });
+      });
+    })();
+
+    // ──────────────────────────────────────────────────────────────────────────
+    // CHAT TYPEWRITER + USER ECHO LOGIC
+    // ──────────────────────────────────────────────────────────────────────────
+    const chatWindow = document.getElementById("chat-window");
+    const chatForm   = document.getElementById("chat-form");
+    const chatInput  = document.getElementById("chat-input");
+
+    function typeWriterLines(lines, wordDelay = 100, lineDelay = 400) {
+      let lineIdx = 0;
+      function nextLine() {
+        if (lineIdx >= lines.length) return;
+        const words = lines[lineIdx].split(" ");
+        let w = 0;
+        const lineEl = document.createElement("div");
+        lineEl.className = "message bot";
+        chatWindow.appendChild(lineEl);
+        function nextWord() {
+          if (w < words.length) {
+            lineEl.textContent += (w ? " " : "") + words[w];
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+            w++;
+            setTimeout(nextWord, wordDelay);
+          } else {
+            lineIdx++;
+            setTimeout(nextLine, lineDelay);
+          }
+        }
+        nextWord();
+      }
+      nextLine();
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      typeWriterLines([ "👋 Hi!", "How can I help you?" ]);
+    });
+
+    chatForm.addEventListener("submit", async e => {
+      e.preventDefault();
+      const userText = chatInput.value.trim();
+      if (!userText) return;
+
+      // Display the user's message
+      const userDiv = document.createElement("div");
+      userDiv.className = "message user";
+      userDiv.textContent = userText;
+      chatWindow.appendChild(userDiv);
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+      chatInput.value = "";
+
+      // ────────────────────────────────────────────────────────────────────────
+      // FETCH TO YOUR VERCEL SERVERLESS FUNCTION
+      // ────────────────────────────────────────────────────────────────────────
+      try {
+        const resp = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: userText })
+      });
+      
+      // ■––––– LOG RAW JSON –––––■
+      const json = await resp.json();
+      console.log("💬 [api/chat] returned:", json);
+      const { reply } = json;
+      // ■–––––––––––––––––––––––––––■
+
+      // Display the assistant's reply…
+        const botDiv = document.createElement("div");
+        botDiv.className = "message bot";
+        botDiv.textContent = reply;
+        chatWindow.appendChild(botDiv);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+      } catch (err) {
+        console.error("Chat request failed:", err);
+      }
+    });
+  </script>
+</body>
+</html>

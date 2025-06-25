@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Page – Mike Mirabal</title>
+  <!-- Base index styles for header spacing -->
+  <link rel="stylesheet" href="styles/index.css" />
+  <!-- Project-specific styles -->
+  <link rel="stylesheet" href="styles/project.css" />
+
+  <!-- Force project title size -->
+<style>
+  #project-title {
+  /* match index.html subheading */
+  font-size: clamp(1.5rem, 5vw, 3rem) !important;
+  font-weight: 800 !important;
+  line-height: 1.2 !important;
+  margin-block-start: 0.5rem !important;
+  margin-block-end:   1.5rem !important;
+}
+</style>
+
+</head>
+<body id="top">
+  <!-- ====== SITE HEADER ====== -->
+  <div class="header">
+    <!-- Changed site name from H1 to H2 to allow page title as H1 -->
+    <h2 class="site-title"><a href="index.html" style="color: inherit; text-decoration: none;">Mike Mirabal</a></h2>
+    <div class="theme-switch" onclick="toggleTheme()"></div>
+  </div>
+
+
+
+  <!-- ====== PROJECT DETAIL ====== -->
+  <div id="project-detail" class="main-container">
+
+  <div class="project-header">
+  <div class="icon-tags">
+    <img id="project-icon" class="icon" src="" alt="Project Icon" />
+  </div>
+  <p id="project-meta" class="meta"></p>
+  <h1 id="project-title" class="project-title"></h1>
+</div>
+
+
+    <!-- ====== CONTENT SECTIONS ====== -->
+    <div class="project-content">
+      <!-- Hero Section -->
+      <section id="hero">
+      <div class="image-grid single"></div>  
+        <figure>
+          <img id="hero-img" src="" alt="Hero Image" />
+          <figcaption id="hero-caption"></figcaption>
+        </figure>
+      </div>
+      </section>
+
+      <!-- Problem Section -->
+      <section id="problem">
+        <h3>Problem</h3>
+        <p id="problem-copy"></p>
+      </section>
+
+      <!-- Process Section -->
+      <section id="process">
+        <h3>Process</h3>
+        <p id="process-copy"></p>
+        <div class="image-grid">
+          <figure>
+            <img id="process-img-1" src="" alt="Process Image 1" />
+            <figcaption id="process-caption-1"></figcaption>
+          </figure>
+          <figure>
+            <img id="process-img-2" src="" alt="Process Image 2" />
+            <figcaption id="process-caption-2"></figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- Solution Section -->
+      <section id="solution">
+        <h3>Solution</h3>
+        <p id="solution-copy"></p>
+      </section>
+
+      <!-- Results Section -->
+      <section id="results">
+        <h3>Results</h3>
+        <p id="results-copy"></p>
+        <div class="image-grid single"></div>
+        <figure>
+          <img id="outcome-img" src="" alt="Outcome Image" />
+          <figcaption id="outcome-caption"></figcaption>
+        </figure>
+        </div>
+      </section>
+
+     
+
+    </div>
+
+  </div>
+
+
+  <!-- ====== FOOTER ====== -->
+  <footer>
+    <hr />
+    <a href="https://linkedin.com/in/mikemirabal" target="_blank">LinkedIn</a>
+    <a href="mailto:mikemirabal.ux@gmail.com">Email</a>
+    <div class="footer-bottom">© Mike Mirabal 2025</div>
+  </footer>
+
+   <!-- ====== SCRIPTS ====== -->
+  <script>
+    // ──────────────────────────────────────────────────────────────────────────
+    // THEME PERSISTENCE: on load, read saved theme and apply
+    // ──────────────────────────────────────────────────────────────────────────
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const theme = saved === 'dark' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+
+    // Toggle light/dark theme and persist to localStorage
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="project.js"></script>
+</body>
+</html>
+
+
+
+
+
+

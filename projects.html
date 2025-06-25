@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio – Mike Mirabal</title>
+  <link rel="stylesheet" href="styles/index.css" />
+  <link rel="stylesheet" href="styles/projects.css">
+  <link rel="icon" type="image/png" href="/assets/favicon.png" />
+</head>
+<body id="top" data-theme="light">
+  <!-- ====== HEADER ====== -->
+  <div class="header">
+    <!-- link back to chat‐first homepage -->
+    <h1><a href="index.html" style="color: inherit; text-decoration: none;">Mike Mirabal</a></h1>
+    <div class="theme-switch" onclick="toggleTheme()"></div>
+  </div>
+
+  <!-- ====== MAIN CONTENT ====== -->
+  <div class="main-container">
+    <h3 class="section-title">Projects</h3>
+
+    <!-- ====== SORT + FILTER ROW (REMOVED) ======
+    <div class="filter-row">
+      <p class="label">↑↓ Filter by type</p>
+      <div class="sort-control">
+        <label for="sortOrder" class="label">Sort:</label>
+        <select id="sortOrder" class="sort-select">
+          <option value="newest">Newest → Oldest</option>
+          <option value="oldest">Oldest → Newest</option>
+        </select>
+      </div>
+    </div>
+    ====== -->
+
+    <!-- ====== FILTER BUTTONS ====== -->
+    <div class="filters">
+      <button class="active" onclick="selectFilter(this)">All</button>
+      <button onclick="selectFilter(this)">AI</button>
+      <button onclick="selectFilter(this)">Art</button>
+      <button onclick="selectFilter(this)">Brand</button>
+      <button onclick="selectFilter(this)">Design</button>
+      <button onclick="selectFilter(this)">Social</button>
+      <button onclick="selectFilter(this)">Strategy</button>
+      <button onclick="selectFilter(this)">Systems</button>
+      <button onclick="selectFilter(this)">UX</button>
+      <button onclick="selectFilter(this)">Web</button>
+      <button onclick="selectFilter(this)">XR</button>
+    </div>
+
+    <!-- ====== PROJECT CARDS ====== -->
+    <div class="grid" id="projectGrid">
+      <!-- project.js will inject cards here -->
+    </div>
+
+    <!-- ====== BACK TO TOP ====== -->
+    <p class="back-to-top"><a href="#top">Back to top ↑</a></p>
+  </div>
+
+  <!-- ====== FOOTER ====== -->
+  <footer>
+    <hr />
+    <a href="https://linkedin.com/in/mikemirabal" target="_blank">LinkedIn</a>
+    <a href="mailto:mikemirabal.ux@gmail.com">Email</a>
+    <div class="footer-bottom">© Mike Mirabal 2025</div>
+  </footer>
+
+  <!-- ====== SCRIPTS ====== -->
+  <script>
+    // ──────────────────────────────────────────────────────────────────────────
+    // THEME PERSISTENCE: on load, read saved theme and apply
+    // ──────────────────────────────────────────────────────────────────────────
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const theme = saved === 'dark' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+
+    // Toggle light/dark theme and persist to localStorage
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+
+    // Filter logic
+    function selectFilter(button) {
+      const filter = button.textContent.trim().toLowerCase();
+      document.querySelectorAll('.filters button').forEach(btn =>
+        btn.classList.remove('active')
+      );
+      button.classList.add('active');
+
+      document.querySelectorAll('.card').forEach(card => {
+        const tags = card.dataset.tags.split(',').map(t => t.trim());
+        card.style.display =
+          filter === 'all' || tags.includes(filter) ? '' : 'none';
+      });
+    }
+
+    // Sort logic (unused since removed, but left intact)
+    document.getElementById('sortOrder')?.addEventListener('change', e => {
+      const order = e.target.value;
+      window.allProjects = window.allProjects || [];
+      const sorted = [...window.allProjects].sort((a, b) =>
+        order === 'newest' ? b.year - a.year : a.year - b.year
+      );
+      renderProjects(sorted, document.getElementById('projectGrid'));
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="project.js"></script>
+</body>
+</html>
+
+
+
+
+
+
