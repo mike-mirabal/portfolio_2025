@@ -290,7 +290,7 @@ h2.chat-heading {
   /* Keep chat bubbles large */
   .chat-window .message.bot,
   .chat-window .message.user {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
   }
 
   /* 3) Ensure chat-window never pushes the form off screen */
