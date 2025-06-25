@@ -9,7 +9,9 @@
 </head>
 <body id="top" class="no-scroll">
 
-  <!-- ─── SIDE NAV PANEL ─── -->
+  <!-- ──────────────────────────────────────────────────────────────────────────
+       SIDE NAV PANEL
+  ────────────────────────────────────────────────────────────────────────────── -->
   <nav id="sideNav" class="side-nav" aria-hidden="true">
     <ul class="nav-list">
       <li><a href="index.html">New Chat</a></li>
@@ -40,13 +42,17 @@
     </ul>
   </nav>
 
-  <!-- ====== HEADER ====== -->
+  <!-- ──────────────────────────────────────────────────────────────────────────
+       HEADER
+  ────────────────────────────────────────────────────────────────────────────── -->
   <div class="header">
     <button id="navToggle" class="nav-toggle" aria-label="Toggle navigation">☰</button>
     <div class="theme-switch" onclick="toggleTheme()"></div>
   </div>
   
-  <!-- ====== HERO CHAT ====== -->
+  <!-- ──────────────────────────────────────────────────────────────────────────
+       HERO CHAT
+  ────────────────────────────────────────────────────────────────────────────── -->
   <div id="pageContent">
     <div class="hero-chat">
       <h2 class="chat-heading">Chat with<br>Mike's AI Assistant</h2>
@@ -64,28 +70,26 @@
     </div>
   </div>
 
-  <!-- ====== FOOTER ====== -->
+  <!-- ──────────────────────────────────────────────────────────────────────────
+       FOOTER
+  ────────────────────────────────────────────────────────────────────────────── -->
   <footer class="compact-footer">
     Mike Mirabal © 2025 | Powered by Aigentask
   </footer>
 
-   <!-- ====== SCRIPTS ====== -->
+  <!-- ──────────────────────────────────────────────────────────────────────────
+       SCRIPTS
+  ────────────────────────────────────────────────────────────────────────────── -->
   <script>
     // ──────────────────────────────────────────────────────────────────────────
     // THEME PERSISTENCE: apply saved theme on load, then toggle+save
     // ──────────────────────────────────────────────────────────────────────────
-
-    // Immediately read localStorage and set the theme before anything else renders
     (function() {
       const saved = localStorage.getItem('theme');
       const theme = saved === 'dark' ? 'dark' : 'light';
       document.documentElement.setAttribute('data-theme', theme);
     })();
 
-    /**
-     * toggleTheme()
-     * Flips data-theme between 'light' and 'dark', and saves the choice.
-     */
     function toggleTheme() {
       const root    = document.documentElement;
       const current = root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
@@ -175,7 +179,6 @@
       const userText = chatInput.value.trim();
       if (!userText) return;
 
-      // Display the user's message
       const userDiv = document.createElement("div");
       userDiv.className = "message user";
       userDiv.textContent = userText;
@@ -183,28 +186,26 @@
       chatWindow.scrollTop = chatWindow.scrollHeight;
       chatInput.value = "";
 
-      // ────────────────────────────────────────────────────────────────────────
-      // FETCH TO YOUR VERCEL SERVERLESS FUNCTION
-      // ────────────────────────────────────────────────────────────────────────
       try {
         const resp = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userText })
-      });
-      
-      // ■––––– LOG RAW JSON –––––■
-      const json = await resp.json();
-      console.log("💬 [api/chat] returned:", json);
-      const { reply } = json;
-      // ■–––––––––––––––––––––––––––■
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: userText })
+        });
 
-      // Display the assistant's reply…
+        const json = await resp.json();
+        console.log("💬 [api/chat] returned:", json);
+        const { reply } = json;
+
         const botDiv = document.createElement("div");
         botDiv.className = "message bot";
-        botDiv.textContent = reply;
+        const htmlReply = reply
+          .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>')
+          .replace(/\n/g, '<br>');
+        botDiv.innerHTML = `<span class="avatar">🤖</span><div class="bubble-text">${htmlReply}</div>`;
         chatWindow.appendChild(botDiv);
         chatWindow.scrollTop = chatWindow.scrollHeight;
+
       } catch (err) {
         console.error("Chat request failed:", err);
       }
