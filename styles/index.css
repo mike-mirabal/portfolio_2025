@@ -300,18 +300,18 @@ h2.chat-heading {
   }
 
   /* CHAT FORM */
-.chat-form input {
-  padding: 1rem 1rem;
-}
+  .chat-form input {
+    padding: 1rem 1rem;
+  }
 
-/* CHAT SEND BUTTON */
+  /* CHAT SEND BUTTON */
   .chat-form .btn-send {
-    padding: 0 1rem;     /* same vertical padding */
-    height: auto; 
-    aspect-ratio: 1 / 1;     /* force width = height */           /* remove any fixed height */
-    width: auto;             /* override any fixed width */
+    padding: 0 1rem;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    width: auto;
     line-height: 1;
-    font-size: 3rem;          /* let padding control vertical centering */
+    font-size: 3rem;
   }
 
   /* ALWAYS COLLAPSE SUBMENU WHEN SIDE NAV CLOSES */
@@ -323,11 +323,44 @@ h2.chat-heading {
   .side-nav a,
   .side-nav .sub-toggle  {
     font-size: 1.5rem;
-}
+  }
 
-/* SIDE NAV SUB MENU LINKS */
+  /* SIDE NAV SUB MENU LINKS */
   .side-nav .sub-list li a {
     font-size: 1.25rem;
     margin-bottom: 0.5rem;
   }
+}
+
+/* ========================================================================== 
+   CUSTOM BOT AVATAR & BUBBLE FIX
+   ========================================================================== */
+.chat-window .message.bot {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  text-align: left;
+  margin: 0.25rem 10% 0.25rem 0;
+  color: var(--text);
+}
+
+.chat-window .message.bot .avatar {
+  flex-shrink: 0;
+  font-size: 1.25rem;
+  line-height: 1.25rem;
+  margin-top: 0.25rem;
+}
+
+.chat-window .message.bot .bubble-text {
+  background: var(--chatbubble);
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.75rem;
+  display: inline-block;
+  max-width: 100%;
+  word-wrap: break-word;
+}
+
+/* Reset background on user messages */
+.chat-window .message.user {
+  background: none;
 }
