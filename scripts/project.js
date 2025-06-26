@@ -59,15 +59,15 @@ function renderProjects(projects, container) {
       .join('');
 
     card.innerHTML = `
-      <img class="icon" src="${p.icon || 'assets/placeholder.png'}" alt="${p.title} icon" />
-      <div class="meta-inline">
-        <span>${p.company}</span><span>${p.year}</span>
-      </div>
-      <div class="title">${p.title}</div>
-      <div class="tags">
-        ${tagsHtml}
-      </div>
-    `;
+  <!-- Icon removed for deploy troubleshooting -->
+  <div class="meta-inline">
+    <span>${p.company}</span><span>${p.year}</span>
+  </div>
+  <div class="title">${p.title}</div>
+  <div class="tags">
+    ${tagsHtml}
+  </div>
+`;
     container.appendChild(card);
   });
 }
