@@ -35,6 +35,96 @@ body {
   padding: 0 1rem;
 }
 
+/* ========================================================================== 
+   SIDE NAV
+   ========================================================================== */
+.side-nav {
+  position: fixed;
+  top: var(--header-height);
+  left: -400px; /* stays hidden until .open */
+  width: 180px;
+  height: calc(100vh - var(--header-height));
+  background: var(--bg);
+  box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+  transition: left 0.3s ease;
+  z-index: 1001;
+  padding: 1rem;
+}
+.side-nav.open {
+  left: 0;
+}
+
+/* top-level links */
+.side-nav .nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.side-nav .nav-list > li {
+  margin: 0.5rem 0;
+}
+.side-nav a,
+.side-nav .sub-toggle {
+  background: transparent;
+  border: none;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 1rem;
+  padding: 0.125rem 0 0.125rem 0;
+  cursor: pointer;
+  display: inline-block;
+}
+/* ensure the toggle is inline-flex so its ::after can rotate */
+.side-nav .sub-toggle {
+  display: inline-flex;
+  align-items: center;
+}
+.side-nav a:hover,
+.side-nav .sub-toggle:hover {
+  color: var(--accent);
+}
+/* move arrow icon to the right */
+.side-nav .sub-toggle::after {
+  content: '›';
+  margin-left: 0.5rem;
+  transition: transform 0.2s ease;
+}
+.side-nav .has-sub.open > .sub-toggle::after {
+  transform: rotate(90deg);
+}
+/* submenu items */
+.side-nav .sub-list {
+  list-style: none;
+  margin: 0.25rem 0 0 1.5rem;
+  padding: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+.side-nav .has-sub.open > .sub-list {
+  max-height: 500px; /* enough to show all */
+}
+.side-nav .sub-list li a {
+  /* match main nav links */
+  color: var(--text);
+  font-size: 1rem;
+  text-decoration: none;
+  display: inline-block;
+  padding: 0;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+.side-nav .sub-list li a:hover {
+  color: var(--accent);
+}
+
+/* page-content gets pushed on desktop but never peeks in */
+#pageContent {
+  transition: margin-left 0.3s ease;
+}
+.side-nav.open + #pageContent {
+  margin-left: 250px;
+}
+
 /* Theme toggle switch */
 .theme-switch {
   width: 40px;
@@ -61,12 +151,15 @@ body {
   transform: translateX(20px);
 }
 
+
+
 /* Main container to match index page, slight top adjust */
 .main-container {
   max-width: 900px;
   margin: 0 auto;
   padding: 1rem 1rem 2rem;
 }
+
 
 
 /* Icon sizing override */
@@ -77,6 +170,7 @@ body {
   object-fit: contain;
   max-width: none;
   flex-shrink: 0;
+  margin-bottom: 1rem;
 }
 
 /* Icon + tags row: flex layout */
@@ -217,7 +311,6 @@ body {
 
 
 
-
 /* View All Projects button at bottom */
 .filters.bottom {
   margin-top: 2rem;
@@ -339,4 +432,87 @@ footer {
 .image-grid,
 .image-grid.single {
   overflow: hidden;  /* ensure no bleed */
+}
+
+/* ========================================================================== 
+   SIDE NAV (imported from index.css)
+   ========================================================================== */
+.side-nav {
+  position: fixed;
+  top: var(--header-height);
+  left: -400px; /* stays hidden until .open */
+  width: 180px;
+  height: calc(100vh - var(--header-height));
+  background: var(--bg);
+  box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+  transition: left 0.3s ease;
+  z-index: 1001;
+  padding: 1rem;
+}
+.side-nav.open {
+  left: 0;
+}
+
+/* top-level links */
+.side-nav .nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.side-nav .nav-list > li {
+  margin: 0.5rem 0;
+}
+.side-nav a,
+.side-nav .sub-toggle {
+  background: transparent;
+  border: none;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 1rem;
+  padding: 0.125rem 0 0.125rem 0;
+  cursor: pointer;
+  display: inline-block;
+}
+.side-nav .sub-toggle {
+  display: inline-flex;
+  align-items: center;
+}
+.side-nav a:hover,
+.side-nav .sub-toggle:hover {
+  color: var(--accent);
+}
+.side-nav .sub-toggle::after {
+  content: '›';
+  margin-left: 0.5rem;
+  transition: transform 0.2s ease;
+}
+.side-nav .has-sub.open > .sub-toggle::after {
+  transform: rotate(90deg);
+}
+.side-nav .sub-list {
+  list-style: none;
+  margin: 0.25rem 0 0 1.5rem;
+  padding: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+.side-nav .has-sub.open > .sub-list {
+  max-height: 500px; /* enough to show all */
+}
+.side-nav .sub-list li a {
+  color: var(--text);
+  font-size: 1rem;
+  text-decoration: none;
+  display: inline-block;
+  padding: 0;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+.side-nav .sub-list li a:hover {
+  color: var(--accent);
+}
+
+/* When nav is open, push page content */
+.side-nav.open + #pageContent {
+  margin-left: 250px;
 }

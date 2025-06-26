@@ -80,15 +80,15 @@
   transition: border-color 0.2s, background 0.2s;
 }
 .filters button:hover {
-  background: var(--hover-border);
-  border-color: var(--hover-border);
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
 }
 .filters button.active {
-  border-color: var(--selected-border);
-  color: var(--accent);
-  font-weight: 600;
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
 }
-
 /* ─── PROJECT GRID & CARDS ─── */
 .grid {
   display: grid;
@@ -104,7 +104,7 @@
 .card {
   display: flex;
   flex-direction: column;
-  border: 2px solid var(--accent);
+  border: 2px solid var(--muted);
   padding: 1rem;
   border-radius: 0.75rem;
   background: var(--bg);
@@ -115,6 +115,7 @@
 .card:hover {
   transform: translateY(-4px);
   box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  border: 2px solid var(--accent);
 }
 
 /* icon at top */

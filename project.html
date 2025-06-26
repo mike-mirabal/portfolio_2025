@@ -24,11 +24,48 @@
 </head>
 <body id="top">
   <!-- ====== SITE HEADER ====== -->
-  <div class="header">
-    <!-- Changed site name from H1 to H2 to allow page title as H1 -->
-    <h2 class="site-title"><a href="index.html" style="color: inherit; text-decoration: none;">Mike Mirabal</a></h2>
-    <div class="theme-switch" onclick="toggleTheme()"></div>
-  </div>
+
+ <!-- ──────────────────────────────────────────────────────────────────────────
+       SIDE NAV PANEL
+  ────────────────────────────────────────────────────────────────────────────── -->
+  <nav id="sideNav" class="side-nav" aria-hidden="true">
+    <ul class="nav-list">
+      <li><a href="index.html">New Chat</a></li>
+      <li class="has-sub">
+        <button class="sub-toggle">Contact Mike</button>
+        <ul class="sub-list">
+          <li><a href="mailto:info@mikemirabal.com">Email</a></li>
+          <li><a href="https://linkedin.com/in/mikemirabal" target="_blank">LinkedIn</a></li>
+        </ul>
+      </li>
+      <li class="has-sub">
+        <button class="sub-toggle">Projects</button>
+        <ul class="sub-list">
+          <li><a href="projects.html?filter=all">View All</a></li>
+          <li><a href="projects.html?filter=ai">AI</a></li>
+          <li><a href="projects.html?filter=art">Art</a></li>
+          <li><a href="projects.html?filter=brand">Brand</a></li>
+          <li><a href="projects.html?filter=design">Design</a></li>
+          <li><a href="projects.html?filter=social">Social</a></li>
+          <li><a href="projects.html?filter=marketing">Marketing</a></li>
+          <li><a href="projects.html?filter=strategy">Strategy</a></li>
+          <li><a href="projects.html?filter=systems">Systems</a></li>
+          <li><a href="projects.html?filter=ux">UX</a></li>
+          <li><a href="projects.html?filter=web">Web</a></li>
+          <li><a href="projects.html?filter=xr">XR</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- ──────────────────────────────────────────────────────────────────────────
+       HEADER
+  ────────────────────────────────────────────────────────────────────────────── -->
+ <div class="header">
+  <button id="navToggle" class="nav-toggle" aria-label="Toggle navigation">☰</button>
+  <div class="theme-switch" onclick="toggleTheme()"></div>
+</div>
+ 
 
 
 
@@ -131,6 +168,51 @@
       localStorage.setItem('theme', next);
     }
   </script>
+
+<!-- ====== FILTERS / SUBNAV BUTTONS ====== -->
+<script src="scripts/filters.js"></script>
+
+
+<script>
+  (function() {
+    const nav    = document.getElementById('sideNav');
+    const toggle = document.getElementById('navToggle');
+    const page   = document.getElementById('pageContent');
+
+    toggle.addEventListener('click', e => {
+      e.stopPropagation();
+      nav.classList.toggle('open');
+      const isOpen = nav.classList.contains('open');
+      nav.setAttribute('aria-hidden', !isOpen);
+      if (!isOpen) {
+        document
+          .querySelectorAll('.side-nav .has-sub.open')
+          .forEach(li => li.classList.remove('open'));
+      }
+    });
+
+    page.addEventListener('click', () => {
+      if (nav.classList.contains('open')) closeNav();
+    });
+
+    function closeNav() {
+      nav.classList.remove('open');
+      nav.setAttribute('aria-hidden', 'true');
+      document
+        .querySelectorAll('.side-nav .has-sub.open')
+        .forEach(li => li.classList.remove('open'));
+    }
+
+    document.querySelectorAll('.sub-toggle').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        btn.parentElement.classList.toggle('open');
+      });
+    });
+  })();
+</script>
+
+
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <script src="project.js"></script>
 </body>
