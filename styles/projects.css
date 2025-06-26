@@ -1,7 +1,38 @@
 /* ─── REUSE VARIABLES & BODY FROM index.css ─── */
 
+/* ─── ADD COMPACT FOOTER ─── */
+:root {
+  --footer-height: 2rem;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Re-introduce footer styling from index */
+.compact-footer {
+  margin-top: auto;
+  height: var(--footer-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: var(--muted);
+  background: var(--bg);
+}
+
+
 /* ─── MAIN CONTAINER ─── */
 .main-container {
+  flex: 1;
   max-width: 900px;
   margin: 0 auto;
   padding: 2rem 1rem;
