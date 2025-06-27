@@ -202,7 +202,7 @@
     window.addEventListener("DOMContentLoaded", () => {
       typeWriterLines([ "Hi! I'm Mike's Assistant.", "What do you want to know?" ]);
     });
-    
+
   // ✅ CHAT FORM EVENT HANDLER / LOTTIE ANIMATION
     chatForm.addEventListener("submit", async e => {
     e.preventDefault();
@@ -212,24 +212,25 @@
     chatInput.value = "";
 
     // ✅ Create typing indicator as a bot message bubble
-    const typingDiv = document.createElement("div");
-    typingDiv.className = "message bot";
-    typingDiv.id = "typing-indicator";
-    typingDiv.innerHTML = `
-      <span class="avatar">🤖</span>
-      <div class="bubble-text">
-        <lottie-player
-          src="/assets/loading.json"
-          background="transparent"
-          speed="1"
-          style="width: 50px; height: 50px;"
-          loop
-          autoplay>
-        </lottie-player>
-      </div>
-    `;
-    chatWindow.appendChild(typingDiv);
-    chatWindow.scrollTop = chatWindow.scrollHeight;
+    // ✅ Create typing indicator as a bot message bubble
+const typingDiv = document.createElement("div");
+typingDiv.className = "message bot";
+typingDiv.id = "typing-indicator";
+typingDiv.innerHTML = `
+  <span class="avatar">🤖</span>
+  <div class="bubble-text typing-indicator">
+    <lottie-player
+      src="/assets/loading.json"
+      background="transparent"
+      speed="1"
+      loop
+      autoplay>
+    </lottie-player>
+  </div>
+`;
+chatWindow.appendChild(typingDiv);
+chatWindow.scrollTop = chatWindow.scrollHeight;
+
 
     try {
       const resp = await fetch("/api/chat", {
