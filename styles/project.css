@@ -483,3 +483,26 @@ footer {
 .side-nav.open + #pageContent {
   margin-left: 250px;
 }
+
+
+
+/* ====== MEDIA QUERY FOR RESPONSIVE SIDE NAV ====== */
+
+@media (max-width: 480px) {
+ /* ALWAYS COLLAPSE SUBMENU WHEN SIDE NAV CLOSES */
+  .side-nav:not(.open) .has-sub.open > .sub-list {
+    max-height: 0 !important;
+  }
+
+  /* SIDE NAV LINKS */
+  .side-nav a,
+  .side-nav .sub-toggle  {
+    font-size: 1.5rem;
+  }
+
+  /* SIDE NAV SUB MENU LINKS */
+  .side-nav .sub-list li a {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+}
