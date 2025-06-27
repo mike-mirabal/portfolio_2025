@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <link rel="stylesheet" href="styles/index.css" />
-  <link rel="icon" href="assets/favicon.png" />
+  <link rel="icon" href="/favicon.png" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mike Mirabal</title>
@@ -137,6 +137,16 @@
         });
       });
     })();
+
+    // Always reset side nav state on load
+    window.addEventListener('pageshow', () => {
+      const nav = document.getElementById('sideNav');
+      nav.classList.remove('open');
+      nav.setAttribute('aria-hidden', 'true');
+
+      document.querySelectorAll('.side-nav .has-sub.open')
+        .forEach(li => li.classList.remove('open'));
+    });
 
     // ──────────────────────────────────────────────────────────────────────────
     // CHAT TYPEWRITER + USER ECHO LOGIC
