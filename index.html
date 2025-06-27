@@ -65,6 +65,18 @@
           autocomplete="off"
           required
         />
+        <!-- Loading Dots Lottie Animation -->
+        <div id="typing-indicator" style="display:none;">
+          <lottie-player
+            src="assets/loading-dots.json" 
+            background="transparent"
+            speed="1"
+            style="width: 50px; height: 50px; margin: auto;"
+            loop
+            autoplay>
+          </lottie-player>
+        </div>
+
         <button type="submit" class="btn-send">↑</button>
       </form>
     </div>
@@ -197,19 +209,32 @@
       chatInput.value = "";
 
       try {
-        const resp = await fetch("/api/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: userText })
-        });
+      // Show typing indicator before API call
+      document.getElementById('typing-indicator').style.display = 'block';
 
-        const json = await resp.json();
-        console.log("💬 [api/chat] returned:", json);
-        renderBotMessage(json.reply);
-      } catch (err) {
-        console.error("Chat request failed:", err);
-      }
+      const resp = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: userText })
+      });
+
+      const json = await resp.json();
+      console.log("💬 [api/chat] returned:", json);
+
+      // Hide typing indicator before rendering reply
+      document.getElementById('typing-indicator').style.display = 'none';
+
+      renderBotMessage(json.reply);
+    } catch (err) {
+      console.error("Chat request failed:", err);
+      // Hide typing indicator even if request fails
+      document.getElementById('typing-indicator').style.display = 'none';
+    }
+
     });
   </script>
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+
 </body>
 </html>
