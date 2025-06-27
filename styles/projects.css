@@ -14,12 +14,12 @@ html, body {
 .page-wrapper {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 100vh; /* makes wrapper span whole viewport */
 }
 
 /* Re-introduce footer styling from index */
 .compact-footer {
-  margin-top: auto;
+  /* margin-top: auto; */
   height: var(--footer-height);
   display: flex;
   align-items: center;
@@ -32,7 +32,7 @@ html, body {
 
 /* ─── MAIN CONTAINER ─── */
 .main-container {
-  flex: 1;
+  flex: 1; /* fills available vertical space */
   max-width: 900px;
   margin: 0 auto;
   padding: 2rem 1rem;
