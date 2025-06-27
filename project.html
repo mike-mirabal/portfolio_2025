@@ -24,11 +24,23 @@
 </style>
 
 </head>
-<body id="top">
-   <div class="page-wrapper">
-    <!-- all your main content here, including nav, main, etc. -->
-  <!-- ====== SITE HEADER ====== -->
 
+
+<body id="top">
+<!-- ──────────────────────────────────────────────────────────────────────────
+       HEADER
+  ────────────────────────────────────────────────────────────────────────────── -->
+ <div class="header">
+  <button id="navToggle" class="nav-toggle" aria-label="Toggle navigation">☰</button>
+  <div class="theme-switch" onclick="toggleTheme()"></div>
+</div>
+
+<!-- ──────────────────────────────────────────────────────────────────────────
+       PAGE CONTENT
+  ────────────────────────────────────────────────────────────────────────────── -->
+
+ <!-- <div class="page-wrapper"> ====== OPEN PAGE WRAPPER ====== -->
+<!-- page-wrapper enables sticky footer -->
  <!-- ──────────────────────────────────────────────────────────────────────────
        SIDE NAV PANEL
   ────────────────────────────────────────────────────────────────────────────── -->
@@ -62,24 +74,16 @@
     </ul>
   </nav>
 
-  <!-- ──────────────────────────────────────────────────────────────────────────
-       HEADER
-  ────────────────────────────────────────────────────────────────────────────── -->
- <div class="header">
-  <button id="navToggle" class="nav-toggle" aria-label="Toggle navigation">☰</button>
-  <div class="theme-switch" onclick="toggleTheme()"></div>
-</div>
- 
-
-
-
+  
+  
+<div id="pageContent">
   <!-- ====== PROJECT DETAIL ====== -->
-  <div id="project-detail" class="main-container">
-
+  <div id="project-detail" class="main-container"> 
   <div class="project-header">
-  <div class="icon-tags">
+  <!-- Remove Icon & Tags 
+   <div class="icon-tags">
     <img id="project-icon" class="icon" src="" alt="Project Icon" />
-  </div>
+  </div> --> 
   <p id="project-meta" class="meta"></p>
   <h1 id="project-title" class="project-title"></h1>
 </div>
@@ -142,8 +146,8 @@
     </div>
 
   </div>
-
-</div> <!-- End of .page-wrapper -->
+</div> <!-- End of Page Content -->
+<!-- </div>  ====== CLOSE PAGE WRAPPER ====== -->
 
   <!-- ====== FOOTER ====== -->
   <footer class="compact-footer">

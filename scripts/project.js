@@ -113,9 +113,11 @@ function renderDetail(p, container) {
 
   container.innerHTML = `
     <div class="project-header">
+    <!--remove icon 
       <div class="icon-tags">
         <img id="project-icon" class="icon" src="${p.icon || 'assets/placeholder.png'}" alt="${p.company} icon" />
       </div>
+      -->
       <p id="project-meta">${p.company} | ${p.year}</p>
       <h1 id="project-title">${p.title}</h1>
     </div>
