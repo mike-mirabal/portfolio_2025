@@ -70,7 +70,7 @@
         />
         <button type="submit" class="btn-send">↑</button>
       </form>
-      <!-- Loading Dots Lottie Animation -->
+      <!-- Loading Dots Lottie Animation 
       <div id="typing-indicator" style="display:none;">
         <lottie-player
           src="/assets/loading.json"
@@ -80,7 +80,7 @@
           loop
           autoplay>
         </lottie-player>
-      </div>
+      </div> -->
     </div> <!-- End Hero Chat -->
   </div> <!-- End Page Content -->
 
@@ -202,38 +202,56 @@
     window.addEventListener("DOMContentLoaded", () => {
       typeWriterLines([ "Hi! I'm Mike's Assistant.", "What do you want to know?" ]);
     });
-
+    
+  // ✅ CHAT FORM EVENT HANDLER / LOTTIE ANIMATION
     chatForm.addEventListener("submit", async e => {
-      e.preventDefault();
-      const userText = chatInput.value.trim();
-      if (!userText) return;
-      renderUserMessage(userText);
-      chatInput.value = "";
+    e.preventDefault();
+    const userText = chatInput.value.trim();
+    if (!userText) return;
+    renderUserMessage(userText);
+    chatInput.value = "";
 
-      try {
-      // Show typing indicator before API call
-      document.getElementById('typing-indicator').style.display = 'block';
+    // ✅ Create typing indicator as a bot message bubble
+    const typingDiv = document.createElement("div");
+    typingDiv.className = "message bot";
+    typingDiv.id = "typing-indicator";
+    typingDiv.innerHTML = `
+      <span class="avatar">🤖</span>
+      <div class="bubble-text">
+        <lottie-player
+          src="/assets/loading.json"
+          background="transparent"
+          speed="1"
+          style="width: 50px; height: 50px;"
+          loop
+          autoplay>
+        </lottie-player>
+      </div>
+    `;
+    chatWindow.appendChild(typingDiv);
+    chatWindow.scrollTop = chatWindow.scrollHeight;
 
+    try {
       const resp = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: userText })
       });
 
-      const json = await resp.json();
-      console.log("💬 [api/chat] returned:", json);
+    const json = await resp.json();
+    console.log("💬 [api/chat] returned:", json);
 
-      // Hide typing indicator before rendering reply
-      document.getElementById('typing-indicator').style.display = 'none';
+    // ✅ Remove typing indicator before rendering actual reply
+    typingDiv.remove();
 
-      renderBotMessage(json.reply);
-    } catch (err) {
-      console.error("Chat request failed:", err);
-      // Hide typing indicator even if request fails
-      document.getElementById('typing-indicator').style.display = 'none';
-    }
+    renderBotMessage(json.reply);
+  } catch (err) {
+    console.error("Chat request failed:", err);
+    // ✅ Remove typing indicator even if request fails
+    typingDiv.remove();
+  }
+});
 
-    });
   </script>
   <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
