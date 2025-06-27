@@ -98,7 +98,7 @@ function initFilters() {
  */
 function renderDetail(p, container) {
   document.title = `${p.title} | Mike Mirabal`;
-  const socialImg = p.hero_img && p.hero_img.trim() !== "" ? p.hero_img : '/assets/placeholder.png';
+  const socialImg = p.hero_img && p.hero_img.trim() !== "" ? p.hero_img : 'assets/placeholder.png';
   setMetaTag('og:image', socialImg);
   setMetaTag('twitter:image', socialImg);
   setMetaTag('og:title', p.title);
@@ -109,16 +109,16 @@ function renderDetail(p, container) {
 
   // Fallback for results caption
   const resultsCaption = p.results_caption || p.outcome_caption || '';
-  const resultsImg = p.results_img && p.results_img.trim() !== "" ? p.results_img : (p.outcome_img && p.outcome_img.trim() !== "" ? p.outcome_img : '/assets/placeholder.png');
+  const resultsImg = p.results_img && p.results_img.trim() !== "" ? p.results_img : (p.outcome_img && p.outcome_img.trim() !== "" ? p.outcome_img : 'assets/placeholder.png');
 
-  const processImg1 = p.process_img_1 && p.process_img_1.trim() !== "" ? p.process_img_1 : '/assets/placeholder.png';
-  const processImg2 = p.process_img_2 && p.process_img_2.trim() !== "" ? p.process_img_2 : '/assets/placeholder.png';
+  const processImg1 = p.process_img_1 && p.process_img_1.trim() !== "" ? p.process_img_1 : 'assets/placeholder.png';
+  const processImg2 = p.process_img_2 && p.process_img_2.trim() !== "" ? p.process_img_2 : 'assets/placeholder.png';
 
   container.innerHTML = `
     <div class="project-header">
     <!--remove icon 
       <div class="icon-tags">
-        <img id="project-icon" class="icon" src="${p.icon && p.icon.trim() !== "" ? p.icon : '/assets/placeholder.png'}" alt="${p.company} icon" />
+        <img id="project-icon" class="icon" src="${p.icon && p.icon.trim() !== "" ? p.icon : 'assets/placeholder.png'}" alt="${p.company} icon" />
       </div>
       -->
       <p id="project-meta">${p.company} | ${p.year}</p>
