@@ -98,7 +98,7 @@ function initFilters() {
  */
 function renderDetail(p, container) {
   document.title = `${p.title} | Mike Mirabal`;
-  const socialImg = p.hero_img || 'assets/placeholder.png';
+  const socialImg = p.hero_img && p.hero_img.trim() !== "" ? p.hero_img : 'assets/placeholder.png';
   setMetaTag('og:image', socialImg);
   setMetaTag('twitter:image', socialImg);
   setMetaTag('og:title', p.title);
@@ -109,13 +109,16 @@ function renderDetail(p, container) {
 
   // Fallback for results caption
   const resultsCaption = p.results_caption || p.outcome_caption || '';
-  const resultsImg = p.results_img || p.outcome_img || 'assets/placeholder.png';
+  const resultsImg = p.results_img && p.results_img.trim() !== "" ? p.results_img : (p.outcome_img && p.outcome_img.trim() !== "" ? p.outcome_img : 'assets/placeholder.png');
+
+  const processImg1 = p.process_img_1 && p.process_img_1.trim() !== "" ? p.process_img_1 : 'assets/placeholder.png';
+  const processImg2 = p.process_img_2 && p.process_img_2.trim() !== "" ? p.process_img_2 : 'assets/placeholder.png';
 
   container.innerHTML = `
     <div class="project-header">
     <!--remove icon 
       <div class="icon-tags">
-        <img id="project-icon" class="icon" src="${p.icon || 'assets/placeholder.png'}" alt="${p.company} icon" />
+        <img id="project-icon" class="icon" src="${p.icon && p.icon.trim() !== "" ? p.icon : 'assets/placeholder.png'}" alt="${p.company} icon" />
       </div>
       -->
       <p id="project-meta">${p.company} | ${p.year}</p>
@@ -124,7 +127,7 @@ function renderDetail(p, container) {
     <section id="hero">
       <div class="image-grid single">
         <figure>
-          <img id="hero-img" src="${p.hero_img || 'assets/placeholder.png'}" alt="Hero image" />
+          <img id="hero-img" src="${socialImg}" alt="Hero image" />
           <figcaption id="hero-caption">${p.hero_caption}</figcaption>
         </figure>
       </div>
@@ -138,11 +141,11 @@ function renderDetail(p, container) {
       <p id="process-copy">${p.process}</p>
       <div class="image-grid">
         <figure>
-          <img id="process-img-1" src="${p.process_img_1 || 'assets/placeholder.png'}" alt="Process image 1" />
+          <img id="process-img-1" src="${processImg1}" alt="Process image 1" />
           <figcaption id="process-caption-1">${p.process_caption_1}</figcaption>
         </figure>
         <figure>
-          <img id="process-img-2" src="${p.process_img_2 || 'assets/placeholder.png'}" alt="Process image 2" />
+          <img id="process-img-2" src="${processImg2}" alt="Process image 2" />
           <figcaption id="process-caption-2">${p.process_caption_2}</figcaption>
         </figure>
       </div>

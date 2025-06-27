@@ -188,6 +188,18 @@
               .forEach(li => li.classList.remove('open'));
     }
   });
+
+   window.addEventListener('popstate', () => {
+    const nav = document.getElementById('sideNav');
+    if (nav && nav.classList.contains('open')) {
+      nav.classList.remove('open');
+      nav.setAttribute('aria-hidden', 'true');
+      document
+        .querySelectorAll('.side-nav .has-sub.open')
+        .forEach(li => li.classList.remove('open'));
+    }
+  });
+  
 </script>
 
 
