@@ -258,8 +258,8 @@ h2.chat-heading {
 
 @media (max-width: 480px) {
   .bubble-text.typing-indicator lottie-player {
-    width: 60px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
   }
 }
 
