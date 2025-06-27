@@ -246,15 +246,16 @@ h2.chat-heading {
    CHAT BUBBLE TYPING INDICATOR / LOTTIE ANIMATION
    ========================================================================== */
    .bubble-text.typing-indicator {
-  padding: 0.25rem 0;
+  padding: 0;
   text-align: center;
 }
 .bubble-text.typing-indicator lottie-player {
-  width: 80px;
-  height: 80px;
+  width: 120px;   /* increase from 80px */
+  height: 120px;
   margin: 0 auto;
   display: block;
 }
+
 @media (max-width: 480px) {
   .bubble-text.typing-indicator lottie-player {
     width: 60px;
