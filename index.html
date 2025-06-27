@@ -58,17 +58,6 @@
       <h2 class="chat-heading">Chat with<br>Mike's AI Assistant</h2>
       <!-- ====== CHAT WINDOW ====== -->
       <div id="chat-window" class="chat-window">
-      <!-- Loading Dots Lottie Animation -->
-        <div id="typing-indicator" style="display:none;">
-          <lottie-player
-            src="/assets/loading-dots.json" 
-            background="transparent"
-            speed="1"
-            style="width: 50px; height: 50px; margin: auto;"
-            loop
-            autoplay>
-          </lottie-player>
-        </div>
       </div> <!-- End Chat Window-->
       <!-- ====== CHAT FORM ====== -->
       <form id="chat-form" class="chat-form">
@@ -79,11 +68,21 @@
           autocomplete="off"
           required
         />
-
         <button type="submit" class="btn-send">↑</button>
       </form>
-    </div>
-  </div>
+      <!-- Loading Dots Lottie Animation -->
+      <div id="typing-indicator" style="display:none;">
+        <lottie-player
+          src="/assets/loading-dots.json" 
+          background="transparent"
+          speed="1"
+          style="width: 50px; height: 50px; margin: auto;"
+          loop
+          autoplay>
+        </lottie-player>
+      </div> 
+    </div> <!-- End Hero Chat -->
+  </div> <!-- End Page Content -->
 
   <!-- ──────────────────────────────────────────────────────────────────────────
        FOOTER
