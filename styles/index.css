@@ -252,12 +252,12 @@ h2.chat-heading {
   display: flex;             /* Make bubble flex container */
   align-items: center;       /* Vertically center content */
   justify-content: left;   /* Horizontally center content */
-  height: auto;              /* Allow height to match content */
+  /* height: auto;              Allow height to match content */
   }
   .bubble-text.typing-indicator lottie-player {
   /* transform: scale(1.5);*/
-  transform-origin: center;
-  margin: -3.75rem -3.75rem; /* equivalent to -60px top/bottom and left/right */
+  /* transform-origin: center;*/
+  margin: -3rem -3rem; /* equivalent to -60px top/bottom and left/right */
 }
  /* @media (max-width: 480px) {
   .bubble-text.typing-indicator lottie-player {
