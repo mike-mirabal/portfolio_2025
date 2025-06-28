@@ -257,7 +257,7 @@ h2.chat-heading {
   .bubble-text.typing-indicator lottie-player {
   /* transform: scale(1.5);*/
   /* transform-origin: center;*/
-  margin: -3rem -3rem; /* equivalent to -60px top/bottom and left/right */
+  margin: -3rem -4rem; /* equivalent to -60px top/bottom and left/right */
 }
  /* @media (max-width: 480px) {
   .bubble-text.typing-indicator lottie-player {
