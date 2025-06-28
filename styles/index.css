@@ -173,7 +173,7 @@ body.no-scroll {
 .hero-chat {
   box-sizing: border-box;
   margin: 0 auto;
-  padding: 1rem;
+  padding: 0 1rem 1rem 1rem;
   max-width: 500px;
   height: calc(100vh - var(--header-height) - var(--footer-height));
   display: flex;
