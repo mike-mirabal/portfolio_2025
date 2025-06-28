@@ -253,8 +253,7 @@ h2.chat-heading {
   height: auto;              /* Allow height to match content */
   }
   .bubble-text.typing-indicator lottie-player {
-  width: 120px;              /* Or desired width */
-  height: 120px;             /* Or desired height */
+  
   margin: 0;                 /* Remove any auto or vertical margin */
   display: block;
   } 
