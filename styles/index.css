@@ -257,7 +257,7 @@ h2.chat-heading {
   background: transparent !important;
   }
   .bubble-text.typing-indicator lottie-player {
-  margin: -3rem -4.5rem; /* equivalent to -60px top/bottom and left/right */
+  margin: -3rem -5rem; /* equivalent to -60px top/bottom and left/right */
 }
  /* @media (max-width: 480px) {
   .bubble-text.typing-indicator lottie-player {
