@@ -246,6 +246,8 @@ h2.chat-heading {
    CHAT BUBBLE TYPING INDICATOR / LOTTIE ANIMATION
    ========================================================================== */
   .bubble-text.typing-indicator {
+  max-height: 2.5rem; /* try to match chat bubble height */
+  overflow: hidden; /* crops any overflow from Lottie */
   padding: 0;                /* Remove extra padding */
   display: flex;             /* Make bubble flex container */
   align-items: center;       /* Vertically center content */
@@ -255,14 +257,14 @@ h2.chat-heading {
   .bubble-text.typing-indicator lottie-player {
   /* transform: scale(1.5);*/
   transform-origin: center;
-  margin: -50px -50px; /* adjust as needed */
+  margin: -3.75rem -3.75rem; /* equivalent to -60px top/bottom and left/right */
 }
-  @media (max-width: 480px) {
+ /* @media (max-width: 480px) {
   .bubble-text.typing-indicator lottie-player {
   width: 80px;
   height: 80px;
   }
-  }
+} */
 
 
 /* ========================================================================== 
