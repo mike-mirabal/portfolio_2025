@@ -255,6 +255,7 @@ h2.chat-heading {
   align-items: center;       /* Vertically center content */
   justify-content: left;   /* Horizontally center content */
   /* height: auto;              Allow height to match content */
+  background: transparent !important;
   }
   .bubble-text.typing-indicator lottie-player {
   /* transform: scale(1.5);*/
