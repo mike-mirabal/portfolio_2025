@@ -203,64 +203,66 @@
       typeWriterLines([ "Hi! I'm Mike's Assistant.", "What do you want to know?" ]);
     });
 
-  // ✅ CHAT FORM EVENT HANDLER / LOTTIE ANIMATION
-chatForm.addEventListener("submit", async e => {
-  e.preventDefault();
-  const userText = chatInput.value.trim();
-  if (!userText) return;
-  renderUserMessage(userText);
-  chatInput.value = "";
+    // ✅ CHAT FORM EVENT HANDLER / LOTTIE ANIMATION
+    chatForm.addEventListener("submit", async e => {
+      e.preventDefault();
+      const userText = chatInput.value.trim();
+      if (!userText) return;
+      renderUserMessage(userText);
+      chatInput.value = "";
 
-  // ✅ Determine current theme and set appropriate Lottie src
-  const currentTheme = document.documentElement.getAttribute('data-theme');
-  const lottieSrc = currentTheme === 'dark'
-    ? '/assets/loading-dots-dark.json'
-    : '/assets/loading-dots-light.json';
+      // ✅ Determine current theme and set appropriate Lottie src
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const lottieSrc = currentTheme === 'dark'
+        ? '/assets/loading-dots-dark.json'
+        : '/assets/loading-dots-light.json';
 
-  // ✅ Create typing indicator as a bot message bubble
-  const typingDiv = document.createElement("div");
-  typingDiv.className = "message bot";
-  typingDiv.id = "typing-indicator";
-  typingDiv.innerHTML = `
-    <span class="avatar">🤖</span>
-    <div class="bubble-text typing-indicator">
-      <lottie-player
-        src="${lottieSrc}"
-        background="transparent"
-        speed="1"
-        loop
-        autoplay>
-      </lottie-player>
-    </div>
-  `;
-  chatWindow.appendChild(typingDiv);
-  chatWindow.scrollTop = chatWindow.scrollHeight;
+      // ✅ Create typing indicator as a bot message bubble
+      const typingDiv = document.createElement("div");
+      typingDiv.className = "message bot";
+      typingDiv.id = "typing-indicator";
+      typingDiv.innerHTML = `
+        <span class="avatar">🤖</span>
+        <div class="bubble-text typing-indicator">
+          <lottie-player
+            src="${lottieSrc}"
+            background="transparent"
+            speed="1"
+            loop
+            autoplay>
+          </lottie-player>
+        </div>
+      `;
+      chatWindow.appendChild(typingDiv);
+      chatWindow.scrollTop = chatWindow.scrollHeight;
 
-  try {
-    const resp = await fetch("/api/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: userText })
+      try {
+        const resp = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: userText })
+        });
+
+        const json = await resp.json();
+        console.log("💬 [api/chat] returned:", json);
+
+        // ✅ Remove typing indicator before rendering actual reply
+        typingDiv.remove();
+
+        // ✅ Split into sentences and render each as its own bubble
+        const sentences = json.reply.split(/(?<=\.)\s+/);
+        sentences.forEach(sentence => {
+          renderBotMessage(sentence.trim());
+        });
+
+      } catch (err) {
+        console.error("Chat request failed:", err);
+        // ✅ Remove typing indicator even if request fails
+        typingDiv.remove();
+      }
     });
-
-    const json = await resp.json();
-    console.log("💬 [api/chat] returned:", json);
-
-    // ✅ Remove typing indicator before rendering actual reply
-    typingDiv.remove();
-
-    renderBotMessage(json.reply);
-  } catch (err) {
-    console.error("Chat request failed:", err);
-    // ✅ Remove typing indicator even if request fails
-    typingDiv.remove();
-  }
-});
-
-
   </script>
   <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-
 
 </body>
 </html>
