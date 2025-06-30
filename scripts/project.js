@@ -18,10 +18,17 @@ document.addEventListener('DOMContentLoaded', () => {
       return res.text();
     })
     .then(csvText => {
-      const { data: projects } = Papa.parse(csvText.trim(), { header: true, skipEmptyLines: true });
+      let { data: projects } = Papa.parse(csvText.trim(), { header: true, skipEmptyLines: true });
+
+      // ✅ Filter out projects without valid dates first
+      projects = projects.filter(p => p.date && parseInt(p.date));
 
       // ✅ Sort projects by date, newest to oldest
-      projects.sort((a, b) => parseInt(b.date) - parseInt(a.date));
+      projects.sort((a, b) => {
+        const yearA = parseInt(a.date) || 0;
+        const yearB = parseInt(b.date) || 0;
+        return yearB - yearA;
+      });
 
       const gridContainer = document.getElementById('projectGrid');
       const detailContainer = document.getElementById('project-detail');
@@ -46,9 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
     .catch(err => console.error('Error loading/parsing CSV:', err));
 });
 
-/**
- * renderProjects: injects project cards into a grid container
- */
+
+/* ====== renderProjects: injects project cards into a grid container ====== */
 function renderProjects(projects, container) {
   container.innerHTML = '';
   projects.forEach(p => {
