@@ -242,6 +242,17 @@ h2.chat-heading {
   word-wrap: break-word;
 }
 
+/* Light mode link styling in bot messages */
+.chat-window .message.bot a {
+  color: #3e7bfa; /* adjust to your desired high-contrast light mode color */
+  text-decoration: underline; /* optional for clarity */
+}
+
+/* Dark mode link styling in bot messages */
+[data-theme="dark"] .chat-window .message.bot a {
+  color: #588bfa; /* brighter high-contrast color for dark backgrounds */
+}
+
 /* ========================================================================== 
    CHAT BUBBLE TYPING INDICATOR / LOTTIE ANIMATION
    ========================================================================== */
