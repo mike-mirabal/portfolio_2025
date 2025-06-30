@@ -60,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-
 /* ====== renderProjects: injects project cards into a grid container ====== */
 function renderProjects(projects, container) {
   container.innerHTML = '';
@@ -75,37 +74,65 @@ function renderProjects(projects, container) {
       .map(t => `<span>${t.trim()}</span>`)
       .join('');
 
+    // ✅ Debug: log each project card being rendered
+    console.log("Rendering project:", p.title, "Hero Img:", p.hero_img);
+
     card.innerHTML = `
-  <!-- Icon removed for deploy troubleshooting -->
-  <div class="meta-inline">
-    <span>${p.company}</span><span>${p.year}</span>
+  <div class="hero-img">
+    <img src="${p.hero_img}" alt="${p.title} hero image">
   </div>
-  <div class="title">${p.title}</div>
-  <div class="tags">
-    ${tagsHtml}
+
+  <div class="card-content">
+    <div class="meta-inline">
+      <span class="company">${p.company}</span>
+      <span class="year">${p.year}</span>
+    </div>
+
+    <p class="title">${p.title}</p>
+
+    <div class="tags">
+      ${tagsHtml}
+    </div>
   </div>
 `;
+
     container.appendChild(card);
   });
 }
+
 
 /**
  * initFilters: sets up click handlers for filter buttons on index.html
  */
 function initFilters() {
   const buttons = document.querySelectorAll('.filters button');
+
+  // ✅ On page load: check URL param and activate correct filter
+  const params = new URLSearchParams(window.location.search);
+  const urlFilter = params.get('filter') || 'all';
+
+  // Find the button matching the URL filter
+  const activeBtn = Array.from(buttons).find(btn =>
+    btn.textContent.trim().toLowerCase() === urlFilter
+  );
+
+  if (activeBtn) {
+    selectFilter(activeBtn);
+  }
+
+  // ✅ Add click listeners to buttons to filter projects + update URL
   buttons.forEach(btn => {
     btn.addEventListener('click', () => {
+      selectFilter(btn);
+
+      // ✅ Update the URL to reflect selected filter without reloading
       const filter = btn.textContent.trim().toLowerCase();
-      buttons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      document.querySelectorAll('.card').forEach(card => {
-        const tags = card.dataset.tags.split(',').map(t => t.trim());
-        card.style.display = (filter === 'all' || tags.includes(filter)) ? '' : 'none';
-      });
+      const newUrl = `${window.location.pathname}?filter=${encodeURIComponent(filter)}`;
+      history.pushState(null, '', newUrl);
     });
   });
 }
+
 
 /**
  * renderDetail: injects full project detail into container

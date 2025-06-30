@@ -126,7 +126,7 @@
       localStorage.setItem('theme', next);
     }
 
-    // Filter logic
+// Filter logic
 function selectFilter(button) {
   const filter = button.textContent.trim().toLowerCase();
   document.querySelectorAll('.filters button').forEach(btn =>
@@ -142,7 +142,13 @@ function selectFilter(button) {
 
   // ✅ Update subheading each time filter changes
   updateSubheading(filter);
+
+  // ✅ Update URL without reloading page
+  const newUrl = new URL(window.location);
+  newUrl.searchParams.set('filter', filter);
+  window.history.pushState({}, '', newUrl);
 }
+
 
 // Subheading Update Logic
 function updateSubheading(filter) {

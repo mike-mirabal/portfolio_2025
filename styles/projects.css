@@ -143,9 +143,10 @@ html, body {
   display: flex;
   flex-direction: column;
   border: 2px solid var(--muted);
-  padding: 1rem;
+  padding: 0;
   border-radius: 0.75rem;
   background: var(--bg);
+  overflow: hidden; /* this masks child corners */
   text-decoration: none;
   color: inherit;
   transition: transform 0.2s, box-shadow 0.2s;
@@ -156,12 +157,39 @@ html, body {
   border: 2px solid var(--accent);
 }
 
-/* icon at top */
+/* Card Hero Image */
+.card .hero-img {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 0; /* ensure no conflicting rounding */
+  margin: 0; /* ensure no default margin is applied */
+}
+
+.card .hero-img img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover; /* crops excess while maintaining aspect ratio */
+  max-height: 200px; /* adjust this to control image height on cards */
+}
+
+@media (max-width: 480px) {
+  .card .hero-img img {
+    max-height: 150px; /* or any smaller value for mobile layout */
+  }
+}
+
+/* Card Content */
+.card .card-content {
+  padding: 1rem; /* or your preferred inner spacing */
+}
+
+/* icon at top 
 .card .icon {
   width: 48px;
   height: 48px;
   margin-bottom: 1rem;
-}
+} */
 
 /* company | year */
 .card .meta-inline {
