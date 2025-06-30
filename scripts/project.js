@@ -18,28 +18,32 @@ document.addEventListener('DOMContentLoaded', () => {
       return res.text();
     })
     .then(csvText => {
-      // ✅ Parse CSV as usual
       const { data: projects } = Papa.parse(csvText.trim(), { header: true, skipEmptyLines: true });
 
-      // ✅ Filter out projects that have NO date (optional)
-      const projectsWithDates = projects.filter(p => p.date && parseInt(p.date));
+      // ✅ Debug: log parsed projects and their years
+      console.log("✅ Parsed projects:", projects);
+      projects.forEach(p => console.log("Project year:", p.year));
 
-      // ✅ Sort projects by date, newest to oldest
-      projectsWithDates.sort((a, b) => parseInt(b.date) - parseInt(a.date));
+      // ✅ Sort projects by year (newest to oldest)
+      projects.sort((a, b) => {
+        const yearA = parseInt(a.year) || 0;
+        const yearB = parseInt(b.year) || 0;
+        return yearB - yearA;
+      });
 
       const gridContainer = document.getElementById('projectGrid');
       const detailContainer = document.getElementById('project-detail');
 
       // ✅ Render grid projects if container exists
       if (gridContainer) {
-        renderProjects(projectsWithDates, gridContainer);
+        renderProjects(projects, gridContainer);
         initFilters();
       }
 
       // ✅ Render individual project details if container exists
       if (detailContainer) {
         const slug = new URLSearchParams(window.location.search).get('slug');
-        const project = projectsWithDates.find(p => String(p.slug) === slug);
+        const project = projects.find(p => String(p.slug) === slug);
         if (project) {
           detailContainer.style.opacity = '0';
           renderDetail(project, detailContainer);
@@ -52,6 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .catch(err => console.error('Error loading/parsing CSV:', err));
 });
+
+
 
 
 
