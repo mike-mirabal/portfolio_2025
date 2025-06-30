@@ -19,6 +19,10 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .then(csvText => {
       const { data: projects } = Papa.parse(csvText.trim(), { header: true, skipEmptyLines: true });
+
+      // ✅ Sort projects by date, newest to oldest
+      projects.sort((a, b) => parseInt(b.date) - parseInt(a.date));
+
       const gridContainer = document.getElementById('projectGrid');
       const detailContainer = document.getElementById('project-detail');
 
