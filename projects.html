@@ -33,7 +33,6 @@
           <li><a href="projects.html?filter=brand">Brand</a></li>
           <li><a href="projects.html?filter=design">Design</a></li>
           <li><a href="projects.html?filter=social">Social</a></li>
-          <li><a href="projects.html?filter=marketing">Marketing</a></li>
           <li><a href="projects.html?filter=strategy">Strategy</a></li>
           <li><a href="projects.html?filter=systems">Systems</a></li>
           <li><a href="projects.html?filter=ux">UX</a></li>
@@ -52,21 +51,23 @@
     <div class="theme-switch" onclick="toggleTheme()"></div>
   </div>
 
-
-<!-- ──────────────────────────────────────────────────────────────────────────
-       SUBHEADING
-  ────────────────────────────────────────────────────────────────────────────── -->
-
-
 <!-- ──────────────────────────────────────────────────────────────────────────
        MAIN CONTENT CONTAINER
   ────────────────────────────────────────────────────────────────────────────── -->
   <div class="main-container">
+
+  <!-- ──────────────────────────────────────────────────────────────────────────
+        SUBHEADING
+    ────────────────────────────────────────────────────────────────────────────── -->
+    <h1 id="projectsSubheading" class="projects-subheading"></h1>
+
+  <!-- ──────────────────────────────────────────────────────────────────────────
+        SECTION TITLE
+    ────────────────────────────────────────────────────────────────────────────── -->
     <h3 class="section-title">Projects</h3>
 
-
-   <!-- ──────────────────────────────────────────────────────────────────────────
-       FILTER BUTTONS
+  <!-- ──────────────────────────────────────────────────────────────────────────
+        FILTER BUTTONS
   ────────────────────────────────────────────────────────────────────────────── -->
     <div class="filters">
       <button class="active" onclick="selectFilter(this)">All</button>
@@ -82,7 +83,7 @@
       <button onclick="selectFilter(this)">XR</button>
     </div>
 
-    <!-- ──────────────────────────────────────────────────────────────────────────
+  <!-- ──────────────────────────────────────────────────────────────────────────
        PROJECT CARD GRID
   ────────────────────────────────────────────────────────────────────────────── -->
     <div class="grid" id="projectGrid">
@@ -126,29 +127,106 @@
     }
 
     // Filter logic
-    function selectFilter(button) {
-      const filter = button.textContent.trim().toLowerCase();
-      document.querySelectorAll('.filters button').forEach(btn =>
-        btn.classList.remove('active')
-      );
-      button.classList.add('active');
+function selectFilter(button) {
+  const filter = button.textContent.trim().toLowerCase();
+  document.querySelectorAll('.filters button').forEach(btn =>
+    btn.classList.remove('active')
+  );
+  button.classList.add('active');
 
-      document.querySelectorAll('.card').forEach(card => {
-        const tags = card.dataset.tags.split(',').map(t => t.trim());
-        card.style.display =
-          filter === 'all' || tags.includes(filter) ? '' : 'none';
-      });
+  document.querySelectorAll('.card').forEach(card => {
+    const tags = card.dataset.tags.split(',').map(t => t.trim());
+    card.style.display =
+      filter === 'all' || tags.includes(filter) ? '' : 'none';
+  });
+
+  // ✅ Update subheading each time filter changes
+  updateSubheading(filter);
+}
+
+// Subheading Update Logic
+function updateSubheading(filter) {
+  const heading = document.getElementById('projectsSubheading');
+  let text = '';
+
+  switch (filter) {
+    case 'all':
+      text = 'All Projects';
+      break;
+    case 'ai':
+      text = 'AI and Automation';
+      break;
+    case 'art':
+      text = 'Art and Illustration';
+      break;
+    case 'brand':
+      text = 'Branding and Identity';
+      break;
+    case 'design':
+      text = 'Graphic and Visual Design';
+      break;
+    case 'social':
+      text = 'Social Media and Marketing';
+      break;
+    case 'strategy':
+      text = 'Strategy and Consulting';
+      break;
+    case 'systems':
+      text = 'System and Workflow Design';
+      break;
+    case 'ux':
+      text = 'UX Research and Design';
+      break;
+    case 'web':
+      text = 'Web Design and Development';
+      break;
+    case 'xr':
+      text = 'AR / VR / XR';
+      break;
+    default:
+      text = 'Projects';
+  }
+
+  heading.textContent = text;
+}
+
+// ✅ On page load, set active filter based on URL param and update subheading
+document.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const filter = params.get('filter') || 'all';
+
+  // Set active button
+  document.querySelectorAll('.filters button').forEach(btn => {
+    const btnFilter = btn.textContent.trim().toLowerCase();
+    if (btnFilter === filter) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
     }
+  });
 
-    // Sort logic (unused since removed, but left intact)
-    document.getElementById('sortOrder')?.addEventListener('change', e => {
-      const order = e.target.value;
-      window.allProjects = window.allProjects || [];
-      const sorted = [...window.allProjects].sort((a, b) =>
-        order === 'newest' ? b.year - a.year : a.year - b.year
-      );
-      renderProjects(sorted, document.getElementById('projectGrid'));
-    });
+  // Update subheading based on filter
+  updateSubheading(filter);
+
+  // Filter visible projects on load
+  document.querySelectorAll('.card').forEach(card => {
+    const tags = card.dataset.tags.split(',').map(t => t.trim());
+    card.style.display =
+      filter === 'all' || tags.includes(filter) ? '' : 'none';
+  });
+});
+
+// Sort logic (unused since removed, but left intact)
+document.getElementById('sortOrder')?.addEventListener('change', e => {
+  const order = e.target.value;
+  window.allProjects = window.allProjects || [];
+  const sorted = [...window.allProjects].sort((a, b) =>
+    order === 'newest' ? b.year - a.year : a.year - b.year
+  );
+  renderProjects(sorted, document.getElementById('projectGrid'));
+});
+
+
   </script>
 
 <script>

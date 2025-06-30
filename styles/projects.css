@@ -29,6 +29,13 @@ html, body {
   background: var(--bg);
 }
 
+/* ─── PROJECTS PAGE SUBHEADING TEXT ─── */
+.projects-subheading {
+  font-size: 2.5rem; /* adjust as needed */
+  font-weight: bold;
+  margin: 0 0 1.5rem 0;
+}
+
 
 /* ─── MAIN CONTAINER ─── */
 .main-container {
