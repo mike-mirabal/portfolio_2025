@@ -24,8 +24,11 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log("✅ Parsed projects:", projects);
       projects.forEach(p => console.log("Project year:", p.year));
 
-      // ✅ Sort projects by year (newest to oldest)
-      projects.sort((a, b) => {
+      // ✅ Filter projects to only include published entries
+      const publishedProjects = projects.filter(p => p.published && p.published.toUpperCase() === "TRUE");
+
+      // ✅ Sort published projects by year (newest to oldest)
+      publishedProjects.sort((a, b) => {
         const yearA = parseInt(a.year) || 0;
         const yearB = parseInt(b.year) || 0;
         return yearB - yearA;
@@ -36,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // ✅ Render grid projects if container exists
       if (gridContainer) {
-        renderProjects(projects, gridContainer);
+        renderProjects(publishedProjects, gridContainer);
         initFilters();
       }
 
