@@ -139,21 +139,23 @@ html, body {
   }
 }
 
+/* ─── CARD STYLES ─── */
 .card {
   display: flex;
   flex-direction: column;
   border: 2px solid var(--muted);
   padding: 0;
   border-radius: 0.75rem;
-  background: var(--bg);
-  overflow: hidden; /* this masks child corners */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  background: var(--bg); /* Eensure consistent background */
+  overflow: hidden; /* Ensures child elements respect rounding */
   text-decoration: none;
   color: inherit;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 .card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
   border: 2px solid var(--accent);
 }
 
@@ -163,6 +165,8 @@ html, body {
   overflow: hidden;
   border-radius: 0; /* ensure no conflicting rounding */
   margin: 0; /* ensure no default margin is applied */
+  position: relative;
+  overflow: hidden;
 }
 
 /* Ensure hero images fill card width and align flush */
@@ -172,6 +176,18 @@ html, body {
   height: auto;
   object-fit: cover; /* crops excess while maintaining aspect ratio */
   max-height: 200px; /* adjust this to control image height on cards */
+}
+
+/* Gradient overlay on hero image for subtle polish */
+.card .hero-img::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0));
+  pointer-events: none;
 }
 
 @media (max-width: 480px) {
@@ -240,6 +256,8 @@ html, body {
   padding-top: 1rem;
   flex-wrap: wrap;
 }
+
+/* card tag styles */
 .card .tags span {
   font-size: 0.5rem;
   color: var(--muted);
