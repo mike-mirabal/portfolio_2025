@@ -165,9 +165,10 @@ html, body {
   margin: 0; /* ensure no default margin is applied */
 }
 
+/* Ensure hero images fill card width and align flush */
 .card .hero-img img {
   display: block;
-  width: 100%;
+  width: 100%; 
   height: auto;
   object-fit: cover; /* crops excess while maintaining aspect ratio */
   max-height: 200px; /* adjust this to control image height on cards */
@@ -181,7 +182,28 @@ html, body {
 
 /* Card Content */
 .card .card-content {
-  padding: 1rem; /* or your preferred inner spacing */
+  padding: 1rem; /* New .card-content wrapper to apply padding only to text area */
+}
+
+/* 📝 Flex layout for company name (bold) on left and year on right */
+.card .meta-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+/* 📝 Style company name as bold, highest level text in content */
+.card .company {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* 📝 Style year to align right and appear secondary */
+.card .year {
+  font-weight: 400;
+  font-size: 0.9rem;
+  opacity: 0.7;
 }
 
 /* icon at top 
@@ -191,7 +213,7 @@ html, body {
   margin-bottom: 1rem;
 } */
 
-/* company | year */
+/* company | year 
 .card .meta-inline {
   font-size: 0.875rem;
   color: var(--muted);
@@ -200,13 +222,14 @@ html, body {
 .card .meta-inline span:not(:last-child)::after {
   content: " | ";
   padding: 0 0.4rem;
-}
+} */
 
-/* project title */
+/* 📝 Style project title as normal paragraph text (no large heading) */
 .card .title {
-  font-weight: bold;
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 400;
+  margin: 0 0 0.75rem 0;
+  line-height: 1.4;
 }
 
 /* tag badges at bottom */

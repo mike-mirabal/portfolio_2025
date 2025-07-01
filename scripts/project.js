@@ -83,8 +83,8 @@ function renderProjects(projects, container) {
   </div>
 
   <div class="card-content">
-    <div class="meta-inline">
-      <span class="company">${p.company}</span>
+    <div class="meta-flex">
+      <strong class="company">${p.company}</strong>
       <span class="year">${p.year}</span>
     </div>
 
