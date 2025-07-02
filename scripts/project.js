@@ -61,8 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-
-
 /* ====== renderProjects: injects project cards into a grid container ====== */
 function renderProjects(projects, container) {
   container.innerHTML = '';
@@ -78,11 +76,11 @@ function renderProjects(projects, container) {
       .join('');
 
     // ✅ Debug: log each project card being rendered
-    console.log("Rendering project:", p.title, "Hero Img:", p.hero_img);
+    console.log("Rendering project:", p.title, "Card Img:", p.card_img);
 
     card.innerHTML = `
   <div class="hero-img">
-    <img src="${p.hero_img}" alt="${p.title} hero image">
+    <img src="${p.card_img}" alt="${p.title} card image">
   </div>
 
   <div class="card-content">
@@ -144,8 +142,10 @@ function initFilters() {
  * Fades content in after injection
  */
 function renderDetail(p, container) {
+  console.log("Overview field content:", p.overview);
+
   document.title = `${p.title} | Mike Mirabal`;
-  const socialImg = p.hero_img && p.hero_img.trim() !== "" ? p.hero_img : 'assets/placeholder.png';
+  const socialImg = p.card_img && p.card_img.trim() !== "" ? p.card_img : 'assets/placeholder.png';
   setMetaTag('og:image', socialImg);
   setMetaTag('twitter:image', socialImg);
   setMetaTag('og:title', p.title);
@@ -153,13 +153,6 @@ function renderDetail(p, container) {
   setMetaTag('og:type', 'article');
   setMetaTag('og:url', window.location.href);
   setMetaTag('twitter:card', 'summary_large_image');
-
-  // Fallback for results caption
-  const resultsCaption = p.results_caption || p.outcome_caption || '';
-  const resultsImg = p.results_img && p.results_img.trim() !== "" ? p.results_img : (p.outcome_img && p.outcome_img.trim() !== "" ? p.outcome_img : 'assets/placeholder.png');
-
-  const processImg1 = p.process_img_1 && p.process_img_1.trim() !== "" ? p.process_img_1 : 'assets/placeholder.png';
-  const processImg2 = p.process_img_2 && p.process_img_2.trim() !== "" ? p.process_img_2 : 'assets/placeholder.png';
 
   container.innerHTML = `
     <div class="project-header">
@@ -171,51 +164,74 @@ function renderDetail(p, container) {
       <p id="project-meta">${p.company} | ${p.year}</p>
       <h1 id="project-title">${p.title}</h1>
     </div>
-    <section id="hero">
-      <div class="image-grid single">
-        <figure>
-          <img id="hero-img" src="${socialImg}" alt="Hero image" />
-          <figcaption id="hero-caption">${p.hero_caption}</figcaption>
-        </figure>
+    <section id="hero-slider" class="swiper">
+      <div class="swiper-wrapper">
+        <!-- Slides will be injected dynamically -->
       </div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-pagination"></div>
     </section>
-    <section id="problem">
-      <h3>Problem</h3>
-      <p id="problem-copy">${p.problem}</p>
+    <section id="project-overview">
+      <h3>Overview</h3>
+      <p>${p.overview || ''}</p>
     </section>
-    <section id="process">
-      <h3>Process</h3>
-      <p id="process-copy">${p.process}</p>
-      <div class="image-grid">
-        <figure>
-          <img id="process-img-1" src="${processImg1}" alt="Process image 1" />
-          <figcaption id="process-caption-1">${p.process_caption_1}</figcaption>
-        </figure>
-        <figure>
-          <img id="process-img-2" src="${processImg2}" alt="Process image 2" />
-          <figcaption id="process-caption-2">${p.process_caption_2}</figcaption>
-        </figure>
-      </div>
-    </section>
-    <section id="solution">
-      <h3>Solution</h3>
-      <p id="solution-copy">${p.solution}</p>
-    </section>
-    <section id="results">
-      <h3>Results</h3>
-      <p id="results-copy">${p.results}</p>
-      <div class="image-grid single">
-        <figure>
-          <img id="results-img" src="${resultsImg}" alt="Results image" />
-          <figcaption id="results-caption">${resultsCaption}</figcaption>
-        </figure>
-      </div>
-    </section>
-    <div class="filters bottom">
-      <a href="projects.html" class="filter-btn">← View All Projects</a>
-    </div>
-    <p class="back-to-top"><a href="#top">Back to top ↑</a></p>
   `;
+
+  const slidesContainer = container.querySelector('.swiper-wrapper');
+
+  for (let i = 1; i <= parseInt(p.hero_count); i++) {
+    const type = p[`hero_type_${i}`];
+    const url = p[`hero_url_${i}`];
+    const caption = p[`hero_caption_${i}`] || '';
+
+    if (!url) continue; // skip empty rows
+
+    const slide = document.createElement('div');
+    slide.classList.add('swiper-slide');
+
+    if (type === "video") {
+      slide.innerHTML = `
+        <figure>
+          <video controls>
+            <source src="${url}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <figcaption>${caption}</figcaption>
+        </figure>
+      `;
+    } else {
+      slide.innerHTML = `
+        <figure>
+          <img src="${url}" alt="Project media">
+          <figcaption>${caption}</figcaption>
+        </figure>
+      `;
+    }
+
+    slidesContainer.appendChild(slide);
+  }
+
+  const swiper = new Swiper('.swiper', {
+    effect: 'coverflow',
+    grabCursor: true,
+    centeredSlides: true,
+    slidesPerView: 'auto',
+    coverflowEffect: {
+      rotate: 50,
+      stretch: 0,
+      depth: 100,
+      modifier: 1,
+      slideShadows: true,
+    },
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+    pagination: {
+      el: '.swiper-pagination',
+    },
+  });
 
   requestAnimationFrame(() => {
     container.style.transition = 'opacity 0.3s ease';

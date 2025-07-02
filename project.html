@@ -9,19 +9,20 @@
   <!-- Project-specific styles -->
   <link rel="stylesheet" href="styles/project.css" />
   <link rel="icon" type="image/png" href="assets/favicon.png" />
-
-
+  <!-- Swiper styles -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <!-- Force project title size -->
-<style>
-  #project-title {
-  /* match index.html subheading */
-  font-size: clamp(1.5rem, 5vw, 3rem) !important;
-  font-weight: 800 !important;
-  line-height: 1.2 !important;
-  margin-block-start: 0.5rem !important;
-  margin-block-end:   1.5rem !important;
-}
-</style>
+  <style>
+    #project-title {
+    /* match index.html subheading */
+    font-size: clamp(1.5rem, 5vw, 3rem) !important;
+    font-weight: 800 !important;
+    line-height: 1.2 !important;
+    margin-block-start: 0.5rem !important;
+    margin-block-end:   1.5rem !important;
+  }
+  </style>
 
 </head>
 
@@ -89,7 +90,7 @@
 
     <!-- ====== CONTENT SECTIONS ====== -->
     <div class="project-content">
-      <!-- Hero Section -->
+      <!-- Hero Section 
       <section id="hero">
       <div class="image-grid single"></div>  
         <figure>
@@ -98,50 +99,27 @@
         </figure>
       </div>
       </section>
+      -->
 
-      <!-- Problem Section -->
-      <section id="problem">
-        <h3>Problem</h3>
-        <p id="problem-copy"></p>
-      </section>
+    <!-- ==== HERO SLIDER SECTION ==== -->
+    <section id="hero-slider" class="swiper">
+      <div class="swiper-wrapper">
+      <!-- Slides will be injected dynamically -->
+      </div>
 
-      <!-- Process Section -->
-      <section id="process">
-        <h3>Process</h3>
-        <p id="process-copy"></p>
-        <div class="image-grid">
-          <figure>
-            <img id="process-img-1" src="" alt="Process Image 1" />
-            <figcaption id="process-caption-1"></figcaption>
-          </figure>
-          <figure>
-            <img id="process-img-2" src="" alt="Process Image 2" />
-            <figcaption id="process-caption-2"></figcaption>
-          </figure>
-        </div>
-      </section>
+      <!-- Navigation and pagination -->
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-pagination"></div>
+    </section>
 
-      <!-- Solution Section -->
-      <section id="solution">
-        <h3>Solution</h3>
-        <p id="solution-copy"></p>
-      </section>
 
-      <!-- Results Section -->
-      <section id="results">
-        <h3>Results</h3>
-        <p id="results-copy"></p>
-        <div class="image-grid single"></div>
-        <figure>
-          <img id="outcome-img" src="" alt="Outcome Image" />
-          <figcaption id="outcome-caption"></figcaption>
-        </figure>
-        </div>
-      </section>
+
 
      
 
-    </div>
+    </div> <!-- End of Project Content -->
+    
 
   </div>
 </div> <!-- End of Page Content -->

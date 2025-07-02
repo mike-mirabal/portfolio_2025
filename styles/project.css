@@ -262,6 +262,10 @@ body {
   height: auto;
   display: block;
 }
+#hero-slider figcaption {
+  font-size: 0.875rem;
+  color: var(--muted);
+}
 
 /* Process images grid */
 .image-grid {
@@ -506,3 +510,25 @@ footer {
     margin-bottom: 0.5rem;
   }
 }
+
+/* Project Overview Section */
+/* This section provides a brief overview of the project */
+#project-overview {
+  max-width: 800px;
+  margin: 0;
+  padding: 0;
+}
+
+/*
+#project-overview h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+*/
+
+#project-overview p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #333;
+}
+
