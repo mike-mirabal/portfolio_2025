@@ -156,15 +156,8 @@ function renderDetail(p, container) {
 
   container.innerHTML = `
     <div class="project-header">
-    <!--remove icon 
-      <div class="icon-tags">
-        <img id="project-icon" class="icon" src="${p.icon && p.icon.trim() !== "" ? p.icon : 'assets/placeholder.png'}" alt="${p.company} icon" />
-      </div>
-      -->
-      <p id="project-meta">${p.company} | ${p.year}</p>
-      <h1 id="project-title">${p.title}</h1>
-    </div>
-    <section id="hero-slider" class="swiper">
+
+   <section id="hero-slider" class="swiper">
       <div class="swiper-wrapper">
         <!-- Slides will be injected dynamically -->
       </div>
@@ -172,6 +165,12 @@ function renderDetail(p, container) {
       <div class="swiper-button-next"></div>
       <div class="swiper-pagination"></div>
     </section>
+
+      
+      <h1 id="project-title">${p.title}</h1>
+      <p id="project-meta">${p.company} | ${p.year}</p>
+    </div>
+    
     <section id="project-overview">
       <h3>Overview</h3>
       <p>${p.overview || ''}</p>

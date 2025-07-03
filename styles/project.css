@@ -123,8 +123,8 @@ body {
 /* Main container to match index page, slight top adjust */
 .main-container {
   max-width: 900px;
-  margin: 0 auto;
-  padding: 1rem 1rem 2rem;
+  margin: 0;
+  padding: 0 1rem 2rem;
 }
 
 
