@@ -1,542 +1,113 @@
-:root {
-  --bg: #ffffff;
-  --text: #1c1c1c;
-  --accent: #3e7bfa;
-  --muted: #6c6c6c;
-  --tag-bg: #f0f0f0; 
-  --hover-border: #3e7bfa66;
-}
-
-[data-theme="dark"] {
-  --bg: #1c1c1c;
-  --text: #ffffff;
-  --accent: #3e7bfa;
-  --muted: #bbbbbb;
-  --tag-bg: #333333;
-}
-
-/* Base reset and layout */
+/* ——————————— GENERAL LAYOUT ——————————— */
 body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
   background: var(--bg);
   color: var(--text);
-  transition: background 0.3s ease, color 0.3s ease;
 }
 
-
-/* ========================================================================== 
-   SIDE NAV
-   ========================================================================== */
-.side-nav {
-  position: fixed;
-  top: var(--header-height);
-  left: -400px; /* stays hidden until .open */
-  width: 180px;
-  height: calc(100vh - var(--header-height));
-  background: var(--bg);
-  box-shadow: 2px 0 8px rgba(0,0,0,0.1);
-  transition: left 0.3s ease;
-  z-index: 1001;
-  padding: 1rem;
-}
-.side-nav.open {
-  left: 0;
-}
-
-/* top-level links */
-.side-nav .nav-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.side-nav .nav-list > li {
-  margin: 0.5rem 0;
-}
-.side-nav a,
-.side-nav .sub-toggle {
-  background: transparent;
-  border: none;
-  color: var(--text);
-  text-decoration: none;
-  font-size: 1rem;
-  padding: 0.125rem 0 0.125rem 0;
-  cursor: pointer;
-  display: inline-block;
-}
-/* ensure the toggle is inline-flex so its ::after can rotate */
-.side-nav .sub-toggle {
-  display: inline-flex;
-  align-items: center;
-}
-.side-nav a:hover,
-.side-nav .sub-toggle:hover {
-  color: var(--accent);
-}
-/* move arrow icon to the right */
-.side-nav .sub-toggle::after {
-  content: '›';
-  margin-left: 0.5rem;
-  transition: transform 0.2s ease;
-}
-.side-nav .has-sub.open > .sub-toggle::after {
-  transform: rotate(90deg);
-}
-/* submenu items */
-.side-nav .sub-list {
-  list-style: none;
-  margin: 0.25rem 0 0 1.5rem;
-  padding: 0;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease;
-}
-.side-nav .has-sub.open > .sub-list {
-  max-height: 500px; /* enough to show all */
-}
-.side-nav .sub-list li a {
-  /* match main nav links */
-  color: var(--text);
-  font-size: 1rem;
-  text-decoration: none;
-  display: inline-block;
-  padding: 0;
-  transition: color 0.2s ease, background 0.2s ease;
-}
-.side-nav .sub-list li a:hover {
-  color: var(--accent);
-}
-
-/* page-content gets pushed on desktop but never peeks in */
-#pageContent {
-  transition: margin-left 0.3s ease;
-}
-.side-nav.open + #pageContent {
-  margin-left: 250px;
-}
-
-
-
-
-
-/* Main container to match index page, slight top adjust */
-.main-container {
+main {
   max-width: 900px;
-  margin: 0;
-  padding: 0 1rem 2rem;
-}
-
-
-
-/* Icon sizing override */
-.icon,
-#project-icon {
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
-  max-width: none;
-  flex-shrink: 0;
-  margin-bottom: 1rem;
-}
-
-/* Icon + tags row: flex layout */
-.icon-tags {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 900px;
-  margin: 0 auto 0;
+  margin: 0 auto;
   padding: 0 1rem;
 }
 
-.tags {
-  display: flex;
-  flex-wrap: nowrap; /* prevent stacking */
-  gap: 0.5rem;
-}
-
-.tags span {
-  font-size: 0.75rem;
-  color: var(--text);
-  background: var(--tag-bg);
-  border-radius: 0.25rem;
-  padding: 0.2rem 0.5rem;
-}
-
-/* Company | Year meta line */
-.meta {
-  font-size: 0.875rem;
-  color: var(--muted);
-  margin: 0 0 1rem;
+.side-nav.open + #pageContent {
+  margin-left: 250px; /* Disable content push */
 }
 
 
-/* Section navigation buttons */
-.filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 2rem;
-}
-
-.filter-btn {
-  padding: 0.5rem 0.75rem;
-  font-size: 0.875rem;
-  background: none;
-  border: 2px solid var(--muted);
-  border-radius: 0.25rem;
-  color: var(--text);
-  cursor: pointer;
-  transition: border 0.2s ease, color 0.2s ease;
-}
-
-.filter-btn:hover {
-  border-color: var(--hover-border);
-}
-
-.filter-btn.active {
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
-
-/* make the subnav buttons look like the index filter buttons */
-.subnav button {
-  padding: 0.5rem 0.75rem;
-  font-size: 0.875rem;
-  background: none;
-  border: 2px solid var(--accent);
-  border-radius: 0.25rem;
-  color: var(--accent);
-  cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease;
-}
-
-/* hover state */
-.subnav button:hover {
-  background: var(--hover-border);
-}
-
-/* if you want an “active” style (e.g. for the View All Projects button) */
-.subnav button.active {
-  background: var(--accent);
-  color: #fff;
-}
-
-
-/* Content sections */
-.project-content section {
-  margin-bottom: 2rem;
-}
-
-.project-content h3 {
-  font-size: 1rem;
-  font-weight: bold;
-  margin-bottom: 0.75rem;
-}
-
-.project-content p {
-  line-height: 1.6;
-  margin-bottom: 1rem;
-}
-
-
-
-/* Caption styling for all figcaption */
-.project-content figcaption,
-.image-grid figcaption {
-  font-size: 0.75rem;
-  color: var(--muted);
-  margin: 0.5rem 0 1rem;
-}
-
-/* Hero image and container */
-.project-content figure {
-  margin: 2rem 0;
-  max-width: 100%;
-}
-
-.project-content img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* slider container */
+/* ——————————— HERO SLIDER ——————————— */
 #hero-slider {
-  max-width: 800px;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  max-height: none; /* ✅ removed height cap to ensure captions show */
+  overflow: visible; /* ✅ ensure entire figure visible */
 }
 
+#hero-slider img,
+#hero-slider video {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  max-height: 70vh; /* ✅ limit image height to maintain fold visibility */
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: var(--accent);
+}
+
+.swiper-pagination-bullet {
+  background: var(--accent);
+}
+
+#hero-slider figure {
+  overflow: visible;
+}
 
 
 #hero-slider figcaption {
   font-size: 0.875rem;
+  margin-top: 1rem;
   color: var(--muted);
+  display: block; /* ensure visible */
 }
 
-/* Process images grid */
-.image-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-  margin: 2rem 0;
+.swiper-slide figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: visible; /* ✅ ensure captions are not clipped */
+  max-height: none; /* ✅ allow caption height */
 }
 
-.image-grid figure {
-  margin: 0;
+.swiper-slide figcaption {
+  position: static;
+  margin-top: 0.5rem;
+  color: var(--muted);
+  text-align: center;
 }
 
+.swiper-slide {
+  overflow: visible; /* ✅ ensure slide itself allows overflow */
+}
+
+.swiper-pagination {
+  margin: 3rem 0;
 
 
-
-/* View All Projects button at bottom */
-.filters.bottom {
+}
+/* ——————————— PROJECT CONTENT ——————————— */
+.project-header {
   margin-top: 2rem;
 }
 
-/* Responsive full width & stacking */
-@media (max-width: 768px) {
-  .filters {
-    flex-direction: column;
-  }
-  .filter-btn {
-    width: 100%;
-  }
-  .image-grid {
-    grid-template-columns: 1fr;
-  }
+#project-title {
+  font-size: clamp(1.5rem, 5vw, 3rem);
+  font-weight: 800;
+  line-height: 1.2;
+  margin: 0.5rem 0 1.5rem 0;
 }
 
-/* pull the icon left so it lines up with the header */
-.icon-tags {
-  /* cancel the 1rem left-padding from .main-container */
-  margin-left: -1rem;
- 
-  /* shrink the gap below the icon */
-  margin-bottom: -1rem;  /* tweak this value up/down to taste */
-}
-
-/* Style the meta line under your project header */
 #project-meta {
-  /* Tighten margins above/below */
-  margin: 0.25rem 0 0.25rem;
-  /* Smaller, responsive font size */
-  font-size: clamp(0.75rem, 2.5vw, 1rem);
-  /* Lighter color to match index cards */
+  font-size: 0.875rem;
   color: var(--muted);
-  /* Optional: adjust line-height for compactness */
-  line-height: 1.4;
 }
 
-/* Make single‐figure wrappers behave like the 2‐col grid (flush left) */
-.image-grid.single {
-  display: grid;
-  grid-template-columns: 1fr;  /* single column */
-  gap: 0;                      /* no gap on the sides */
-  margin: 0 0 1.5rem;          /* bottom spacing for rhythm */
-}
-
-/* Normalize all captions */
-.image-grid.single figcaption,
-.image-grid figcaption {
-  font-size: 0.75rem;
-  color: var(--muted);
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
-  line-height: 1.4;
-}
-
-
-/* —— View All Projects Button Styling —— */
-
-/* Base button style */
-.filters.bottom .filter-btn {
-  display: inline-block;       /* allow width control */
-  width: auto;                 /* default */
-  text-decoration: none;       /* remove underline */
-  border: 2px solid var(--accent);
-  color: var(--accent);
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.25rem;
-  text-align: center;
-  transition: background 0.2s ease, color 0.2s ease;
-}
-
-/* Hover */
-.filters.bottom .filter-btn:hover {
-  background: var(--hover-border);
-}
-
-/* Full-width on mobile */
-@media (max-width: 768px) {
-  .filters.bottom .filter-btn {
-    display: block;
-    width: 100%;
-  }
-}
-
-/* —— Back to Top Link Container —— */
-.back-to-top {
-  /* lock to your main-container width & center */
-  max-width: 900px;
-  margin: 2rem auto 0.5rem;   /* 2rem above, 0.5rem below */
-  padding: 0;            /* same gutter as your content */
-  text-align: left;           /* align to the left edge of that container */
-}
-
-@media (max-width: 768px) {
-  .back-to-top {
-    padding: 0;               /* remove side gutter on narrow screens */
-    text-align: center;       /* center the link on mobile */
-  }
-}
-
-
-/* Give the footer some space from the viewport bottom */
-footer {
-  padding-bottom: 2rem; /* adjust up/down as you like */
-}
-
-/* Make all project‐page images fit their containers */
-.image-grid img,
-.image-grid.single img,
-#project-detail img {
-  max-width: 100%;
-  height: auto;
-  display: block;    /* removes any inline whitespace */
-}
-
-/* If your figures or wrappers have negative margins or padding: */
-.image-grid,
-.image-grid.single {
-  overflow: hidden;  /* ensure no bleed */
-}
-
-/* ========================================================================== 
-   SIDE NAV (imported from index.css)
-   ========================================================================== */
-.side-nav {
-  position: fixed;
-  top: var(--header-height);
-  left: -400px; /* stays hidden until .open */
-  width: 180px;
-  height: calc(100vh - var(--header-height));
-  background: var(--bg);
-  box-shadow: 2px 0 8px rgba(0,0,0,0.1);
-  transition: left 0.3s ease;
-  z-index: 1001;
-  padding: 1rem;
-}
-.side-nav.open {
-  left: 0;
-}
-
-/* top-level links */
-.side-nav .nav-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.side-nav .nav-list > li {
-  margin: 0.5rem 0;
-}
-.side-nav a,
-.side-nav .sub-toggle {
-  background: transparent;
-  border: none;
-  color: var(--text);
-  text-decoration: none;
-  font-size: 1rem;
-  padding: 0.125rem 0 0.125rem 0;
-  cursor: pointer;
-  display: inline-block;
-}
-.side-nav .sub-toggle {
-  display: inline-flex;
-  align-items: center;
-}
-.side-nav a:hover,
-.side-nav .sub-toggle:hover {
-  color: var(--accent);
-}
-.side-nav .sub-toggle::after {
-  content: '›';
-  margin-left: 0.5rem;
-  transition: transform 0.2s ease;
-}
-.side-nav .has-sub.open > .sub-toggle::after {
-  transform: rotate(90deg);
-}
-.side-nav .sub-list {
-  list-style: none;
-  margin: 0.25rem 0 0 1.5rem;
-  padding: 0;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease;
-}
-.side-nav .has-sub.open > .sub-list {
-  max-height: 500px; /* enough to show all */
-}
-.side-nav .sub-list li a {
-  color: var(--text);
-  font-size: 1rem;
-  text-decoration: none;
-  display: inline-block;
-  padding: 0;
-  transition: color 0.2s ease, background 0.2s ease;
-}
-.side-nav .sub-list li a:hover {
-  color: var(--accent);
-}
-
-/* When nav is open, push page content */
-.side-nav.open + #pageContent {
-  margin-left: 250px;
-}
-
-
-
-/* ====== MEDIA QUERY FOR RESPONSIVE SIDE NAV ====== */
-
-@media (max-width: 480px) {
- /* ALWAYS COLLAPSE SUBMENU WHEN SIDE NAV CLOSES */
-  .side-nav:not(.open) .has-sub.open > .sub-list {
-    max-height: 0 !important;
-  }
-
-  /* SIDE NAV LINKS */
-  .side-nav a,
-  .side-nav .sub-toggle  {
-    font-size: 1.5rem;
-  }
-
-  /* SIDE NAV SUB MENU LINKS */
-  .side-nav .sub-list li a {
-    font-size: 1.25rem;
-    margin-bottom: 0.5rem;
-  }
-}
-
-/* Project Overview Section */
-/* This section provides a brief overview of the project */
-#project-overview {
-  max-width: 800px;
-  margin: 0;
-  padding: 0;
-}
-
-/*
 #project-overview h3 {
-  font-size: 1.5rem;
-  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  font-weight: bold;
 }
-*/
 
 #project-overview p {
-  font-size: 1rem;
   line-height: 1.6;
-  color: var(--text);
 }
 
+/* TEMP DEBUG: Force figcaptions visible */
+figure figcaption {
+  display: block !important;
+  color: var(--muted) !important;
+  font-size: 0.75rem !important;
+}

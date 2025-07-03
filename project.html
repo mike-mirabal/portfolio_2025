@@ -4,232 +4,166 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Project Page – Mike Mirabal</title>
+
   <!-- Base index styles for header spacing -->
   <link rel="stylesheet" href="styles/index.css" />
   <!-- Project-specific styles -->
   <link rel="stylesheet" href="styles/project.css" />
   <link rel="icon" type="image/png" href="assets/favicon.png" />
+
   <!-- Swiper styles -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-  <!-- Force project title size -->
+
   <style>
     #project-title {
-    /* match index.html subheading */
-    font-size: clamp(1.5rem, 5vw, 3rem) !important;
-    font-weight: 800 !important;
-    line-height: 1.2 !important;
-    margin-block-start: 0.5rem !important;
-    margin-block-end:   1.5rem !important;
-  }
+      font-size: clamp(1.5rem, 5vw, 3rem) !important;
+      font-weight: 800 !important;
+      line-height: 1.2 !important;
+      margin-block-start: 0.5rem !important;
+      margin-block-end: 1.5rem !important;
+    }
   </style>
-
 </head>
 
-
 <body id="top">
-<!-- ──────────────────────────────────────────────────────────────────────────
-       HEADER
-  ────────────────────────────────────────────────────────────────────────────── -->
- <div class="header">
+<!-- ───────── HEADER ───────── -->
+<div class="header">
   <button id="navToggle" class="nav-toggle" aria-label="Toggle navigation">☰</button>
   <div class="theme-switch" onclick="toggleTheme()"></div>
 </div>
- 
- <!-- ──────────────────────────────────────────────────────────────────────────
-       SIDE NAV PANEL
-  ────────────────────────────────────────────────────────────────────────────── -->
-  <nav id="sideNav" class="side-nav" aria-hidden="true">
-    <ul class="nav-list">
-      <li><a href="index.html">New Chat</a></li>
-      <li class="has-sub">
-        <button class="sub-toggle">Contact Mike</button>
-        <ul class="sub-list">
-          <li><a href="mailto:info@mikemirabal.com">Email</a></li>
-          <li><a href="https://linkedin.com/in/mikemirabal" target="_blank">LinkedIn</a></li>
-        </ul>
-      </li>
-      <li class="has-sub">
-        <button class="sub-toggle">Projects</button>
-        <ul class="sub-list">
-          <li><a href="projects.html?filter=all">View All</a></li>
-          <li><a href="projects.html?filter=ai">AI</a></li>
-          <li><a href="projects.html?filter=art">Art</a></li>
-          <li><a href="projects.html?filter=brand">Brand</a></li>
-          <li><a href="projects.html?filter=design">Design</a></li>
-          <li><a href="projects.html?filter=social">Social</a></li>
-          <li><a href="projects.html?filter=strategy">Strategy</a></li>
-          <li><a href="projects.html?filter=systems">Systems</a></li>
-          <li><a href="projects.html?filter=ux">UX</a></li>
-          <li><a href="projects.html?filter=web">Web</a></li>
-          <li><a href="projects.html?filter=xr">XR</a></li>
-        </ul>
-      </li>
-    </ul>
-  </nav>
 
-<!-- ──────────────────────────────────────────────────────────────────────────
-       PAGE CONTENT
-  ────────────────────────────────────────────────────────────────────────────── -->
+<!-- ───────── SIDE NAV ───────── -->
+<nav id="sideNav" class="side-nav" aria-hidden="true">
+  <ul class="nav-list">
+    <li><a href="index.html">New Chat</a></li>
+    <li class="has-sub">
+      <button class="sub-toggle">Contact Mike</button>
+      <ul class="sub-list">
+        <li><a href="mailto:info@mikemirabal.com">Email</a></li>
+        <li><a href="https://linkedin.com/in/mikemirabal" target="_blank">LinkedIn</a></li>
+      </ul>
+    </li>
+    <li class="has-sub">
+  <button class="sub-toggle">Projects</button>
+  <ul class="sub-list">
+    <li><a href="projects.html?filter=all">View All</a></li>
+    <li><a href="projects.html?filter=ai">AI</a></li>
+    <li><a href="projects.html?filter=art">Art</a></li>
+    <li><a href="projects.html?filter=brand">Brand</a></li>
+    <li><a href="projects.html?filter=design">Design</a></li>
+    <li><a href="projects.html?filter=social">Social</a></li>
+    <li><a href="projects.html?filter=strategy">Strategy</a></li>
+    <li><a href="projects.html?filter=systems">Systems</a></li>
+    <li><a href="projects.html?filter=ux">UX</a></li>
+    <li><a href="projects.html?filter=web">Web</a></li>
+    <li><a href="projects.html?filter=xr">XR</a></li>
+  </ul>
+</li>
 
-<div class="page-wrapper"> <!--====== OPEN PAGE WRAPPER ====== -->
-<!-- page-wrapper enables sticky footer -->
-  
+  </ul>
+</nav>
+
+<!-- ───────── PAGE CONTENT ───────── -->
 <div id="pageContent">
-  <!-- ====== PROJECT DETAIL ====== -->
-  <div id="project-detail" class="main-container"> 
-    
-  <div class="project-header">
-  <p id="project-meta" class="meta"></p>
-  <h1 id="project-title" class="project-title"></h1>
-  </div>
+  <main class="main-container">
 
-    <!-- ====== CONTENT SECTIONS ====== -->
-    <div class="project-content">
-    <!-- ==== HERO SLIDER SECTION ==== -->
+  
+
+    <!-- Hero slider -->
     <section id="hero-slider" class="swiper">
       <div class="swiper-wrapper">
-      <!-- Slides will be injected dynamically -->
+        <!-- Slides injected by JS -->
       </div>
-
-      <!-- Navigation and pagination -->
       <div class="swiper-button-prev"></div>
       <div class="swiper-button-next"></div>
       <div class="swiper-pagination"></div>
     </section>
-    </div> <!-- End of Project Content -->
 
+  <!-- Project header -->
+    <div class="project-header">
+      <p id="project-meta" class="meta"></p>
+      <h1 id="project-title" class="project-title"></h1>
+    </div>
 
-  </div>
-</div> <!-- End of Page Content -->
-</div> <!--  ====== CLOSE PAGE WRAPPER ====== -->
+    <!-- Project overview -->
+    <section id="project-overview">
+      <h3>Overview</h3>
+      <p id="overview-text"></p>
+    </section>
 
-  <!-- ====== FOOTER ====== -->
-  <footer class="compact-footer">
-  Mike Mirabal © 2025 | Powered by Aigentask
-</footer>
+    <!-- Footer -->
+    <footer class="compact-footer">
+      Mike Mirabal © 2025 | Powered by Aigentask
+    </footer>
 
+  </main>
+</div>
 
-   <!-- ====== SCRIPTS ====== -->
-  
-  <script>
-    // ──────────────────────────────────────────────────────────────────────────
-    // THEME PERSISTENCE: on load, read saved theme and apply
-    // ──────────────────────────────────────────────────────────────────────────
-    (function() {
-      const saved = localStorage.getItem('theme');
-      const theme = saved === 'dark' ? 'dark' : 'light';
-      document.documentElement.setAttribute('data-theme', theme);
-    })();
+<!-- ───────── SCRIPTS ───────── -->
+<script>
+  // Theme persistence
+  (function() {
+    const saved = localStorage.getItem('theme');
+    const theme = saved === 'dark' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', theme);
+  })();
 
-    // Toggle light/dark theme and persist to localStorage
-    function toggleTheme() {
-      const html = document.documentElement;
-      const current = html.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-      const next = current === 'dark' ? 'light' : 'dark';
-      html.setAttribute('data-theme', next);
-      localStorage.setItem('theme', next);
-    }
-  </script>
-
-<!-- ====== FILTERS / SUBNAV BUTTONS ====== -->
+  function toggleTheme() {
+    const html = document.documentElement;
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  }
+</script>
 
 <script>
+  // Side nav toggle
   document.addEventListener('DOMContentLoaded', () => {
     const nav = document.getElementById('sideNav');
-    if (nav) {
-      nav.classList.remove('open');
-      nav.setAttribute('aria-hidden', 'true');
-      document.querySelectorAll('.side-nav .has-sub.open')
-              .forEach(li => li.classList.remove('open'));
-    }
-  });
+    const toggle = document.getElementById('navToggle');
+    const page = document.getElementById('pageContent');
 
-   window.addEventListener('popstate', () => {
+    toggle.addEventListener('click', e => {
+      e.stopPropagation();
+      nav.classList.toggle('open');
+      nav.setAttribute('aria-hidden', !nav.classList.contains('open'));
+    });
+
+    page.addEventListener('click', () => {
+      if (nav.classList.contains('open')) {
+        nav.classList.remove('open');
+        nav.setAttribute('aria-hidden', 'true');
+      }
+    });
+
+    document.querySelectorAll('.sub-toggle').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        btn.parentElement.classList.toggle('open');
+      });
+    });
+  });
+</script>
+
+<script>
+  // ✅ Close side nav when page scrolls
+  window.addEventListener('scroll', () => {
     const nav = document.getElementById('sideNav');
     if (nav && nav.classList.contains('open')) {
       nav.classList.remove('open');
       nav.setAttribute('aria-hidden', 'true');
-      document
-        .querySelectorAll('.side-nav .has-sub.open')
+      document.querySelectorAll('.side-nav .has-sub.open')
         .forEach(li => li.classList.remove('open'));
     }
   });
-  
 </script>
 
 
-<script>
-   // ──────────────────────────────────────────────────────────────────────────
-// SIDE-NAV OPEN/CLOSE + AUTO-COLLAPSE SUBMENUS + CLOSE ON SCROLL
-// ──────────────────────────────────────────────────────────────────────────
-;(function() {
-  const nav    = document.getElementById('sideNav');
-  const toggle = document.getElementById('navToggle');
-  const page   = document.getElementById('pageContent');
-
-  toggle.addEventListener('click', e => {
-    e.stopPropagation();
-    nav.classList.toggle('open');
-    const isOpen = nav.classList.contains('open');
-    nav.setAttribute('aria-hidden', !isOpen);
-    if (!isOpen) {
-      document
-        .querySelectorAll('.side-nav .has-sub.open')
-        .forEach(li => li.classList.remove('open'));
-    }
-  });
-
-  page.addEventListener('click', () => {
-    if (nav.classList.contains('open')) closeNav();
-  });
-
-  function closeNav() {
-    nav.classList.remove('open');
-    nav.setAttribute('aria-hidden', 'true');
-    document
-      .querySelectorAll('.side-nav .has-sub.open')
-      .forEach(li => li.classList.remove('open'));
-  }
-
-  document.querySelectorAll('.sub-toggle').forEach(btn => {
-    btn.addEventListener('click', e => {
-      e.stopPropagation();
-      btn.parentElement.classList.toggle('open');
-    });
-  });
-
-  // ✅ Close nav on scroll
-  window.addEventListener('scroll', () => {
-    if (nav.classList.contains('open')) closeNav();
-  });
-
-})();
-
-// Always reset side nav state on load
-window.addEventListener('pageshow', () => {
-  const nav = document.getElementById('sideNav');
-  nav.classList.remove('open');
-  nav.setAttribute('aria-hidden', 'true');
-
-  document.querySelectorAll('.side-nav .has-sub.open')
-    .forEach(li => li.classList.remove('open'));
-});
-
-</script>
-
-<!-- dependencies first -->
+<!-- Dependencies -->
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js" defer></script>
 <script src="scripts/filters.js" defer></script>
-<!-- main script last -->
 <script src="scripts/project.js" defer></script>
 
- 
 </body>
 </html>
-
-
-
-
-
-
