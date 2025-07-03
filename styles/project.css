@@ -262,6 +262,14 @@ body {
   height: auto;
   display: block;
 }
+
+/* slider container */
+#hero-slider {
+  max-width: 800px;
+}
+
+
+
 #hero-slider figcaption {
   font-size: 0.875rem;
   color: var(--muted);
@@ -529,6 +537,6 @@ footer {
 #project-overview p {
   font-size: 1rem;
   line-height: 1.6;
-  color: #333;
+  color: var(--text);
 }
 
