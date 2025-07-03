@@ -13,17 +13,14 @@ main {
   padding: 0 1rem;
 }
 
-.side-nav.open + #pageContent {
-  margin-left: 250px; /* Disable content push */
-}
 
 
 /* ——————————— HERO SLIDER ——————————— */
 #hero-slider {
   width: 100vw;
   margin-left: calc(-50vw + 50%);
-  max-height: none; /* ✅ removed height cap to ensure captions show */
-  overflow: visible; /* ✅ ensure entire figure visible */
+  max-height: none; /* removed height cap to ensure captions show */
+  overflow: visible; /* ensure entire figure visible */
 }
 
 #hero-slider img,
@@ -31,26 +28,16 @@ main {
   width: 100%;
   height: auto;
   object-fit: cover;
-  max-height: 70vh; /* ✅ limit image height to maintain fold visibility */
-}
-
-.swiper-button-next,
-.swiper-button-prev {
-  color: var(--accent);
-}
-
-.swiper-pagination-bullet {
-  background: var(--accent);
+  max-height: 70vh; /* limit image height to maintain fold visibility */
 }
 
 #hero-slider figure {
   overflow: visible;
+  margin: 0;
 }
-
 
 #hero-slider figcaption {
   font-size: 0.875rem;
-  margin-top: 1rem;
   color: var(--muted);
   display: block; /* ensure visible */
 }
@@ -59,8 +46,8 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: visible; /* ✅ ensure captions are not clipped */
-  max-height: none; /* ✅ allow caption height */
+  overflow: visible; /* ensure captions are not clipped */
+  max-height: none; /* allow caption height */
 }
 
 .swiper-slide figcaption {
@@ -71,17 +58,47 @@ main {
 }
 
 .swiper-slide {
-  overflow: visible; /* ✅ ensure slide itself allows overflow */
+  overflow: visible; /* ensure slide itself allows overflow */
 }
 
+/* ——————————— SWIPER NAV BUTTONS ——————————— */
+.swiper-button-prev,
+.swiper-button-next {
+  color: var(--accent);        /* your accent color for arrows */
+  background: none;            /* remove default background */
+  width: auto;                 /* remove forced size */
+  height: auto;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+
+.swiper-button-prev {
+  left: 1rem; /* adjust as needed to overlay on image */
+}
+
+.swiper-button-next {
+  right: 1rem; /* adjust as needed to overlay on image */
+}
+
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  font-size: 0.5rem; /* arrow icon size as needed */
+}
+
+/* ——————————— SWIPER PAGINATION ——————————— */
 .swiper-pagination {
-  margin: 3rem 0;
-
-
+  margin: 2rem 0;
 }
+
+.swiper-pagination-bullet {
+  background: var(--accent);
+}
+
 /* ——————————— PROJECT CONTENT ——————————— */
 .project-header {
-  margin-top: 2rem;
+  margin-top: 1.5rem;
 }
 
 #project-title {
@@ -103,11 +120,17 @@ main {
 
 #project-overview p {
   line-height: 1.6;
+  margin-bottom: 2rem;
 }
 
-/* TEMP DEBUG: Force figcaptions visible */
+/* ——————————— TEMP DEBUG: Force figcaptions visible ——————————— */
 figure figcaption {
   display: block !important;
   color: var(--muted) !important;
   font-size: 0.75rem !important;
+}
+
+/* Disable content push when sidenav opens */
+#pageContent {
+  margin-left: 0 !important;
 }
