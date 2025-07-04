@@ -285,3 +285,16 @@ html, body {
     padding: 0;
   }
 }
+
+/* ─── RESPONSIVE GRID & CARDS / Increase Padding on Tablets ─── */
+@media (min-width: 480px) and (max-width: 768px) {
+  .grid {
+    max-width: 500px; /* adjust as needed for your card width */
+    margin: 0 auto;   /* centers the grid container */
+    padding: 0 1.5rem; /* optional: side padding for breathing room */
+  }
+
+  .card {
+    width: 100%; /* ensure cards use the container width */
+  }
+}
