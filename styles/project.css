@@ -51,15 +51,22 @@ main {
 }
 
 .swiper-slide figcaption {
+  display:none; /* Only show captions on active slide */
   position: static;
   margin-top: 0.5rem;
   color: var(--muted);
   text-align: center;
 }
 
+.swiper-slide-active figcaption {
+  display: block;
+}
+
 .swiper-slide {
   overflow: visible; /* ensure slide itself allows overflow */
 }
+
+
 
 /* ——————————— SWIPER NAV BUTTONS ——————————— */
 .swiper-button-prev,
@@ -123,12 +130,7 @@ main {
   margin-bottom: 2rem;
 }
 
-/* ——————————— TEMP DEBUG: Force figcaptions visible ——————————— */
-figure figcaption {
-  display: block !important;
-  color: var(--muted) !important;
-  font-size: 0.75rem !important;
-}
+
 
 /* Disable content push when sidenav opens */
 #pageContent {

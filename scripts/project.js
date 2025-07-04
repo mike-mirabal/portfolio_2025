@@ -21,12 +21,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const slug = new URLSearchParams(window.location.search).get('slug');
 
       if (gridContainer) {
-        // If grid exists, render project cards
         renderProjects(publishedProjects, gridContainer);
       }
 
       if (slug) {
-        // If slug param exists, render project detail
         const p = publishedProjects.find(p => String(p.slug) === slug);
         if (p) renderDetail(p);
       }
@@ -88,9 +86,6 @@ function renderDetail(p) {
       const url = p[`hero_url_${i}`];
       const caption = p[`hero_caption_${i}`] || '';
 
-      // ✅ Debug log each slide caption
-      console.log(`Hero ${i}: type=${type}, url=${url}, caption=${caption}`);
-
       if (!url) continue;
 
       const slide = document.createElement('div');
@@ -102,14 +97,14 @@ function renderDetail(p) {
             <video controls>
               <source src="${url}" type="video/mp4">
             </video>
-            <figcaption>${caption}</figcaption>
+            <figcaption class="slide-caption">${caption}</figcaption>
           </figure>
         `;
       } else {
         slide.innerHTML = `
           <figure>
             <img src="${url}" alt="Slide image">
-            <figcaption>${caption}</figcaption>
+            <figcaption class="slide-caption">${caption}</figcaption>
           </figure>
         `;
       }
@@ -117,12 +112,41 @@ function renderDetail(p) {
       slidesContainer.appendChild(slide);
     }
 
-    // ✅ Initialize Swiper
-    new Swiper('.swiper', {
+    // ✅ Initialize Swiper with correct caption handling for looped slides
+    const swiper = new Swiper('.swiper', {
       effect: 'fade',
       loop: true,
       navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
       pagination: { el: '.swiper-pagination' },
+      on: {
+        init: function () {
+          updateCaptions(this);
+        },
+        slideChange: function () {
+          updateCaptions(this);
+        }
+      }
     });
+
+    /**
+     * Helper to show only the caption of the active slide
+     */
+    function updateCaptions(swiperInstance) {
+      const allSlides = swiperInstance.slides; // includes duplicate looped slides
+      allSlides.forEach(slide => {
+        const caption = slide.querySelector('figcaption');
+        if (caption) {
+          caption.style.display = 'none';
+        }
+      });
+
+      const activeSlide = swiperInstance.slides[swiperInstance.activeIndex];
+      if (activeSlide) {
+        const activeCaption = activeSlide.querySelector('figcaption');
+        if (activeCaption) {
+          activeCaption.style.display = 'block';
+        }
+      }
+    }
   }
 }
