@@ -103,6 +103,21 @@ main {
   background: var(--accent);
 }
 
+/* Ensure GLightbox hero images remain full width */
+
+#hero-slider a.glightbox {
+  display: block;       /* make link behave like a block container */
+  width: 100%;          /* fill available width */
+}
+
+#hero-slider a.glightbox img {
+  width: 100%;          /* make image fill its parent link */
+  height: auto;         /* maintain aspect ratio */
+  display: block;       /* remove any inline spacing artifacts */
+}
+
+
+
 /* ——————————— PROJECT CONTENT ——————————— */
 .project-header {
   margin-top: 1.5rem;
@@ -130,6 +145,33 @@ main {
   margin-bottom: 2rem;
 }
 
+#overview-text p { /*control paragraph spacing in overview*/
+  margin: 1rem 0; /* adjust as needed for tighter or wider spacing */
+  /*  line-height: 1.6; */
+}
+
+/* View All Projects Link */
+.view-all-projects {
+  text-align: left;
+  margin: 2rem 0;
+}
+
+.view-all-projects a {
+  font-size: 0.875rem;
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.view-all-projects a:hover {
+  color: var(--text);
+}
+
+@media (max-width: 480px) {
+  .view-all-projects {
+    text-align: center;
+  }
+}
 
 
 /* Disable content push when sidenav opens */

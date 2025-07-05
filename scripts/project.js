@@ -74,7 +74,15 @@ function renderDetail(p) {
   document.title = `${p.title} | Mike Mirabal`;
   document.getElementById('project-title').textContent = p.title;
   document.getElementById('project-meta').textContent = `${p.company} | ${p.year}`;
-  document.getElementById('overview-text').textContent = p.overview || '';
+
+  // ✅ Render overview text as semantic paragraphs
+  const overviewContainer = document.getElementById('overview-text');
+  if (overviewContainer) {
+    overviewContainer.innerHTML = (p.overview || '')
+      .split('\n')
+      .map(para => `<p>${para.trim()}</p>`)
+      .join('');
+  }
 
   // ✅ Populate slider slides only
   const slidesContainer = document.querySelector('.swiper-wrapper');
@@ -101,9 +109,12 @@ function renderDetail(p) {
           </figure>
         `;
       } else {
+        // ✅ Wrap image in <a> for GLightbox
         slide.innerHTML = `
           <figure>
-            <img src="${url}" alt="Slide image">
+            <a href="${url}" class="glightbox" data-gallery="project-hero">
+              <img src="${url}" alt="Slide image">
+            </a>
             <figcaption class="slide-caption">${caption}</figcaption>
           </figure>
         `;
@@ -132,7 +143,7 @@ function renderDetail(p) {
      * Helper to show only the caption of the active slide
      */
     function updateCaptions(swiperInstance) {
-      const allSlides = swiperInstance.slides; // includes duplicate looped slides
+      const allSlides = swiperInstance.slides;
       allSlides.forEach(slide => {
         const caption = slide.querySelector('figcaption');
         if (caption) {
@@ -148,5 +159,10 @@ function renderDetail(p) {
         }
       }
     }
+
+    // ✅ Initialize GLightbox
+    const lightbox = GLightbox({
+      selector: '.glightbox'
+    });
   }
 }
