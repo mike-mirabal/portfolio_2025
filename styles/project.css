@@ -189,6 +189,7 @@ main {
     width: calc(100% - 0.5rem); /* subtract left+right padding */
     margin: 0 auto;
     box-sizing: border-box; /* ensures padding/borders are included within width */
+    font-size: 1rem; /* larger font on mobile for readability */
   }
 }
 
