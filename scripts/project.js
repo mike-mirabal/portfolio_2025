@@ -84,6 +84,19 @@ function renderDetail(p) {
       .join('');
   }
 
+  // ✅ OPTIONAL RESOURCE LINK if applicable
+  if (p.extra_resource_link) {
+    const overviewSection = document.getElementById('project-overview');
+    const linkHTML = `
+      <p>
+        <a href="${p.extra_resource_link}" target="_blank" rel="noopener noreferrer">
+          ${p.extra_resource_text || 'View More Details'}
+        </a>
+      </p>
+    `;
+    overviewSection.insertAdjacentHTML('beforeend', linkHTML);
+  }
+
   // ✅ Populate slider slides only
   const slidesContainer = document.querySelector('.swiper-wrapper');
   if (slidesContainer) {
@@ -128,7 +141,7 @@ function renderDetail(p) {
       effect: 'fade',
       loop: true,
       navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
-      pagination: { el: '.swiper-pagination' },
+      // pagination: { el: '.swiper-pagination' }, // removed pagination
       on: {
         init: function () {
           updateCaptions(this);

@@ -36,10 +36,16 @@ main {
   margin: 0;
 }
 
+/* ——————————— HERO SLIDER CAPTION LAYOUT ——————————— */
 #hero-slider figcaption {
-  font-size: 0.875rem;
+  font-size: 0.75rem; /* smaller font for captions */
   color: var(--muted);
   display: block; /* ensure visible */
+  max-width: 900px;  /* match your main max-width */
+  padding: 0 1rem;   /* match main padding */
+  margin: 1rem auto 1rem auto; /* top margin of 1rem, auto sides, 0 bottom if desired */
+  box-sizing: border-box;
+  text-align: left;  /* optional: align like project content */
 }
 
 .swiper-slide figure {
@@ -96,12 +102,14 @@ main {
 
 /* ——————————— SWIPER PAGINATION ——————————— */
 .swiper-pagination {
-  margin: 2rem 0;
+   position: relative; /* ensures it stays in normal document flow */
+   margin: 1rem 0;      /* adjust spacing from image or caption */
 }
 
 .swiper-pagination-bullet {
   background: var(--accent);
 }
+
 
 /* Ensure GLightbox hero images remain full width */
 
@@ -135,6 +143,7 @@ main {
   color: var(--muted);
 }
 
+
 #project-overview h3 {
   font-size: 1rem;
   font-weight: bold;
@@ -149,6 +158,40 @@ main {
   margin: 1rem 0; /* adjust as needed for tighter or wider spacing */
   /*  line-height: 1.6; */
 }
+
+/* ───────────────────────────────
+   EXTRA RESOURCE LINK STYLING
+   Matches filter buttons
+──────────────────────────────── */
+#project-overview a {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  margin-top: 0;
+  border: 1px solid var(--muted);
+  background: transparent;
+  color: var(--text);
+  font-size: 0.75rem;
+  text-align: center;
+  border-radius: 0.25rem;
+  text-decoration: none;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+
+#project-overview a:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+@media (max-width: 480px) {
+  #project-overview a {
+   display: block;
+    width: calc(100% - 0.5rem); /* subtract left+right padding */
+    margin: 0 auto;
+    box-sizing: border-box; /* ensures padding/borders are included within width */
+  }
+}
+
 
 /* View All Projects Link */
 .view-all-projects {
