@@ -31,17 +31,24 @@
   <!-- GLightbox script -->
   <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
 
-
 </head>
 
 <body id="top">
-<!-- ───────── HEADER ───────── -->
+<!-- ──────────────────────────────────────────────────────────────────────────
+     HEADER
+────────────────────────────────────────────────────────────────────────────── -->
 <div class="header">
-  <button id="navToggle" class="nav-toggle" aria-label="Toggle navigation">☰</button>
+  <button id="navToggle" class="nav-toggle" aria-label="Toggle navigation">
+    <span class="bar"></span>
+    <span class="bar"></span>
+    <span class="bar"></span>
+  </button>
   <div class="theme-switch" onclick="toggleTheme()"></div>
 </div>
 
-<!-- ───────── SIDE NAV ───────── -->
+<!-- ──────────────────────────────────────────────────────────────────────────
+     SIDE NAV PANEL
+────────────────────────────────────────────────────────────────────────────── -->
 <nav id="sideNav" class="side-nav" aria-hidden="true">
   <ul class="nav-list">
     <li><a href="index.html">New Chat</a></li>
@@ -53,30 +60,27 @@
       </ul>
     </li>
     <li class="has-sub">
-  <button class="sub-toggle">Projects</button>
-  <ul class="sub-list">
-    <li><a href="projects.html?filter=all">View All</a></li>
-    <li><a href="projects.html?filter=ai">AI</a></li>
-    <li><a href="projects.html?filter=art">Art</a></li>
-    <li><a href="projects.html?filter=brand">Brand</a></li>
-    <li><a href="projects.html?filter=design">Design</a></li>
-    <li><a href="projects.html?filter=social">Social</a></li>
-    <li><a href="projects.html?filter=strategy">Strategy</a></li>
-    <li><a href="projects.html?filter=systems">Systems</a></li>
-    <li><a href="projects.html?filter=ux">UX</a></li>
-    <li><a href="projects.html?filter=web">Web</a></li>
-    <li><a href="projects.html?filter=xr">XR</a></li>
-  </ul>
-</li>
-
+      <button class="sub-toggle">Projects</button>
+      <ul class="sub-list">
+        <li><a href="projects.html?filter=all">View All</a></li>
+        <li><a href="projects.html?filter=ai">AI</a></li>
+        <li><a href="projects.html?filter=art">Art</a></li>
+        <li><a href="projects.html?filter=brand">Brand</a></li>
+        <li><a href="projects.html?filter=design">Design</a></li>
+        <li><a href="projects.html?filter=social">Social</a></li>
+        <li><a href="projects.html?filter=strategy">Strategy</a></li>
+        <li><a href="projects.html?filter=systems">Systems</a></li>
+        <li><a href="projects.html?filter=ux">UX</a></li>
+        <li><a href="projects.html?filter=web">Web</a></li>
+        <li><a href="projects.html?filter=xr">XR</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
 
 <!-- ───────── PAGE CONTENT ───────── -->
 <div id="pageContent">
   <main class="main-container">
-
-  
 
     <!-- Hero slider -->
     <section id="hero-slider" class="swiper">
@@ -104,7 +108,6 @@
     <p class="view-all-projects">
     <a href="projects.html?filter=all">← Back to All Projects</a>
     </p>
-
 
     <!-- Footer -->
     <footer class="compact-footer">
@@ -141,12 +144,14 @@
     toggle.addEventListener('click', e => {
       e.stopPropagation();
       nav.classList.toggle('open');
+      toggle.classList.toggle('open'); // ✅ Added to toggle .open on the button
       nav.setAttribute('aria-hidden', !nav.classList.contains('open'));
     });
 
     page.addEventListener('click', () => {
       if (nav.classList.contains('open')) {
         nav.classList.remove('open');
+        toggle.classList.remove('open'); // ✅ Removes .open from button when nav closes
         nav.setAttribute('aria-hidden', 'true');
       }
     });
@@ -164,15 +169,16 @@
   // ✅ Close side nav when page scrolls
   window.addEventListener('scroll', () => {
     const nav = document.getElementById('sideNav');
+    const toggle = document.getElementById('navToggle');
     if (nav && nav.classList.contains('open')) {
       nav.classList.remove('open');
+      toggle.classList.remove('open'); // ✅ Removes .open from button on scroll close
       nav.setAttribute('aria-hidden', 'true');
       document.querySelectorAll('.side-nav .has-sub.open')
         .forEach(li => li.classList.remove('open'));
     }
   });
 </script>
-
 
 <!-- Dependencies -->
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js" defer></script>

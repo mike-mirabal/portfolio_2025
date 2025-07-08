@@ -167,6 +167,41 @@ body.no-scroll {
   margin-left: 250px;
 }
 
+/* hamburger menu / nav toggle */
+.nav-toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 24px;
+  height: 18px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1002;
+}
+
+.nav-toggle .bar {
+  height: 3px;
+  width: 100%;
+  background-color: var(--text);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+/* Hamburger to X transform */
+.side-nav.open ~ .header .nav-toggle .bar:nth-child(1) {
+  transform: translateY(7.5px) rotate(45deg);
+}
+
+.side-nav.open ~ .header .nav-toggle .bar:nth-child(2) {
+  opacity: 0;
+}
+
+.side-nav.open ~ .header .nav-toggle .bar:nth-child(3) {
+  transform: translateY(-7.5px) rotate(-45deg);
+}
+
 /* ========================================================================== 
    HERO CHAT
    ========================================================================== */
