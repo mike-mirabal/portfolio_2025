@@ -212,3 +212,8 @@ Projects:
   Summary: Managed The Dirt Doctor’s entire digital presence, growing YouTube subscribers by 180% and social media following by 250%.  
   Date: 2019
 
+• [On Rotation](https://mikemirabal.com/project.html?slug=onrotation-inventory) — From Chaos to Flow: Streamlining Keg Inventory Management for a Craft Brewery  
+  Summary: Designed and implemented a simple, visual keg inventory tracking system that reduced changeover times by 80%, improved staff safety, and cut out-of-stock incidents by 70%.  
+  Date: 2023
+
+
