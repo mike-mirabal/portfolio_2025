@@ -216,4 +216,12 @@ Projects:
   Summary: Designed and implemented a simple, visual keg inventory tracking system that reduced changeover times by 80%, improved staff safety, and cut out-of-stock incidents by 70%.  
   Date: 2023
 
+• [On Rotation](https://mikemirabal.com/project.html?slug=onrotation-operations) — Streamlining Bar Operations: Building Efficient Workflow Systems at a Craft Brewery  
+  Summary: Redesigned On Rotation’s entire bar workflow, implementing station-based systems that reduced congestion, improved accuracy, and transformed guest experience.  
+  Date: 2023
+
+• [Frisco Studios](https://mikemirabal.com/project.html?slug=frisco_studios) — Creating the Impossible: A 360° Studio Tour with Multiple Simultaneous Perspectives  
+  Summary: Produced an innovative 360° video composite featuring multiple versions of the studio founder to showcase Frisco Studios’ technical expertise and creativity.  
+  Date: 2018
+
 
