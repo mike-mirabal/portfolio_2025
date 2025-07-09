@@ -200,6 +200,9 @@ html, body {
 
 /* Card Content */
 .card .card-content {
+  display: flex; /* added */
+  flex-direction: column; /* added */
+  flex: 1; /* added */
   padding: 1rem; /* New .card-content wrapper to apply padding only to text area */
 }
 
