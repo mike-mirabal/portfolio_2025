@@ -224,4 +224,16 @@ Projects:
   Summary: Produced an innovative 360° video composite featuring multiple versions of the studio founder to showcase Frisco Studios’ technical expertise and creativity.  
   Date: 2018
 
+• [Adam Velte Photography](https://mikemirabal.com/project.html?slug=adamvelte) — Growing Together: A Creative Partnership Evolves Into Brand Identity  
+  Summary: Developed a deeply personal brand identity for Adam Velte Photography that captured his Dallas roots, love for nature, and artistic authenticity through logo design, collateral, and exhibition materials.  
+  Date: 2020
+
+• [KB Strength & Wellness](https://mikemirabal.com/project.html?slug=kb) — UX Strategy Doubles Online Membership Base During Pandemic  
+  Summary: Designed and implemented a Wix-based membership platform with user-centered architecture and chat integration, doubling KB Strength & Wellness’s membership base during COVID-19.  
+  Date: 2020
+
+• [AR Tattoo](https://mikemirabal.com/project.html?slug=ar_tattoo) — Creative Technical Solutions Transform AR Development Constraints Into Viral Prototype and Industry Recognition  
+  Summary: Developed an innovative AR tattoo prototype using VR modeling workflows, generating social media traction and recognition for pushing creative boundaries in emerging tech.  
+  Date: 2018
+
 
