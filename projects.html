@@ -29,16 +29,12 @@
         <button class="sub-toggle">Projects</button>
         <ul class="sub-list">
           <li><a href="projects.html?filter=all">View All</a></li>
-          <li><a href="projects.html?filter=ai">AI</a></li>
-          <li><a href="projects.html?filter=art">Art</a></li>
           <li><a href="projects.html?filter=brand">Brand</a></li>
-          <li><a href="projects.html?filter=design">Design</a></li>
-          <li><a href="projects.html?filter=social">Social</a></li>
-          <li><a href="projects.html?filter=strategy">Strategy</a></li>
-          <li><a href="projects.html?filter=systems">Systems</a></li>
-          <li><a href="projects.html?filter=ux">UX</a></li>
-          <li><a href="projects.html?filter=web">Web</a></li>
-          <li><a href="projects.html?filter=xr">XR</a></li>
+          <li><a href="projects.html?filter=creative">Creative</a></li>
+          <li><a href="projects.html?filter=digital">Digital</a></li>
+          <li><a href="projects.html?filter=innovation">Innovation</a></li>
+          <li><a href="projects.html?filter=operations">Operations</a></li>
+          <li><a href="projects.html?filter=product">Product</a></li>
         </ul>
       </li>
     </ul>
@@ -77,16 +73,12 @@
   ────────────────────────────────────────────────────────────────────────────── -->
     <div class="filters">
       <button class="active" onclick="selectFilter(this)">All</button>
-      <button onclick="selectFilter(this)">AI</button>
-      <button onclick="selectFilter(this)">Art</button>
       <button onclick="selectFilter(this)">Brand</button>
-      <button onclick="selectFilter(this)">Design</button>
-      <button onclick="selectFilter(this)">Social</button>
-      <button onclick="selectFilter(this)">Strategy</button>
-      <button onclick="selectFilter(this)">Systems</button>
-      <button onclick="selectFilter(this)">UX</button>
-      <button onclick="selectFilter(this)">Web</button>
-      <button onclick="selectFilter(this)">XR</button>
+      <button onclick="selectFilter(this)">Creative</button>
+      <button onclick="selectFilter(this)">Digital</button>
+      <button onclick="selectFilter(this)">Innovation</button>
+      <button onclick="selectFilter(this)">Operations</button>
+      <button onclick="selectFilter(this)">Product</button>
     </div>
 
   <!-- ──────────────────────────────────────────────────────────────────────────
@@ -165,35 +157,23 @@ function updateSubheading(filter) {
     case 'all':
       text = 'All Projects';
       break;
-    case 'ai':
-      text = 'AI and Automation';
-      break;
-    case 'art':
-      text = 'Art and Illustration';
-      break;
     case 'brand':
-      text = 'Branding and Identity';
+      text = 'Building Identities that Connect and Convert';
       break;
-    case 'design':
-      text = 'Graphic and Visual Design';
+    case 'creative':
+      text = 'Bringing Ideas to Life with Visual Storytelling';
       break;
-    case 'social':
-      text = 'Social Media and Marketing';
+    case 'digital':
+      text = 'Creating Engaging Digital Touchpoints';
       break;
-    case 'strategy':
-      text = 'Strategy and Consulting';
+    case 'innovation':
+      text = 'Exploring What’s Next in Digital Experiences';
       break;
-    case 'systems':
-      text = 'Systems and Workflows';
+    case 'operations':
+      text = 'Streamlining Systems for Better Outcomes';
       break;
-    case 'ux':
-      text = 'User Experience';
-      break;
-    case 'web':
-      text = 'Web Design and Development';
-      break;
-    case 'xr':
-      text = 'AR / VR / XR / 360°';
+    case 'product':
+      text = 'Designing Experiences that Users Love';
       break;
     default:
       text = 'Projects';
