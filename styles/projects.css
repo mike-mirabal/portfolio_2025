@@ -14,12 +14,10 @@ html, body {
 .page-wrapper {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* makes wrapper span whole viewport */
+  min-height: 100vh;
 }
 
-/* Re-introduce footer styling from index */
 .compact-footer {
-  /* margin-top: auto; */
   height: var(--footer-height);
   display: flex;
   align-items: center;
@@ -31,15 +29,14 @@ html, body {
 
 /* ─── PROJECTS PAGE SUBHEADING TEXT ─── */
 .projects-subheading {
-  font-size: 2.5rem; /* adjust as needed */
+  font-size: 2.5rem;
   font-weight: bold;
   margin: 0 0 1.5rem 0;
 }
 
-
 /* ─── MAIN CONTAINER ─── */
 .main-container {
-  flex: 1; /* fills available vertical space */
+  flex: 1;
   max-width: 900px;
   margin: 0 auto;
   padding: 2rem 1rem;
@@ -61,6 +58,7 @@ html, body {
   margin-bottom: 1rem;
   padding: 0 1rem;
 }
+
 @media (max-width: 768px) {
   .filter-row {
     flex-direction: column-reverse;
@@ -83,6 +81,7 @@ html, body {
   align-items: center;
   gap: 0.5rem;
 }
+
 .sort-select {
   font-size: 0.75rem;
   padding: 0.25rem 0.5rem;
@@ -93,6 +92,7 @@ html, body {
   cursor: pointer;
   transition: border-color 0.2s;
 }
+
 .sort-select:hover,
 .sort-select:focus {
   border-color: var(--hover-border);
@@ -105,6 +105,7 @@ html, body {
   gap: 0.5rem;
   margin-bottom: 1.5rem;
 }
+
 .filters button {
   flex: 1 1 0%;
   text-align: center;
@@ -117,159 +118,146 @@ html, body {
   cursor: pointer;
   transition: border-color 0.2s, background 0.2s;
 }
+
 .filters button:hover {
   background: var(--accent);
   color: #fff;
   border-color: var(--accent);
 }
+
 .filters button.active {
   background: var(--accent);
   color: #fff;
   border-color: var(--accent);
 }
-/* ─── PROJECT GRID & CARDS ─── */
+
+/* ─── PROJECT GRID ─── */
 .grid {
   display: grid;
-  grid-template-columns: repeat(2,1fr);
-  gap: 1.5rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px; /* consistent gutter top, bottom, left, right */
 }
+
 @media (max-width: 768px) {
   .grid {
     grid-template-columns: 1fr;
   }
 }
 
-/* ─── CARD STYLES ─── */
-.card {
+/* ──────────────────────────────────────────────────────────────────────────
+   Card v03 — icon + company + year → hero → title → description
+   ────────────────────────────────────────────────────────────────────────── */
+.card.card-v03 {
   display: flex;
   flex-direction: column;
-  border: 2px solid var(--muted);
-  padding: 0;
-  border-radius: 0.75rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  background: var(--bg); /* Eensure consistent background */
-  overflow: hidden; /* Ensures child elements respect rounding */
   text-decoration: none;
   color: inherit;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
-  border: 2px solid var(--accent);
+
+  border: 2px solid var(--muted);
+  border-radius: 8px; /* Material Design-style */
+  overflow: hidden;
+  background: var(--bg);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.10);
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
 }
 
-/* Card Hero Image */
-.card .hero-img {
-  width: 100%;
+.card.card-v03:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 40px rgba(0,0,0,0.14);
+  border-color: var(--accent);
+}
+
+/* Top meta bar (tightened spacing) */
+.card.card-v03 .top-meta {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 0.75rem;
+  align-items: center;
+  padding: 8px 16px;
+  background: #E8F0FE;
+  border-bottom: 1px solid color-mix(in srgb, var(--muted), transparent 40%);
+}
+
+/* Icon (40x40, no border/background) */
+.card.card-v03 .company-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
   overflow: hidden;
-  border-radius: 0; /* ensure no conflicting rounding */
-  margin: 0; /* ensure no default margin is applied */
+  display: grid;
+  place-items: center;
+  border: none;
+  background: transparent;
+}
+
+.card.card-v03 .company-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card.card-v03 .company-icon .icon-fallback {
+  font-weight: 700;
+  font-size: 0.95rem;
+  opacity: .75;
+}
+
+/* Company + Year (tight) */
+.card.card-v03 .company-and-year {
+  display: grid;
+  gap: 4px;
+}
+
+.card.card-v03 .company {
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.card.card-v03 .year {
+  font-size: 12px;
+  font-weight: 300;
+  opacity: 0.85;
+  line-height: 1.2;
+}
+
+/* Hero image */
+.card.card-v03 .hero-img {
   position: relative;
   overflow: hidden;
 }
 
-/* Ensure hero images fill card width and align flush */
-.card .hero-img img {
+.card.card-v03 .hero-img img {
   display: block;
-  width: 100%; 
-  height: auto;
-  object-fit: cover; /* crops excess while maintaining aspect ratio */
-  max-height: 200px; /* adjust this to control image height on cards */
-}
-
-/* Gradient overlay on hero image for subtle polish */
-.card .hero-img::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
-  height: 100%;
-  /*
-  background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0));
-  */
-  pointer-events: none;
+  height: clamp(200px, 26vw, 320px);
+  object-fit: cover;
 }
 
-@media (max-width: 480px) {
-  .card .hero-img img {
-    max-height: 150px; /* or any smaller value for mobile layout */
-  }
+/* Content area (16px padding) */
+.card.card-v03 .card-content {
+  padding: 16px;
 }
 
-/* Card Content */
-.card .card-content {
-  display: flex; /* added */
-  flex-direction: column; /* added */
-  flex: 1; /* added */
-  padding: 1rem; /* New .card-content wrapper to apply padding only to text area */
+/* Title (h2) */
+.card.card-v03 .title {
+  margin: 0 0 8px 0;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 1.25;
 }
 
-/* 📝 Flex layout for company name (bold) on left and year on right */
-.card .meta-flex {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.5rem;
+/* Description (body) */
+.card.card-v03 .desc {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+  opacity: .95;
 }
 
-/* 📝 Style company name as bold, highest level text in content */
-.card .company {
-  font-weight: 600;
-  font-size: 1rem;
-}
-
-/* 📝 Style year to align right and appear secondary */
-.card .year {
-  font-weight: 400;
-  font-size: 0.9rem;
-  opacity: 0.7;
-}
-
-/* icon at top 
-.card .icon {
-  width: 48px;
-  height: 48px;
-  margin-bottom: 1rem;
-} */
-
-/* company | year 
-.card .meta-inline {
-  font-size: 0.875rem;
-  color: var(--muted);
-  margin-bottom: 0.25rem;
-}
-.card .meta-inline span:not(:last-child)::after {
-  content: " | ";
-  padding: 0 0.4rem;
-} */
-
-/* 📝 Style project title as normal paragraph text (no large heading) */
-.card .title {
-  font-size: 0.95rem;
-  font-weight: 400;
-  margin: 0 0 0.75rem 0;
-  line-height: 1.4;
-}
-
-/* tag badges at bottom */
-.card .tags {
-  margin-top: auto;
-  display: flex;
-  gap: 0.5rem;
-  padding-top: 1rem;
-  flex-wrap: wrap;
-}
-
-/* card tag styles */
-.card .tags span {
-  font-size: 0.5rem;
-  color: var(--muted);
-  padding: 0.15rem 0.4rem;
-  border: 1px solid var(--muted);
-  border-radius: 0.25rem;
-  background: transparent;
+/* Hide tags entirely */
+.card.card-v03 .tags {
+  display: none !important;
 }
 
 /* ─── BACK TO TOP ─── */
@@ -278,10 +266,12 @@ html, body {
   margin: 2rem 0;
   padding: 0;
 }
+
 .back-to-top a {
   color: var(--accent);
   text-decoration: underline;
 }
+
 @media (max-width: 768px) {
   .back-to-top {
     text-align: center;
@@ -289,15 +279,11 @@ html, body {
   }
 }
 
-/* ─── RESPONSIVE GRID & CARDS / Increase Padding on Tablets ─── */
+/* ─── RESPONSIVE GRID ─── */
 @media (min-width: 480px) and (max-width: 768px) {
   .grid {
-    max-width: 500px; /* adjust as needed for your card width */
-    margin: 0 auto;   /* centers the grid container */
-    padding: 0 1.5rem; /* optional: side padding for breathing room */
-  }
-
-  .card {
-    width: 100%; /* ensure cards use the container width */
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
   }
 }

@@ -1,4 +1,4 @@
-const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRAZz5mIVDN9q1EEapOvFb5RFNKN3VRrFK44KVQQlMa-HUmzEZWfseLnXpmaCQNfiXZIQjGcmLcTb1Q/pub?gid=0&single=true&output=csv';
+ const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRAZz5mIVDN9q1EEapOvFb5RFNKN3VRrFK44KVQQlMa-HUmzEZWfseLnXpmaCQNfiXZIQjGcmLcTb1Q/pub?gid=0&single=true&output=csv';
 
 document.addEventListener('DOMContentLoaded', () => {
   fetch(sheetURL)
@@ -38,27 +38,55 @@ document.addEventListener('DOMContentLoaded', () => {
 function renderProjects(projects, container) {
   container.innerHTML = '';
   projects.forEach(p => {
-    const card = document.createElement('a');
-    card.href = `project.html?slug=${encodeURIComponent(p.slug)}`;
-    card.className = 'card';
-    card.dataset.tags = (p.tags || '').toLowerCase();
+    // ── Field map + sensible fallbacks for new layout ────────────────────────
+    const href    = `project.html?slug=${encodeURIComponent(p.slug)}`;
+    const company = p.company || '';
+    const year    = p.year || '';
+    const heroImg = p.card_img || p.hero_url_1 || '';
+    const iconUrl = p.icon || p.logo || p.icon_url || ''; // add one of these cols if needed
 
+    // 🔁 Use card_title for the card; fall back to title if missing
+    const title   = p.card_title || p.title || '';
+
+    const desc =
+      p.short_desc ||
+      p.description ||
+      p.subtitle ||
+      (p.overview ? String(p.overview).split('\n')[0] : '') || '';
+
+    const tagsLower = (p.tags || '').toLowerCase();
     const tagsHtml = (p.tags || '')
       .split(',')
+      .filter(Boolean)
       .map(t => `<span>${t.trim()}</span>`)
       .join('');
 
+    // ── Card DOM for: top-meta → hero → title → description (tags optional) ──
+    const card = document.createElement('a');
+    card.href = href;
+    card.className = 'card card-v03';
+    card.dataset.tags = tagsLower;
+    card.setAttribute('aria-label', `${title} – ${company} ${year}`);
+
     card.innerHTML = `
-      <div class="hero-img">
-        <img src="${p.card_img}" alt="${p.title} card image">
-      </div>
-      <div class="card-content">
-        <div class="meta-flex">
-          <strong class="company">${p.company}</strong>
-          <span class="year">${p.year}</span>
+      <div class="top-meta">
+        <div class="company-icon" aria-hidden="true">
+          ${iconUrl ? `<img src="${iconUrl}" alt="">` : `<span class="icon-fallback">${(company || '?').charAt(0)}</span>`}
         </div>
-        <p class="title">${p.title}</p>
-        <div class="tags">${tagsHtml}</div>
+        <div class="company-and-year">
+          <div class="company">${company}</div>
+          <div class="year">${year}</div>
+        </div>
+      </div>
+
+      <div class="hero-img">
+        <img src="${heroImg}" alt="${title} card image">
+      </div>
+
+      <div class="card-content">
+        <h4 class="title">${title}</h4>
+        ${desc ? `<p class="desc">${desc}</p>` : ''}
+        ${tagsHtml ? `<div class="tags">${tagsHtml}</div>` : ''}
       </div>
     `;
 

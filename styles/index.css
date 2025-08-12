@@ -1,5 +1,5 @@
 /* ========================================================================== 
-   VARIABLES & RESET
+   VARIABLES & THEME
    ========================================================================== */
 :root {
   --bg: #ffffff;
@@ -10,6 +10,9 @@
   --chatbubble: #dedede;
   --header-height: 4rem;
   --footer-height: 2rem;
+
+  /* Height of the blue app bar (used by sticky controls) */
+  --appbar-h: 56px;
 }
 
 [data-theme="dark"] {
@@ -21,19 +24,21 @@
   --chatbubble: #2d2d2d;
 }
 
+/* ========================================================================== 
+   BASE / RESET
+   ========================================================================== */
 html, body {
   height: 100%;
-  margin: 0; padding: 0;
+  margin: 0;
+  padding: 0;
   font-family: sans-serif;
   background: var(--bg);
   color: var(--text);
 }
-body.no-scroll {
-  overflow: hidden;
-}
+body.no-scroll { overflow: hidden; }
 
 /* ========================================================================== 
-   HEADER
+   LEGACY HEADER & SIDE NAV (kept for other pages)
    ========================================================================== */
 .header {
   position: relative;
@@ -42,24 +47,43 @@ body.no-scroll {
   display: flex;
   align-items: center;
 }
+
+/* Hamburger button */
 .nav-toggle {
   position: absolute;
   left: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  background: transparent;
+  background: none;
   border: none;
-  font-size: 1.5rem;
-  color: var(--text);
   cursor: pointer;
   z-index: 1002;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 24px;
+  height: 18px;
 }
+.nav-toggle .bar {
+  height: 3px;
+  width: 100%;
+  background-color: var(--text);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+/* Hamburger → X transform when side nav open */
+.side-nav.open ~ .header .nav-toggle .bar:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+.side-nav.open ~ .header .nav-toggle .bar:nth-child(2) { opacity: 0; }
+.side-nav.open ~ .header .nav-toggle .bar:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+/* Global (pill) theme switch used on other pages */
 .theme-switch {
   position: absolute;
   right: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  width: 40px; height: 20px;
+  width: 40px; 
+  height: 20px;
   background: var(--muted);
   border-radius: 10px;
   cursor: pointer;
@@ -73,17 +97,13 @@ body.no-scroll {
   border-radius: 50%;
   transition: transform 0.3s ease;
 }
-[data-theme="dark"] .theme-switch::after {
-  transform: translateX(20px);
-}
+[data-theme="dark"] .theme-switch::after { transform: translateX(20px); }
 
-/* ========================================================================== 
-   SIDE NAV
-   ========================================================================== */
+/* Side Nav (for pages that use it) */
 .side-nav {
   position: fixed;
   top: var(--header-height);
-  left: -400px; /* stays hidden until .open */
+  left: -400px;                      /* hidden until .open */
   width: 180px;
   height: calc(100vh - var(--header-height));
   background: var(--bg);
@@ -92,19 +112,11 @@ body.no-scroll {
   z-index: 1001;
   padding: 1rem;
 }
-.side-nav.open {
-  left: 0;
-}
+.side-nav.open { left: 0; }
 
-/* top-level links */
-.side-nav .nav-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.side-nav .nav-list > li {
-  margin: 0.5rem 0;
-}
+.side-nav .nav-list { list-style: none; margin: 0; padding: 0; }
+.side-nav .nav-list > li { margin: 0.5rem 0; }
+
 .side-nav a,
 .side-nav .sub-toggle {
   background: transparent;
@@ -112,29 +124,21 @@ body.no-scroll {
   color: var(--text);
   text-decoration: none;
   font-size: 1rem;
-  padding: 0.125rem 0 0.125rem 0;
+  padding: 0.125rem 0;
   cursor: pointer;
   display: inline-block;
 }
-/* ensure the toggle is inline-flex so its ::after can rotate */
-.side-nav .sub-toggle {
-  display: inline-flex;
-  align-items: center;
-}
+.side-nav .sub-toggle { display: inline-flex; align-items: center; }
 .side-nav a:hover,
-.side-nav .sub-toggle:hover {
-  color: var(--accent);
-}
-/* move arrow icon to the right */
+.side-nav .sub-toggle:hover { color: var(--accent); }
+
 .side-nav .sub-toggle::after {
   content: '›';
   margin-left: 0.5rem;
   transition: transform 0.2s ease;
 }
-.side-nav .has-sub.open > .sub-toggle::after {
-  transform: rotate(90deg);
-}
-/* submenu items */
+.side-nav .has-sub.open > .sub-toggle::after { transform: rotate(90deg); }
+
 .side-nav .sub-list {
   list-style: none;
   margin: 0.25rem 0 0 1.5rem;
@@ -143,11 +147,8 @@ body.no-scroll {
   overflow: hidden;
   transition: max-height 0.3s ease;
 }
-.side-nav .has-sub.open > .sub-list {
-  max-height: 500px; /* enough to show all */
-}
+.side-nav .has-sub.open > .sub-list { max-height: 500px; }
 .side-nav .sub-list li a {
-  /* match main nav links */
   color: var(--text);
   font-size: 1rem;
   text-decoration: none;
@@ -155,55 +156,132 @@ body.no-scroll {
   padding: 0;
   transition: color 0.2s ease, background 0.2s ease;
 }
-.side-nav .sub-list li a:hover {
-  color: var(--accent);
-}
+.side-nav .sub-list li a:hover { color: var(--accent); }
 
-/* page-content gets pushed on desktop but never peeks in */
-#pageContent {
-  transition: margin-left 0.3s ease;
-}
-.side-nav.open + #pageContent {
-  margin-left: 250px;
-}
+/* Page content nudge when side nav is open (desktop) */
+#pageContent { transition: margin-left 0.3s ease; }
+.side-nav.open + #pageContent { margin-left: 250px; }
 
-/* hamburger menu / nav toggle */
-.nav-toggle {
+/* ========================================================================== 
+   PROJECTS PAGE — APP BAR (Material style)
+   - Scoped to .appbar to avoid conflicts with global header/toggle
+   ========================================================================== */
+
+/* Hide legacy header/nav on this page only (projects) */
+.header, #navToggle, #sideNav { display: none !important; }
+
+.appbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  min-height: var(--appbar-h);
+  background: var(--primary, #1a73e8);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.appbar .appbar-inner {
+  max-width: 900px;                 /* match main content width */
+  margin: 0 auto;
+  padding: 12px 16px;
   display: flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: space-between;
-  width: 24px;
-  height: 18px;
-  background: none;
+  gap: 12px;
+}
+.appbar .appbar-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  color: #fff;
+  line-height: 1;
+}
+.appbar .appbar-right { display: flex; align-items: center; gap: 12px; }
+
+/* App bar icon buttons (email, LinkedIn, theme) */
+.appbar .icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+  color: #fff;
+  text-decoration: none;
+  background: transparent;
   border: none;
   cursor: pointer;
-  padding: 0;
-  z-index: 1002;
+  transition: background-color .2s ease, opacity .2s ease;
+}
+.appbar .icon-btn:hover  { background-color: rgba(255,255,255,0.12); }
+.appbar .icon-btn:active { background-color: rgba(255,255,255,0.18); }
+.appbar .icon-btn svg { display: block; color: currentColor; }
+
+/* App bar theme switch (icon button w/ sun/moon) */
+.appbar .theme-switch { padding: 0; position: static; transform: none; width: 32px; height: 32px; border: none; background: transparent; border-radius: 16px; }
+.appbar .theme-switch::before,
+.appbar .theme-switch::after { display: none !important; } /* neutralize global pill */
+.appbar .theme-switch .icon-moon { display: none; }
+[data-theme="dark"] .appbar .theme-switch .icon-sun { display: none; }
+[data-theme="dark"] .appbar .theme-switch .icon-moon { display: block; }
+
+/* ========================================================================== 
+   PROJECTS PAGE — HERO TEXT (under app bar)
+   ========================================================================== */
+.projects-subheading,
+.page-sublead,
+.page-kicker {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;               /* align with .main-container padding */
+  padding-right: 1rem;
 }
 
-.nav-toggle .bar {
-  height: 3px;
-  width: 100%;
-  background-color: var(--text);
-  border-radius: 2px;
-  transition: all 0.3s ease;
+.projects-subheading {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-top: 1rem;
+  margin-bottom: 0.25rem;           /* tighter space before sublead */
 }
-
-/* Hamburger to X transform */
-.side-nav.open ~ .header .nav-toggle .bar:nth-child(1) {
-  transform: translateY(7.5px) rotate(45deg);
+.page-sublead {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--text);
+  opacity: 0.9;
+  margin: 0 0 1.25rem 0;            /* more space before kicker */
 }
-
-.side-nav.open ~ .header .nav-toggle .bar:nth-child(2) {
-  opacity: 0;
-}
-
-.side-nav.open ~ .header .nav-toggle .bar:nth-child(3) {
-  transform: translateY(-7.5px) rotate(-45deg);
+.page-kicker {
+  font-size: 0.95rem;
+  color: var(--text);
+  opacity: 0.9;
+  margin: 0 0 1rem 0;
 }
 
 /* ========================================================================== 
-   HERO CHAT
+   PROJECTS PAGE — STICKY CONTROLS (Projects heading + Filters)
+   ========================================================================== */
+.sticky-controls {
+  position: sticky;
+  top: var(--appbar-h);             /* sits directly under app bar */
+  z-index: 900;
+  background: var(--bg);
+}
+.sticky-controls .sticky-inner {
+  max-width: 900px;
+  padding: 0.75rem 0 0.75rem 0;
+ 
+}
+.sticky-controls .section-title { margin: 0 0 0.5rem 0; }
+.sticky-controls .filters { margin: 0; }
+
+/* Keep grid spacing consistent on projects */
+.grid { gap: 24px; margin-top: 0.25rem; }
+
+/* Main container top padding can be lighter under the app bar */
+.main-container { padding-top: 1.25rem; }
+
+/* ========================================================================== 
+   CHAT (used on chat/assistant page)
    ========================================================================== */
 .hero-chat {
   box-sizing: border-box;
@@ -277,37 +355,23 @@ h2.chat-heading {
   word-wrap: break-word;
 }
 
-/* Light mode link styling in bot messages */
-.chat-window .message.bot a {
-  color: #3e7bfa; /* adjust to your desired high-contrast light mode color */
-  text-decoration: underline; /* optional for clarity */
-}
+/* Link colors inside bot messages */
+.chat-window .message.bot a { color: #3e7bfa; text-decoration: underline; }
+[data-theme="dark"] .chat-window .message.bot a { color: #588bfa; }
 
-/* Dark mode link styling in bot messages */
-[data-theme="dark"] .chat-window .message.bot a {
-  color: #588bfa; /* brighter high-contrast color for dark backgrounds */
-}
-
-/* ========================================================================== 
-   CHAT BUBBLE TYPING INDICATOR / LOTTIE ANIMATION
-   ========================================================================== */
-  .bubble-text.typing-indicator {
-  max-height: 2.5rem; /* try to match chat bubble height */
-  overflow: hidden; /* crops any overflow from Lottie */
-  padding: 0;                /* Remove extra padding */
-  display: flex;             /* Make bubble flex container */
-  align-items: center;       /* Vertically center content */
-  justify-content: left;   /* Horizontally center content */
+/* Typing indicator bubble */
+.bubble-text.typing-indicator {
+  max-height: 2.5rem;
+  overflow: hidden;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: left;
   background: transparent !important;
-  }
-  .bubble-text.typing-indicator lottie-player {
-  margin: -3rem -5rem; /* equivalent to -60px top/bottom and left/right */
 }
+.bubble-text.typing-indicator lottie-player { margin: -3rem -5rem; }
 
-
-/* ========================================================================== 
-   INPUT FORM
-   ========================================================================== */
+/* Chat input form */
 .chat-form {
   display: flex;
   align-items: stretch;
@@ -326,9 +390,8 @@ h2.chat-heading {
 }
 .btn-send {
   flex: 0 0 auto;
-  width: 3rem;         /* keep button square */
-  height: auto;      /* ← remove fixed height */
-  padding: 0.75rem;     /* horizontal padding—vertical */
+  width: 3rem;
+  padding: 0.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -339,9 +402,7 @@ h2.chat-heading {
   cursor: pointer;
   transition: transform 0.2s ease;
 }
-.btn-send:hover {
-  transform: translateY(-2px);
-}
+.btn-send:hover { transform: translateY(-2px); }
 
 /* ========================================================================== 
    FOOTER
@@ -358,49 +419,27 @@ h2.chat-heading {
 }
 
 /* ========================================================================== 
-   RESPONSIVE STYLES
+   RESPONSIVE
    ========================================================================== */
 @media (max-width: 768px) {
   .hero-chat {
     padding: 0.75rem;
     height: calc(100vh - var(--header-height) - var(--footer-height));
   }
-  h2.chat-heading {
-    font-size: 2rem;
-  }
-  .btn-send {
-    width: 2rem;
-    height: 2rem;
-    font-size: 1rem;
-  }
+  h2.chat-heading { font-size: 2rem; }
+  .btn-send { width: 2rem; height: 2rem; font-size: 1rem; }
 }
 
 @media (max-width: 480px) {
-  /* Double the left/right gutter */
   .hero-chat {
     padding: 0.5rem 2rem;
-    /* CHAT WINDOW FILL FULL SPACE, WITHOUT PUSHING FORM OFF SCREEN */
     height: calc(100vh - var(--header-height) - var(--footer-height) - 4rem);
   }
-
-  /* Keep chat bubbles large */
   .chat-window .message.bot,
-  .chat-window .message.user {
-    font-size: 1.2rem;
-  }
+  .chat-window .message.user { font-size: 1.2rem; }
+  .chat-window { flex: 1 1 auto; min-height: 0; }
 
-  /* 3) Ensure chat-window never pushes the form off screen */
-  .chat-window {
-    flex: 1 1 auto;
-    min-height: 0;
-  }
-
-  /* CHAT FORM */
-  .chat-form input {
-    padding: 1rem 1rem;
-  }
-
-  /* CHAT SEND BUTTON */
+  .chat-form input { padding: 1rem 1rem; }
   .chat-form .btn-send {
     padding: 0 1rem;
     height: auto;
@@ -410,20 +449,39 @@ h2.chat-heading {
     font-size: 3rem;
   }
 
-  /* ALWAYS COLLAPSE SUBMENU WHEN SIDE NAV CLOSES */
-  .side-nav:not(.open) .has-sub.open > .sub-list {
-    max-height: 0 !important;
-  }
+  /* Always collapse submenu when side nav closes */
+  .side-nav:not(.open) .has-sub.open > .sub-list { max-height: 0 !important; }
 
-  /* SIDE NAV LINKS */
+  /* Side nav sizing */
   .side-nav a,
-  .side-nav .sub-toggle  {
-    font-size: 1.5rem;
-  }
+  .side-nav .sub-toggle  { font-size: 1.5rem; }
+  .side-nav .sub-list li a { font-size: 1.25rem; margin-bottom: 0.5rem; }
+}
 
-  /* SIDE NAV SUB MENU LINKS */
-  .side-nav .sub-list li a {
-    font-size: 1.25rem;
-    margin-bottom: 0.5rem;
-  }
+/* ========================================================================== 
+   DARK MODE OVERRIDES
+   ========================================================================== */
+
+/* App bar switches to dark-theme accent blue when in dark mode */
+[data-theme="dark"] .appbar {
+  background: var(--accent);
+}
+
+/* Force card header text (company name + date) to stay in var(--text) for both themes */
+.card .company,
+.card .date,
+.card .year,
+.card .card-header .company,
+.card .card-header .date,
+.card .card-header .year {
+  color: var(--text) !important;
+}
+
+[data-theme="dark"] .card .company,
+[data-theme="dark"] .card .date,
+[data-theme="dark"] .card .year,
+[data-theme="dark"] .card .card-header .company,
+[data-theme="dark"] .card .card-header .date,
+[data-theme="dark"] .card .card-header .year {
+  color: #1c1c1c !important;
 }
