@@ -229,6 +229,12 @@ body.no-scroll { overflow: hidden; }
 [data-theme="dark"] .appbar .theme-switch .icon-sun { display: none; }
 [data-theme="dark"] .appbar .theme-switch .icon-moon { display: block; }
 
+/* Hide dark icon in light mode */
+.icon-dark { display: none; }
+[data-theme="dark"] .icon-dark { display: inline; }
+[data-theme="dark"] .icon-light { display: none; }
+
+
 /* ========================================================================== 
    PROJECTS PAGE — HERO TEXT (under app bar)
    ========================================================================== */
@@ -603,6 +609,70 @@ h2.chat-heading {
 }
 .btn-send:hover { transform: translateY(-2px); }
 
+/* Avatar containers next to chat bubbles */
+.bot-avatar, .user-avatar {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bot-avatar img, .user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0%) contrast(100%); /* default dark text color */
+}
+
+/* In dark mode, flip to white-ish */
+[data-theme="dark"] .bot-avatar img,
+[data-theme="dark"] .user-avatar img {
+  filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+}
+
+/* Align message rows with avatar + bubble */
+.proj-bot, .proj-user {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Avatar icons that inherit text color via CSS mask */
+.avatar-icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  background-color: currentColor;            /* ← icon color follows theme text */
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+}
+
+/* Point each variant at its SVG file */
+.avatar-icon.bot {
+  mask-image: url('/assets/icons/icon_chat_bot.svg');
+  -webkit-mask-image: url('/assets/icons/icon_chat_bot.svg');
+}
+.avatar-icon.user {
+  mask-image: url('/assets/icons/icon_chat_user.svg');
+  -webkit-mask-image: url('/assets/icons/icon_chat_user.svg');
+}
+
+/* Row layout keeps icon + bubble aligned */
+.proj-bot, .proj-user {
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text); /* ensures avatar uses theme text color */
+}
+
+
+
 /* ──────────────────────────────────────────────────────────────────────────
    Project Chat Modal — Large Dialog on Desktop, Inset on Mobile
    ────────────────────────────────────────────────────────────────────────── */
@@ -652,13 +722,17 @@ h2.chat-heading {
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  background: color-mix(in srgb, var(--bg), var(--text) 6%);
+  background: #E8F0FE; /* same as card header background */
+  color: var(--text);  /* same as card header text */
   border-bottom: 1px solid color-mix(in srgb, var(--muted), transparent 40%);
 }
+
 .projchat-title {
   display: grid;
   gap: 2px;
+  color: #1c1c1c;
 }
+
 .projchat-title strong {
   font-size: 1rem;
   line-height: 1.1;
@@ -671,11 +745,21 @@ h2.chat-heading {
 .projchat-close {
   background: transparent;
   border: 0;
-  color: var(--text);
-  font-size: 24px;
-  line-height: 1;
+  padding: 0;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
 }
+
+.projchat-close img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 
 .projchat-window {
   flex: 1 1 auto;

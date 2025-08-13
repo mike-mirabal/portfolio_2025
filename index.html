@@ -60,16 +60,12 @@
     
       <!-- Theme toggle as icon button with sun/moon -->
       <button class="icon-btn theme-switch" id="themeSwitch" onclick="toggleTheme()" aria-label="Toggle theme">
-        <!-- Sun (shown in light) -->
-        <svg class="icon-sun" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" fill="none">
-          <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/>
-          <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.7 4.7l2.1 2.1M17.2 17.2l2.1 2.1M4.7 19.3l2.1-2.1M17.2 6.8l2.1-2.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-        </svg>
-        <!-- Moon (shown in dark) -->
-        <svg class="icon-moon" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" fill="none">
-          <path d="M20 13.5A8.5 8.5 0 1 1 10.5 4a6.5 6.5 0 1 0 9.5 9.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
-        </svg>
-      </button>
+  <!-- Light mode icon -->
+  <img class="icon-light" src="assets/icons/icon_appbar_lightmode.svg" alt="Light mode" width="24" height="24">
+  <!-- Dark mode icon -->
+  <img class="icon-dark" src="assets/icons/icon_appbar_darkmode.svg" alt="Dark mode" width="24" height="24">
+</button>
+
     </div>
   </div>
 </header>
@@ -125,11 +121,13 @@
     <div class="projchat-header">
       <div class="projchat-title">
         <strong id="projchatProjectTitle">Project</strong>
-        <span class="projchat-sub">Ask AI anything about this work</span>
+        <span class="projchat-sub">Ask AI about this project</span>
       </div>
-      <button class="projchat-close" type="button" aria-label="Close" onclick="closeProjectChatModal()">
-        &times;
-      </button>
+    <button class="projchat-close" aria-label="Close chat" onclick="closeProjectChatModal()">
+  <img src="/assets/icons/icon_close_3BF286.svg" alt="Close" />
+</button>
+
+
     </div>
 
     <div id="projchatWindow" class="projchat-window" aria-live="polite" aria-busy="false"></div>
@@ -219,13 +217,13 @@
 
    document.getElementById('projectsSubheading').textContent = ({
   all:        'Creating Impact Through Design and Innovation',
-  featured:   'Delivering Creative Excellence Across Every Project',
-  ai:         'Designing AI Workflows that Enhance Productivity',
+  featured:   'Delivering Creative Excellence For Every Project',
+  ai:         'Designing Workflows that Enhance Productivity',
   brand:      'Building Identities that Connect and Convert',
   creative:   'Bringing Ideas to Life with Visual Storytelling',
-  ux:         'Crafting User Experiences that Drive Engagement',
-  operations: 'Streamlining Systems for Better Business Outcomes',
-  strategy:   'Developing Strategies that Inspire and Deliver Results'
+  ux:         'Crafting Experiences that Drive Engagement',
+  operations: 'Streamlining Systems for Better Outcomes',
+  strategy:   'Developing Strategies That Inspire Results'
 })[filter] || 'Projects';
 
     const newUrl = new URL(window.location);
@@ -282,7 +280,7 @@
 
   t.textContent = title;
   w.innerHTML = '';
-  appendBot("Hi! Ask me anything about this project. I’m trained on its overview and context.");
+  appendBot("Hi there! I'm here to help you dive deeper into this project. Go ahead and ask me anything you're curious about!");
 
   m.setAttribute('aria-hidden','false');
   setTimeout(() => document.getElementById('projchatInput').focus(), 50);
@@ -294,17 +292,33 @@
   }
 
   function appendBot(text) {
-    const w = document.getElementById('projchatWindow');
-    const row = document.createElement('div'); row.className = 'proj-bot';
-    row.innerHTML = `<div class="proj-bubble">${linkify(text)}</div>`;
-    w.appendChild(row); w.scrollTop = w.scrollHeight;
-  }
-  function appendUser(text) {
-    const w = document.getElementById('projchatWindow');
-    const row = document.createElement('div'); row.className = 'proj-user';
-    row.innerHTML = `<div class="proj-bubble">${escapeHtml(text)}</div>`;
-    w.appendChild(row); w.scrollTop = w.scrollHeight;
-  }
+  const w = document.getElementById('projchatWindow');
+  const row = document.createElement('div'); 
+  row.className = 'proj-bot';
+
+  row.innerHTML = `
+    <span class="avatar-icon bot" aria-hidden="true"></span>
+    <div class="proj-bubble">${linkify(text)}</div>
+  `;
+
+  w.appendChild(row); 
+  w.scrollTop = w.scrollHeight;
+}
+
+ function appendUser(text) {
+  const w = document.getElementById('projchatWindow');
+  const row = document.createElement('div'); 
+  row.className = 'proj-user';
+
+  row.innerHTML = `
+    <span class="avatar-icon user" aria-hidden="true"></span>
+    <div class="proj-bubble">${escapeHtml(text)}</div>
+  `;
+
+  w.appendChild(row); 
+  w.scrollTop = w.scrollHeight;
+}
+
 
   function linkify(s) {
     return escapeHtml(s).replace(
