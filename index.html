@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Portfolio – Mike Mirabal</title>
   <link rel="stylesheet" href="styles/index.css" />
-  <link rel="stylesheet" href="styles/projects.css">
+  <!-- Base styles for the project page 
+  <link rel="stylesheet" href="styles/projects.css"> -->
   <link rel="icon" type="image/png" href="assets/favicon.png" />
 </head>
 <body id="top" data-theme="light">
@@ -117,6 +118,29 @@
   </footer>
 
 </div>
+
+<!-- Project Chat Modal -->
+<div id="projectChatModal" class="projchat-modal" aria-hidden="true" role="dialog" aria-label="Project AI Chat">
+  <div class="projchat-dialog" role="document">
+    <div class="projchat-header">
+      <div class="projchat-title">
+        <strong id="projchatProjectTitle">Project</strong>
+        <span class="projchat-sub">Ask AI anything about this work</span>
+      </div>
+      <button class="projchat-close" type="button" aria-label="Close" onclick="closeProjectChatModal()">
+        &times;
+      </button>
+    </div>
+
+    <div id="projchatWindow" class="projchat-window" aria-live="polite" aria-busy="false"></div>
+
+    <form id="projchatForm" class="projchat-form">
+      <input id="projchatInput" type="text" placeholder="Ask a question…" autocomplete="off" required />
+      <button type="submit" class="projchat-send">↑</button>
+    </form>
+  </div>
+</div>
+
 
 <!-- THEME INIT -->
 <script>
@@ -234,5 +258,107 @@
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js" defer></script>
 <script src="scripts/filters.js" defer></script>
 <script src="/scripts/project.js" defer></script>
+
+
+<!-- Project Chat Script -->
+<script>
+  // Simple project-aware chat using your /api/chat endpoint.
+  let projCtx = { slug: '', title: '', overview: '' };
+
+  function openProjectChatModal(e, btn) {
+  // prevent the <a> card click
+  if (e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  const m = document.getElementById('projectChatModal');
+  const w = document.getElementById('projchatWindow');
+  const t = document.getElementById('projchatProjectTitle');
+
+  // read context from the button’s data-attributes
+  const { slug = '', title = 'Project', overview = '' } = btn.dataset;
+  projCtx = { slug, title, overview };
+
+  t.textContent = title;
+  w.innerHTML = '';
+  appendBot("Hi! Ask me anything about this project. I’m trained on its overview and context.");
+
+  m.setAttribute('aria-hidden','false');
+  setTimeout(() => document.getElementById('projchatInput').focus(), 50);
+}
+
+
+  function closeProjectChatModal() {
+    document.getElementById('projectChatModal').setAttribute('aria-hidden','true');
+  }
+
+  function appendBot(text) {
+    const w = document.getElementById('projchatWindow');
+    const row = document.createElement('div'); row.className = 'proj-bot';
+    row.innerHTML = `<div class="proj-bubble">${linkify(text)}</div>`;
+    w.appendChild(row); w.scrollTop = w.scrollHeight;
+  }
+  function appendUser(text) {
+    const w = document.getElementById('projchatWindow');
+    const row = document.createElement('div'); row.className = 'proj-user';
+    row.innerHTML = `<div class="proj-bubble">${escapeHtml(text)}</div>`;
+    w.appendChild(row); w.scrollTop = w.scrollHeight;
+  }
+
+  function linkify(s) {
+    return escapeHtml(s).replace(
+      /\[([^\]]+)\]\(([^)]+)\)/g,
+      '<a href="$2" target="_blank" rel="noopener">$1</a>'
+    ).replace(/\n/g,'<br>');
+  }
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  }
+
+  // Submit handler
+  document.getElementById('projchatForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const input = document.getElementById('projchatInput');
+    const msg = input.value.trim();
+    if (!msg) return;
+
+    appendUser(msg);
+    input.value = '';
+
+    // Compose a lightweight context hint for your backend
+    const contextPrefix =
+`You are an assistant answering questions about a portfolio project.
+Project Title: ${projCtx.title}
+Slug: ${projCtx.slug}
+Overview: ${projCtx.overview}
+Answer concisely and reference specific details from the overview when relevant.`;
+
+    try {
+      const resp = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          // Your API likely expects { message }; we prepend context as a system hint.
+          message: `${contextPrefix}\n\nUser question: ${msg}`,
+          // If your API supports extra fields, these are nice to have (harmless if ignored):
+          project: { slug: projCtx.slug, title: projCtx.title }
+        })
+      });
+      const json = await resp.json();
+      appendBot(json.reply || 'Got it.');
+    } catch (err) {
+      console.error(err);
+      appendBot("Sorry—I'm having trouble right now.");
+    }
+  });
+
+  // ESC to close
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeProjectChatModal();
+  });
+</script>
+
+
 </body>
 </html>

@@ -76,7 +76,7 @@ body.no-scroll { overflow: hidden; }
 .side-nav.open ~ .header .nav-toggle .bar:nth-child(2) { opacity: 0; }
 .side-nav.open ~ .header .nav-toggle .bar:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
 
-/* Global (pill) theme switch used on other pages */
+/* Global (pill) theme switch used on other pages) */
 .theme-switch {
   position: absolute;
   right: 1rem;
@@ -164,10 +164,9 @@ body.no-scroll { overflow: hidden; }
 
 /* ========================================================================== 
    PROJECTS PAGE — APP BAR (Material style)
-   - Scoped to .appbar to avoid conflicts with global header/toggle
    ========================================================================== */
 
-/* Hide legacy header/nav on this page only (projects) */
+/* Hide legacy header/nav on the projects page */
 .header, #navToggle, #sideNav { display: none !important; }
 
 .appbar {
@@ -233,12 +232,25 @@ body.no-scroll { overflow: hidden; }
 /* ========================================================================== 
    PROJECTS PAGE — HERO TEXT (under app bar)
    ========================================================================== */
+
+/* Layout container used across the page */
+.main-container {
+  flex: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1rem 0 1rem;   /* 16px side gutters + comfy top/bottom */
+}
+
+
+./* Keep hero texts aligned with container gutters */
 .projects-subheading,
 .page-sublead,
 .page-kicker {
   max-width: 900px;
   margin-left: auto;
   margin-right: auto;
+  padding-left: 1rem;     /* align with .main-container */
+  padding-right: 1rem;
 }
 
 
@@ -272,17 +284,200 @@ body.no-scroll { overflow: hidden; }
 }
 .sticky-controls .sticky-inner {
   max-width: 900px;
+  margin: 0 auto;
   padding: 0.75rem 0 0.75rem 0;
- 
 }
 .sticky-controls .section-title { margin: 0 0 0.5rem 0; }
-.sticky-controls .filters { margin: 0; }
+
+/* Filters (desktop default: flex; mobile overridden to grid) */
+.sticky-controls .filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+}
+.sticky-controls .filters button {
+  flex: 1 1 0%;
+  text-align: center;
+  background: transparent;
+  border: 1px solid var(--muted);
+  color: var(--text);
+  border-radius: 0.25rem;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.sticky-controls .filters button:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.sticky-controls .filters button.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
 
 /* Keep grid spacing consistent on projects */
 .grid { gap: 24px; margin-top: 0.25rem; }
 
-/* Main container top padding can be lighter under the app bar */
-.main-container { padding-top: 1.25rem; }
+/* Mobile: force filters into a 4x2 uniform grid */
+@media (max-width: 768px) {
+  .sticky-controls .filters {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin: 0;
+  }
+  .sticky-controls .filters button {
+    flex: initial !important;
+    width: 100%;
+    min-width: 0;
+    padding: 0.45rem 0.5rem;
+  }
+}
+
+/* ========================================================================== 
+   PROJECT GRID & CARD V03
+   ========================================================================== */
+.section-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem 0;
+}
+
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+@media (max-width: 768px) {
+  .grid { grid-template-columns: 1fr; }
+}
+
+/* Card shell */
+.card.card-v03 {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+
+  border: 2px solid var(--muted);
+  border-radius: 8px; /* Material-like */
+  overflow: hidden;
+  background: var(--bg);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.10);
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.card.card-v03:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 40px rgba(0,0,0,0.14);
+  border-color: var(--accent);
+}
+
+/* Top meta row: icon | company/year | Ask‑AI (right) */
+.card.card-v03 .top-meta {
+  display: grid;
+  grid-template-columns: auto minmax(0,1fr) auto; /* ← three columns, center can shrink */
+  column-gap: 0.75rem;
+  align-items: center;
+  padding: 8px 16px;
+  background: #E8F0FE;
+  border-bottom: 1px solid color-mix(in srgb, var(--muted), transparent 40%);
+}
+
+/* Icon (40x40, no border/background) */
+.card.card-v03 .company-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  border: none;
+  background: transparent;
+}
+.card.card-v03 .company-icon img { width: 100%; height: 100%; object-fit: cover; }
+.card.card-v03 .company-icon .icon-fallback { font-weight: 700; font-size: 0.95rem; opacity: .75; }
+
+/* Company + Year (tight) */
+.card.card-v03 .company-and-year { display: grid; gap: 4px; min-width: 0; }
+.card.card-v03 .company {
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 1.2;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; /* prevents push */
+}
+.card.card-v03 .year {
+  font-size: 12px;
+  font-weight: 300;
+  opacity: 0.85;
+  line-height: 1.2;
+}
+
+/* Ask‑AI button participates in grid and stays right/centered */
+.top-meta .ask-ai-btn {
+  position: static;
+  justify-self: end;
+  align-self: center;
+  width: 24px; height: 24px;
+}
+.card-action.ask-ai-btn {
+  margin-left: auto;
+  background: transparent; border: 0; cursor: pointer;
+  color: var(--text);
+  width: 28px; height: 28px; border-radius: 14px;
+}
+.card-action.ask-ai-btn:hover { background: rgba(0,0,0,0.06); }
+[data-theme="dark"] .card-action.ask-ai-btn:hover { background: rgba(255,255,255,0.08); }
+
+/* Hero image */
+.card.card-v03 .hero-img { position: relative; overflow: hidden; }
+.card.card-v03 .hero-img img {
+  display: block;
+  width: 100%;
+  height: clamp(200px, 26vw, 320px);
+  object-fit: cover;
+}
+
+/* Content area (16px padding) */
+.card.card-v03 .card-content { padding: 16px; }
+
+/* Title (h2) */
+.card.card-v03 .title {
+  margin: 0 0 8px 0;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 1.25;
+}
+
+/* Description (body) */
+.card.card-v03 .desc {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+  opacity: .95;
+}
+
+/* Hide tags entirely on cards */
+.card.card-v03 .tags { display: none !important; }
+
+/* Back to top */
+.back-to-top { text-align: left; margin: 2rem 0; padding: 0; }
+.back-to-top a { color: var(--accent); text-decoration: underline; }
+@media (max-width: 768px) {
+  .back-to-top { text-align: center; padding: 0; }
+}
+
+/* Optional: narrower grid container on small tablets */
+@media (min-width: 480px) and (max-width: 768px) {
+  .grid {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+}
 
 /* ========================================================================== 
    CHAT (used on chat/assistant page)
@@ -408,6 +603,137 @@ h2.chat-heading {
 }
 .btn-send:hover { transform: translateY(-2px); }
 
+/* ──────────────────────────────────────────────────────────────────────────
+   Project Chat Modal — Large Dialog on Desktop, Fullscreen on Mobile
+   ────────────────────────────────────────────────────────────────────────── */
+.projchat-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6); /* dark overlay for focus */
+  display: none;
+  align-items: center;         /* center vertically */
+  justify-content: center;     /* center horizontally */
+  z-index: 1200;
+}
+.projchat-modal[aria-hidden="false"] {
+  display: flex;
+}
+
+.projchat-dialog {
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+
+  /* Desktop default: centered modal with padding around */
+  width: min(900px, 90vw);
+  height: min(85vh, 90vh);
+  border-radius: 12px;
+}
+
+/* Mobile: full screen */
+@media (max-width: 768px) {
+  .projchat-dialog {
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+    max-width: none;
+    max-height: none;
+  }
+}
+
+.projchat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: color-mix(in srgb, var(--bg), var(--text) 6%);
+  border-bottom: 1px solid color-mix(in srgb, var(--muted), transparent 40%);
+}
+.projchat-title {
+  display: grid;
+  gap: 2px;
+}
+.projchat-title strong {
+  font-size: 1rem;
+  line-height: 1.1;
+}
+.projchat-sub {
+  font-size: 0.8rem;
+  opacity: 0.75;
+}
+
+.projchat-close {
+  background: transparent;
+  border: 0;
+  color: var(--text);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.projchat-window {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 12px 16px;
+  overflow-y: auto;
+  background: var(--chatbg);
+  border-bottom: 1px solid color-mix(in srgb, var(--muted), transparent 60%);
+}
+
+/* bubbles */
+.proj-bot, .proj-user {
+  display: flex;
+  margin: 6px 0;
+}
+.proj-bot {
+  justify-content: flex-start;
+}
+.proj-user {
+  justify-content: flex-end;
+}
+.proj-bubble {
+  max-width: 80%;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: var(--chatbubble);
+  color: var(--text);
+}
+.proj-user .proj-bubble {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* input row */
+.projchat-form {
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+  background: var(--bg);
+}
+.projchat-form input {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--muted), transparent 30%);
+  background: var(--chatbg);
+  color: var(--text);
+}
+.projchat-send {
+  width: 40px;
+  border-radius: 10px;
+  border: 0;
+  cursor: pointer;
+  background: var(--accent);
+  color: #fff;
+  font-size: 18px;
+}
+
+
+
 /* ========================================================================== 
    FOOTER
    ========================================================================== */
@@ -437,7 +763,6 @@ h2.chat-heading {
 @media (max-width: 480px) {
   .hero-chat {
     padding: 0.5rem 2rem;
-    height: calc(100vh - var(--header-height) - var(--footer-height) - 4rem);
   }
   .chat-window .message.bot,
   .chat-window .message.user { font-size: 1.2rem; }
@@ -462,25 +787,6 @@ h2.chat-heading {
   .side-nav .sub-list li a { font-size: 1.25rem; margin-bottom: 0.5rem; }
 }
 
-/* Mobile: force filters into a 4x2 uniform grid */
-@media (max-width: 768px) {
-  .sticky-controls .filters {
-    display: grid !important;                 /* override flex */
-    grid-template-columns: repeat(4, 1fr);    /* 4 per row */
-    gap: 8px;                                  /* even spacing */
-    margin: 0;                                 /* keep sticky spacing tight */
-  }
-
-  .sticky-controls .filters button {
-    flex: initial !important;  /* kill flex sizing from desktop */
-    width: 100%;               /* full cell width */
-    min-width: 0;              /* allow shrink */
-    padding: 0.45rem 0.5rem;   /* comfy tap target */
-  }
-}
-
-
-
 /* ========================================================================== 
    DARK MODE OVERRIDES
    ========================================================================== */
@@ -490,7 +796,7 @@ h2.chat-heading {
   background: var(--accent);
 }
 
-/* Force card header text (company name + date) to stay in var(--text) for both themes */
+/* Force card header text (company name + date) to stay dark text in both themes */
 .card .company,
 .card .date,
 .card .year,
@@ -499,7 +805,6 @@ h2.chat-heading {
 .card .card-header .year {
   color: var(--text) !important;
 }
-
 [data-theme="dark"] .card .company,
 [data-theme="dark"] .card .date,
 [data-theme="dark"] .card .year,

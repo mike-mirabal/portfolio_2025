@@ -77,8 +77,27 @@ function renderProjects(projects, container) {
           <div class="company">${company}</div>
           <div class="year">${year}</div>
         </div>
-      </div>
+      
 
+      <!-- Ask AI button (top-right) -->
+    <button
+      class="card-action ask-ai-btn"
+      type="button"
+      aria-label="Ask AI about this project"
+      title="Ask AI about this project"
+      data-slug="${p.slug || ''}"
+      data-title="${(p.card_title || p.title || '').replace(/"/g,'&quot;')}"
+      data-overview="${(p.overview || '').replace(/"/g,'&quot;')}"
+      onclick="openProjectChatModal(event, this)"
+    >
+    
+      <!-- chat bubble icon -->
+
+    <img src="/assets/icons/icon_chat_3B82F6.svg" alt="Chat Icon" width="24" height="24">
+
+    </button>
+  </div>
+</div>
       <div class="hero-img">
         <img src="${heroImg}" alt="${title} card image">
       </div>
