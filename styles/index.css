@@ -604,16 +604,18 @@ h2.chat-heading {
 .btn-send:hover { transform: translateY(-2px); }
 
 /* ──────────────────────────────────────────────────────────────────────────
-   Project Chat Modal — Large Dialog on Desktop, Fullscreen on Mobile
+   Project Chat Modal — Large Dialog on Desktop, Inset on Mobile
    ────────────────────────────────────────────────────────────────────────── */
 .projchat-modal {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.6); /* dark overlay for focus */
+  background: rgba(0,0,0,0.6);      /* dark overlay for focus */
   display: none;
-  align-items: center;         /* center vertically */
-  justify-content: center;     /* center horizontally */
+  align-items: center;               /* center vertically */
+  justify-content: center;           /* center horizontally */
   z-index: 1200;
+  padding: 16px;                     /* inset from viewport edges (desktop) */
+  box-sizing: border-box;
 }
 .projchat-modal[aria-hidden="false"] {
   display: flex;
@@ -627,20 +629,21 @@ h2.chat-heading {
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(0,0,0,0.25);
 
-  /* Desktop default: centered modal with padding around */
-  width: min(900px, 90vw);
-  height: min(85vh, 90vh);
+  /* Desktop / default: centered modal with room around */
+  width: min(900px, 92vw);
+  max-height: 90vh;                  /* leave breathing room top/bottom */
   border-radius: 12px;
 }
 
-/* Mobile: full screen */
+/* Mobile: keep it floating with insets and rounded corners (no full-bleed) */
 @media (max-width: 768px) {
+  .projchat-modal {
+    padding: 12px;                   /* slightly smaller inset on mobile */
+  }
   .projchat-dialog {
-    width: 100vw;
-    height: 100vh;
-    border-radius: 0;
-    max-width: none;
-    max-height: none;
+    width: 100%;
+    max-height: 92vh;                /* prevent top/bottom cutoff */
+    border-radius: 10px;             /* still feels like a modal */
   }
 }
 
@@ -678,7 +681,7 @@ h2.chat-heading {
   flex: 1 1 auto;
   min-height: 0;
   padding: 12px 16px;
-  overflow-y: auto;
+  overflow-y: auto;                  /* chat scrolls independently */
   background: var(--chatbg);
   border-bottom: 1px solid color-mix(in srgb, var(--muted), transparent 60%);
 }
@@ -731,6 +734,7 @@ h2.chat-heading {
   color: #fff;
   font-size: 18px;
 }
+
 
 
 
