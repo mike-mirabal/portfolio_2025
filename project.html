@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Project Page – Mike Mirabal</title>
 
-  <!-- Base index styles for header spacing -->
+  <!-- Base index styles (contains the app bar styles) -->
   <link rel="stylesheet" href="styles/index.css" />
   <!-- Project-specific styles -->
   <link rel="stylesheet" href="styles/project.css" />
@@ -30,12 +30,45 @@
 
   <!-- GLightbox script -->
   <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js" defer></script>
-
 </head>
 
 <body id="top">
 <!-- ──────────────────────────────────────────────────────────────────────────
-     HEADER
+     APP BAR (same as index.html)
+────────────────────────────────────────────────────────────────────────────── -->
+<header class="appbar" role="banner">
+  <div class="appbar-inner">
+    <div class="appbar-left">
+      <a href="javascript:history.back()" class="logo-link" aria-label="Back to Projects">
+    <img src="/assets/icons/icon_appbar_back.svg" alt="Back Icon" width="24" height="24">
+    </a>
+      <h1 class="appbar-title" aria-label="Mike Mirabal Portfolio">Mike Mirabal&nbsp;|&nbsp;Portfolio</h1>
+    </div>
+    <div class="appbar-right">
+      <!-- Mail -->
+        <a class="icon-btn" href="mailto:info@mikemirabal.com" aria-label="Email Mike" title="Email Mike">
+        <img src="/assets/icons/icon_appbar_mail.svg" alt="Mail Icon" width="24" height="24">
+      </a>
+      </a>
+
+      <!-- Theme toggle (sun/moon) -->
+      <button class="icon-btn theme-switch" id="themeSwitch" onclick="toggleTheme()" aria-label="Toggle theme">
+        <!-- Sun (shown in light) -->
+        <svg class="icon-sun" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" fill="none">
+          <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.7 4.7l2.1 2.1M17.2 17.2l2.1 2.1M4.7 19.3l2.1-2.1M17.2 6.8l2.1-2.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+        <!-- Moon (shown in dark) -->
+        <svg class="icon-moon" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" fill="none">
+          <path d="M20 13.5A8.5 8.5 0 1 1 10.5 4a6.5 6.5 0 1 0 9.5 9.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ──────────────────────────────────────────────────────────────────────────
+     (LEGACY) HEADER & SIDE NAV — kept in file but hidden by CSS
 ────────────────────────────────────────────────────────────────────────────── -->
 <div class="header">
   <button id="navToggle" class="nav-toggle" aria-label="Toggle navigation">
@@ -46,9 +79,6 @@
   <div class="theme-switch" onclick="toggleTheme()"></div>
 </div>
 
-<!-- ──────────────────────────────────────────────────────────────────────────
-     SIDE NAV PANEL
-────────────────────────────────────────────────────────────────────────────── -->
 <nav id="sideNav" class="side-nav" aria-hidden="true">
   <ul class="nav-list">
     <li><a href="index.html">New Chat</a></li>
@@ -88,7 +118,7 @@
       <div class="swiper-pagination"></div>
     </section>
 
-  <!-- Project header -->
+    <!-- Project header -->
     <div class="project-header">
       <p id="project-meta" class="meta"></p>
       <h1 id="project-title" class="project-title"></h1>
@@ -102,7 +132,7 @@
 
     <!-- View All Projects Link -->
     <p class="view-all-projects">
-    <a href="projects.html?filter=all">← Back to All Projects</a>
+      <a href="index.html?filter=all">← Back to All Projects</a>
     </p>
 
     <!-- Footer -->
@@ -131,23 +161,25 @@
 </script>
 
 <script>
-  // Side nav toggle
+  // Side nav toggle (kept for other pages; hidden here by CSS)
   document.addEventListener('DOMContentLoaded', () => {
     const nav = document.getElementById('sideNav');
     const toggle = document.getElementById('navToggle');
     const page = document.getElementById('pageContent');
 
-    toggle.addEventListener('click', e => {
-      e.stopPropagation();
-      nav.classList.toggle('open');
-      toggle.classList.toggle('open'); // ✅ Added to toggle .open on the button
-      nav.setAttribute('aria-hidden', !nav.classList.contains('open'));
-    });
+    if (toggle) {
+      toggle.addEventListener('click', e => {
+        e.stopPropagation();
+        nav.classList.toggle('open');
+        toggle.classList.toggle('open');
+        nav.setAttribute('aria-hidden', !nav.classList.contains('open'));
+      });
+    }
 
     page.addEventListener('click', () => {
       if (nav.classList.contains('open')) {
         nav.classList.remove('open');
-        toggle.classList.remove('open'); // ✅ Removes .open from button when nav closes
+        if (toggle) toggle.classList.remove('open');
         nav.setAttribute('aria-hidden', 'true');
       }
     });
@@ -162,13 +194,13 @@
 </script>
 
 <script>
-  // ✅ Close side nav when page scrolls
+  // Close side nav on scroll
   window.addEventListener('scroll', () => {
     const nav = document.getElementById('sideNav');
     const toggle = document.getElementById('navToggle');
     if (nav && nav.classList.contains('open')) {
       nav.classList.remove('open');
-      toggle.classList.remove('open'); // ✅ Removes .open from button on scroll close
+      if (toggle) toggle.classList.remove('open');
       nav.setAttribute('aria-hidden', 'true');
       document.querySelectorAll('.side-nav .has-sub.open')
         .forEach(li => li.classList.remove('open'));

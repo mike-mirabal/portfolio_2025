@@ -188,6 +188,12 @@ body.no-scroll { overflow: hidden; }
   justify-content: space-between;
   gap: 12px;
 }
+
+.appbar .appbar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 .appbar .appbar-title {
   margin: 0;
   font-size: 18px;
@@ -233,15 +239,13 @@ body.no-scroll { overflow: hidden; }
   max-width: 900px;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 1rem;               /* align with .main-container padding */
-  padding-right: 1rem;
 }
+
 
 .projects-subheading {
   font-size: 2.5rem;
   font-weight: 800;
   margin-top: 1rem;
-  margin-bottom: 0.25rem;           /* tighter space before sublead */
 }
 .page-sublead {
   font-size: 1.1rem;
@@ -457,6 +461,25 @@ h2.chat-heading {
   .side-nav .sub-toggle  { font-size: 1.5rem; }
   .side-nav .sub-list li a { font-size: 1.25rem; margin-bottom: 0.5rem; }
 }
+
+/* Mobile: force filters into a 4x2 uniform grid */
+@media (max-width: 768px) {
+  .sticky-controls .filters {
+    display: grid !important;                 /* override flex */
+    grid-template-columns: repeat(4, 1fr);    /* 4 per row */
+    gap: 8px;                                  /* even spacing */
+    margin: 0;                                 /* keep sticky spacing tight */
+  }
+
+  .sticky-controls .filters button {
+    flex: initial !important;  /* kill flex sizing from desktop */
+    width: 100%;               /* full cell width */
+    min-width: 0;              /* allow shrink */
+    padding: 0.45rem 0.5rem;   /* comfy tap target */
+  }
+}
+
+
 
 /* ========================================================================== 
    DARK MODE OVERRIDES

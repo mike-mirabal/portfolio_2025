@@ -13,6 +13,10 @@ main {
   padding: 0 1rem;
 }
 
+.main-container {
+ padding-top: 0;
+}
+
 /* ——————————— HERO SLIDER ——————————— */
 #hero-slider {
   width: 100vw;
