@@ -118,17 +118,24 @@
 <!-- Project Chat Modal -->
 <div id="projectChatModal" class="projchat-modal" aria-hidden="true" role="dialog" aria-label="Project AI Chat">
   <div class="projchat-dialog" role="document">
-    <div class="projchat-header">
-      <div class="projchat-title">
-        <strong id="projchatProjectTitle">Project</strong>
-        <span class="projchat-sub">Ask AI about this project</span>
-      </div>
-    <button class="projchat-close" aria-label="Close chat" onclick="closeProjectChatModal()">
-  <img src="/assets/icons/icon_close_3BF286.svg" alt="Close" />
-</button>
+<div class="projchat-header">
+  <!-- Project icon (matches card) -->
+  <div class="projchat-icon">
+    <img id="projchatProjectIcon" src="" alt="Project Icon" />
+  </div>
 
+  <!-- Title + subtitle -->
+  <div class="projchat-title">
+    <strong id="projchatProjectTitle">Project</strong>
+    <span class="projchat-sub">Ask AI about this project</span>
+  </div>
 
-    </div>
+  <!-- Close button -->
+  <button class="projchat-close" aria-label="Close chat" onclick="closeProjectChatModal()">
+    <img src="/assets/icons/icon_close_3BF286.svg" alt="Close" />
+  </button>
+</div>
+
 
     <div id="projchatWindow" class="projchat-window" aria-live="polite" aria-busy="false"></div>
 
@@ -273,18 +280,38 @@
   const m = document.getElementById('projectChatModal');
   const w = document.getElementById('projchatWindow');
   const t = document.getElementById('projchatProjectTitle');
+  const i = document.getElementById('projchatProjectIcon'); // ← icon in modal header
 
   // read context from the button’s data-attributes
-  const { slug = '', title = 'Project', overview = '' } = btn.dataset;
+  // make sure your Ask‑AI button has: data-slug, data-title, data-overview, data-icon
+  const {
+    slug = '',
+    title = 'Project',
+    overview = '',
+    icon: iconSrc = ''
+  } = btn.dataset;
+
+  // persist context for the chat
   projCtx = { slug, title, overview };
 
+  // update header title + icon
   t.textContent = title;
-  w.innerHTML = '';
-  appendBot("Hi there! I'm here to help you dive deeper into this project. Go ahead and ask me anything you're curious about!");
+  if (i) {
+    i.src = iconSrc || '/assets/icons/icon_fallback.svg';
+    i.alt = `${title} icon`;
+  }
 
-  m.setAttribute('aria-hidden','false');
+  // reset chat window and greet
+  w.innerHTML = '';
+  appendBot(
+    "Hi there! I'm here to help you dive deeper into this project. Go ahead and ask me anything you're curious about!"
+  );
+
+  // show modal and focus input
+  m.setAttribute('aria-hidden', 'false');
   setTimeout(() => document.getElementById('projchatInput').focus(), 50);
 }
+
 
 
   function closeProjectChatModal() {
