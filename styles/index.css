@@ -254,7 +254,8 @@ main, #content, .page-content, .main-container {
   flex: 1;
   max-width: 900px;
   margin: 0 auto;
-  padding: 0 1rem 0 1rem;   /* 16px side gutters + comfy top/bottom */
+  padding: calc(var(--appbar-h) + 1rem) 1rem 0 1rem;
+
 }
 
 
@@ -265,8 +266,7 @@ main, #content, .page-content, .main-container {
   max-width: 900px;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 1rem;     /* align with .main-container */
-  padding-right: 1rem;
+ 
 }
 
 
