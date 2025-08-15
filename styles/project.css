@@ -7,6 +7,96 @@ body {
   color: var(--text);
 }
 
+/* ——————————— APP BAR ——————————— */
+.appbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  min-height: var(--appbar-h);
+  background: var(--primary, #1a73e8);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.appbar .appbar-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.appbar .appbar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.appbar .appbar-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  color: #fff;
+  line-height: 1;
+}
+
+.appbar .appbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* App bar icon buttons */
+.appbar .icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+  color: #fff;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background-color .2s ease, opacity .2s ease;
+}
+.appbar .icon-btn:hover {
+  background-color: rgba(255,255,255,0.12);
+}
+.appbar .icon-btn:active {
+  background-color: rgba(255,255,255,0.18);
+}
+
+.appbar .theme-switch {
+  padding: 0;
+  position: static;
+  transform: none;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  border-radius: 16px;
+}
+
+.appbar .theme-switch::before,
+.appbar .theme-switch::after {
+  display: none !important;
+}
+
+.icon-dark { display: none; }
+[data-theme="dark"] .icon-dark { display: inline; }
+[data-theme="dark"] .icon-light { display: none; }
+
+[data-theme="dark"] .appbar {
+  background: var(--accent);
+}
+
+
+/* ——————————— MAIN CONTAINER ——————————— */
+
 main {
   max-width: 900px;
   margin: 0 auto;
