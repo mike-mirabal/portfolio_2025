@@ -1,3 +1,4 @@
+<!-- FILE: project.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,6 +16,11 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
 
+  <!-- GLightbox styles -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
+  <!-- GLightbox script -->
+  <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js" defer></script>
+
   <style>
     #project-title {
       font-size: clamp(1.5rem, 5vw, 3rem) !important;
@@ -24,14 +30,7 @@
       margin-block-end: 1.5rem !important;
     }
   </style>
-
-  <!-- GLightbox styles -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
-
-  <!-- GLightbox script -->
-  <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js" defer></script>
 </head>
-
 <body id="top">
 <!-- ──────────────────────────────────────────────────────────────────────────
      APP BAR (same as index.html)
@@ -40,15 +39,14 @@
   <div class="appbar-inner">
     <div class="appbar-left">
       <a href="javascript:history.back()" class="logo-link" aria-label="Back to Projects">
-    <img src="/assets/icons/icon_appbar_back.svg" alt="Back Icon" width="24" height="24">
-    </a>
+        <img src="/assets/icons/icon_appbar_back.svg" alt="Back Icon" width="24" height="24">
+      </a>
       <h1 class="appbar-title" aria-label="Mike Mirabal Portfolio">Mike Mirabal&nbsp;|&nbsp;Portfolio</h1>
     </div>
     <div class="appbar-right">
       <!-- Mail -->
-        <a class="icon-btn" href="mailto:info@mikemirabal.com" aria-label="Email Mike" title="Email Mike">
+      <a class="icon-btn" href="mailto:info@mikemirabal.com" aria-label="Email Mike" title="Email Mike">
         <img src="/assets/icons/icon_appbar_mail.svg" alt="Mail Icon" width="24" height="24">
-      </a>
       </a>
 
       <!-- Theme toggle (sun/moon) -->
@@ -110,9 +108,7 @@
 
     <!-- Hero slider -->
     <section id="hero-slider" class="swiper">
-      <div class="swiper-wrapper">
-        <!-- Slides injected by JS -->
-      </div>
+      <div class="swiper-wrapper"></div>
       <div class="swiper-button-prev"></div>
       <div class="swiper-button-next"></div>
       <div class="swiper-pagination"></div>
@@ -124,11 +120,8 @@
       <h1 id="project-title" class="project-title"></h1>
     </div>
 
-    <!-- Project overview -->
-    <section id="project-overview">
-      <h3>About this Project</h3>
-      <p id="overview-text"></p>
-    </section>
+    <!-- 🆕 Dynamic project sections -->
+    <section id="project-content"></section>
 
     <!-- View All Projects Link -->
     <p class="view-all-projects">
@@ -145,7 +138,6 @@
 
 <!-- ───────── SCRIPTS ───────── -->
 <script>
-  // Theme persistence
   (function() {
     const saved = localStorage.getItem('theme');
     const theme = saved === 'dark' ? 'dark' : 'light';
@@ -212,6 +204,5 @@
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js" defer></script>
 <script src="scripts/filters.js" defer></script>
 <script src="scripts/project.js" defer></script>
-
 </body>
 </html>

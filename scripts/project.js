@@ -1,4 +1,6 @@
- const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRAZz5mIVDN9q1EEapOvFb5RFNKN3VRrFK44KVQQlMa-HUmzEZWfseLnXpmaCQNfiXZIQjGcmLcTb1Q/pub?gid=0&single=true&output=csv';
+// FILE: project.js
+
+const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRAZz5mIVDN9q1EEapOvFb5RFNKN3VRrFK44KVQQlMa-HUmzEZWfseLnXpmaCQNfiXZIQjGcmLcTb1Q/pub?gid=0&single=true&output=csv';
 
 document.addEventListener('DOMContentLoaded', () => {
   fetch(sheetURL)
@@ -6,17 +8,14 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(csvText => {
       const { data: projects } = Papa.parse(csvText.trim(), { header: true, skipEmptyLines: true });
 
-      // ✅ Filter projects to only include published entries
       const publishedProjects = projects.filter(p => p.published && p.published.toUpperCase() === "TRUE");
 
-      // ✅ Sort published projects by year (newest to oldest)
       publishedProjects.sort((a, b) => {
         const yearA = parseInt(a.year) || 0;
         const yearB = parseInt(b.year) || 0;
         return yearB - yearA;
       });
 
-      // ✅ Determine page type based on DOM
       const gridContainer = document.getElementById('projectGrid');
       const slug = new URLSearchParams(window.location.search).get('slug');
 
@@ -38,21 +37,13 @@ document.addEventListener('DOMContentLoaded', () => {
 function renderProjects(projects, container) {
   container.innerHTML = '';
   projects.forEach(p => {
-    // ── Field map + sensible fallbacks for new layout ────────────────────────
     const href    = `project.html?slug=${encodeURIComponent(p.slug)}`;
     const company = p.company || '';
     const year    = p.year || '';
     const heroImg = p.card_img || p.hero_url_1 || '';
-    const iconUrl = p.icon || p.logo || p.icon_url || ''; // add one of these cols if needed
-
-    // 🔁 Use card_title for the card; fall back to title if missing
+    const iconUrl = p.icon || p.logo || p.icon_url || '';
     const title   = p.card_title || p.title || '';
-
-    const desc =
-      p.short_desc ||
-      p.description ||
-      p.subtitle ||
-      (p.overview ? String(p.overview).split('\n')[0] : '') || '';
+    const desc    = p.short_desc || p.description || p.subtitle || (p.overview ? String(p.overview).split('\n')[0] : '') || '';
 
     const tagsLower = (p.tags || '').toLowerCase();
     const tagsHtml = (p.tags || '')
@@ -61,7 +52,6 @@ function renderProjects(projects, container) {
       .map(t => `<span>${t.trim()}</span>`)
       .join('');
 
-    // ── Card DOM for: top-meta → hero → title → description (tags optional) ──
     const card = document.createElement('a');
     card.href = href;
     card.className = 'card card-v03';
@@ -77,27 +67,22 @@ function renderProjects(projects, container) {
           <div class="company">${company}</div>
           <div class="year">${year}</div>
         </div>
-      
 
-      <!-- Ask AI button (top-right) -->
-    <button
-      class="card-action ask-ai-btn"
-      type="button"
-      aria-label="Ask AI about this project"
-      title="Ask AI about this project"
-      data-slug="${p.slug || ''}"
-      data-title="${(p.card_title || p.title || '').replace(/"/g,'&quot;')}"
-      data-overview="${(p.overview || '').replace(/"/g,'&quot;')}"
-      onclick="openProjectChatModal(event, this)"
-    >
-    
-      <!-- chat bubble icon -->
+        <button
+          class="card-action ask-ai-btn"
+          type="button"
+          aria-label="Ask AI about this project"
+          title="Ask AI about this project"
+          data-slug="${p.slug || ''}"
+          data-title="${(p.card_title || p.title || '').replace(/"/g,'&quot;')}"
+          data-overview="${(p.overview || '').replace(/"/g,'&quot;')}"
+          data-icon="${iconUrl}"
+          onclick="openProjectChatModal(event, this)"
+        >
+          <img src="/assets/icons/icon_chat_3B82F6.svg" alt="Chat Icon" width="24" height="24">
+        </button>
+      </div>
 
-    <img src="/assets/icons/icon_chat_3B82F6.svg" alt="Chat Icon" width="24" height="24">
-
-    </button>
-  </div>
-</div>
       <div class="hero-img">
         <img src="${heroImg}" alt="${title} card image">
       </div>
@@ -117,34 +102,49 @@ function renderProjects(projects, container) {
  * Renders project detail page content
  */
 function renderDetail(p) {
-  // ✅ Populate existing project title and meta
   document.title = `${p.title} | Mike Mirabal`;
   document.getElementById('project-title').textContent = p.title;
   document.getElementById('project-meta').textContent = `${p.company} | ${p.year}`;
 
-  // ✅ Render overview text as semantic paragraphs
-  const overviewContainer = document.getElementById('overview-text');
-  if (overviewContainer) {
-    overviewContainer.innerHTML = (p.overview || '')
-      .split('\n')
-      .map(para => `<p>${para.trim()}</p>`)
-      .join('');
+  const contentContainer = document.getElementById('project-content');
+  if (contentContainer) {
+    const sections = [
+      { key: 'overview', title: 'Overview' },
+      { key: 'problem', title: 'Problem' },
+      { key: 'process', title: 'Process' },
+      { key: 'solution', title: 'Solution' },
+      { key: 'results', title: 'Results' }
+    ];
+
+    sections.forEach(({ key, title }) => {
+      if (p[key]) {
+        const section = document.createElement('section');
+        const heading = document.createElement('h3');
+        heading.textContent = title;
+        section.appendChild(heading);
+
+        p[key].split('\n').forEach(para => {
+          const pEl = document.createElement('p');
+          pEl.textContent = para.trim();
+          section.appendChild(pEl);
+        });
+
+        contentContainer.appendChild(section);
+      }
+    });
+
+    if (p.extra_resource_link) {
+      const linkHTML = `
+        <p>
+          <a href="${p.extra_resource_link}" target="_blank" rel="noopener noreferrer">
+            ${p.extra_resource_text || 'View More Details'}
+          </a>
+        </p>
+      `;
+      contentContainer.insertAdjacentHTML('beforeend', linkHTML);
+    }
   }
 
-  // ✅ OPTIONAL RESOURCE LINK if applicable
-  if (p.extra_resource_link) {
-    const overviewSection = document.getElementById('project-overview');
-    const linkHTML = `
-      <p>
-        <a href="${p.extra_resource_link}" target="_blank" rel="noopener noreferrer">
-          ${p.extra_resource_text || 'View More Details'}
-        </a>
-      </p>
-    `;
-    overviewSection.insertAdjacentHTML('beforeend', linkHTML);
-  }
-
-  // ✅ Populate slider slides only
   const slidesContainer = document.querySelector('.swiper-wrapper');
   if (slidesContainer) {
     slidesContainer.innerHTML = '';
@@ -169,7 +169,6 @@ function renderDetail(p) {
           </figure>
         `;
       } else {
-        // ✅ Wrap image in <a> for GLightbox
         slide.innerHTML = `
           <figure>
             <a href="${url}" class="glightbox" data-gallery="project-hero">
@@ -183,12 +182,10 @@ function renderDetail(p) {
       slidesContainer.appendChild(slide);
     }
 
-    // ✅ Initialize Swiper with correct caption handling for looped slides
     const swiper = new Swiper('.swiper', {
       effect: 'fade',
       loop: true,
       navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
-      // pagination: { el: '.swiper-pagination' }, // removed pagination
       on: {
         init: function () {
           updateCaptions(this);
@@ -199,9 +196,6 @@ function renderDetail(p) {
       }
     });
 
-    /**
-     * Helper to show only the caption of the active slide
-     */
     function updateCaptions(swiperInstance) {
       const allSlides = swiperInstance.slides;
       allSlides.forEach(slide => {
@@ -220,7 +214,6 @@ function renderDetail(p) {
       }
     }
 
-    // ✅ Initialize GLightbox
     const lightbox = GLightbox({
       selector: '.glightbox'
     });
