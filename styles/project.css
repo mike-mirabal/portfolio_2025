@@ -258,12 +258,26 @@ main {
   color: var(--muted);
 }
 
-.interactive-link-block {
-  margin: 1.5rem 0 1.5rem 0;
-}
 
 hr {
   margin-top: 2rem;
+}
+
+.interactive-link-block {
+   margin: 1.5rem 0 1.5rem 0;
+  text-align: left !important;
+}
+
+.interactive-link-block a {
+  display: inline !important;
+  text-decoration: underline;
+  color: var(--accent);
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  border-radius: 0;
 }
 
 
