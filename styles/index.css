@@ -169,15 +169,25 @@ body.no-scroll { overflow: hidden; }
 /* Hide legacy header/nav on the projects page */
 .header, #navToggle, #sideNav { display: none !important; }
 
+/* App bar is fixed across pages */
 .appbar {
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: 1000;
+  left: 0;
+  right: 0;
+  z-index: 1100;
   min-height: var(--appbar-h);
   background: var(--primary, #1a73e8);
   color: #fff;
   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
+
+/* Prevent content from tucking under the fixed app bar */
+main, #content, .page-content, .main-container {
+  padding-top: var(--appbar-h);
+}
+
+
 .appbar .appbar-inner {
   max-width: 900px;                 /* match main content width */
   margin: 0 auto;
@@ -248,7 +258,7 @@ body.no-scroll { overflow: hidden; }
 }
 
 
-./* Keep hero texts aligned with container gutters */
+/* Keep hero texts aligned with container gutters */
 .projects-subheading,
 .page-sublead,
 .page-kicker {

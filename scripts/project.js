@@ -130,6 +130,28 @@ function renderDetail(p) {
         });
 
         contentContainer.appendChild(section);
+
+        // ───────────────────────────────
+        // INTERACTIVE LINK + SUPPORTING TEXT (after overview only)
+        // ───────────────────────────────
+        if (key === 'overview' && p.interactive_link && p.interactive_text) {
+          const icon = p.interactive_icon || '';
+          const interactiveHTML = `
+            <div class="interactive-link-block">
+              <p class="slide-caption">
+                ${icon ? `<img src="${icon}" alt="icon" class="interactive-icon" style="vertical-align: middle; margin-right: 0.4em; height: 1em;">` : ''}
+                ${p.interactive_supporting || ''}
+              </p>
+              <p style="margin: 0.4rem 0 1rem">
+                <a href="${p.interactive_link}" target="_blank" rel="noopener noreferrer" style="text-decoration: underline; color: var(--accent); border: none; background: none; padding: 0; margin: 0; font: inherit; border-radius: 0;">
+                  ${p.interactive_text}
+                </a>
+              </p>
+              <hr />
+            </div>
+          `;
+          contentContainer.insertAdjacentHTML('beforeend', interactiveHTML);
+        }
       }
     });
 

@@ -9,14 +9,22 @@ body {
 
 /* ——————————— APP BAR ——————————— */
 .appbar {
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: 1000;
+  left: 0;
+  right: 0;
+  z-index: 1100;
   min-height: var(--appbar-h);
   background: var(--primary, #1a73e8);
   color: #fff;
   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
+
+/* Make room for fixed app bar on the project page */
+main, .main-container {
+  padding-top: var(--appbar-h);
+}
+
 
 .appbar .appbar-inner {
   max-width: 900px;
@@ -243,6 +251,21 @@ main {
   margin: 1rem 0; /* adjust as needed for tighter or wider spacing */
   /*  line-height: 1.6; */
 }
+
+.caption
+{
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.interactive-link-block {
+  margin: 1.5rem 0 1.5rem 0;
+}
+
+hr {
+  margin-top: 2rem;
+}
+
 
 /* ───────────────────────────────
    EXTRA RESOURCE LINK STYLING
