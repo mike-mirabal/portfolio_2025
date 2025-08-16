@@ -65,7 +65,7 @@
   <div class="hero-panel panel-1" id="heroPanel1"></div>
   <div class="hero-panel panel-2" id="heroPanel2"></div>
   <div class="main-container" style="position: relative; z-index: 2;">
-    <h1 id="projectsSubheading" class="projects-subheading transition-all duration-700 ease-in-out opacity-100 translate-y-0">
+    <h1 id="projectsSubheading" class="projects-subheading transition-all duration-500 ease-in-out opacity-100 translate-y-0">
       Creating Impact Through Design and Innovation
     </h1>
     <p class="page-sublead">
@@ -407,8 +407,17 @@ Answer concisely and reference specific details from the overview when relevant.
 <script>
   // Slide-out panels on load
   window.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => document.getElementById('heroPanel1').classList.add('slide-out'), 200);
-    setTimeout(() => document.getElementById('heroPanel2').classList.add('slide-out'), 600);
+    setTimeout(() => document.getElementById('heroPanel1').classList.add('slide-out'), 100);
+    setTimeout(() => document.getElementById('heroPanel2').classList.add('slide-out'), 400);
+
+    // Trigger initial hero heading animation
+    const heading = document.getElementById('projectsSubheading');
+    heading.classList.add('fade-slide-reset');
+
+    setTimeout(() => {
+      heading.classList.remove('fade-slide-reset');
+      heading.classList.add('fade-slide-in');
+    }, 100);
   });
 
   const heroContentMap = {
@@ -442,18 +451,16 @@ Answer concisely and reference specific details from the overview when relevant.
     const heading = document.getElementById('projectsSubheading');
     const content = heroContentMap[filterKey] || heroContentMap['all'];
 
-    // Animate out
-    heading.classList.remove('opacity-100', 'translate-y-0');
-    heading.classList.add('opacity-0', 'translate-y-6', 'scale-95');
+    // Reset to starting position immediately
+    heading.classList.remove('fade-slide-in');
+    heading.classList.add('fade-slide-reset');
 
+    // After a tiny delay, apply fade-slide-in for smooth animation
     setTimeout(() => {
-      // Swap content
       heading.textContent = content.heading;
-
-      // Animate in
-      heading.classList.remove('opacity-0', 'translate-y-6', 'scale-95');
-      heading.classList.add('opacity-100', 'translate-y-0');
-    }, 300);
+      heading.classList.remove('fade-slide-reset');
+      heading.classList.add('fade-slide-in');
+    }, 100);
   }
 
   // Extend selectFilter to animate hero
@@ -467,36 +474,28 @@ Answer concisely and reference specific details from the overview when relevant.
 
 <style>
   .projects-subheading {
-    transition: all 0.7s ease-in-out;
-  }
-
-  .translate-y-6 {
-    transform: translateY(2rem);
-  }
-
-  .translate-y-0 {
-    transform: translateY(0);
-  }
-
-  .opacity-0 {
+    transition: opacity 1s ease, transform 1s ease;
     opacity: 0;
+    transform: translateX(-3rem);
   }
 
-  .opacity-100 {
-    opacity: 1;
+  .fade-slide-in {
+    opacity: 1 !important;
+    transform: translateX(0) !important;
   }
 
-  .scale-95 {
-    transform: scale(0.95);
+  .fade-slide-reset {
+    opacity: 0 !important;
+    transform: translateX(-3rem) !important;
   }
 
   .hero-panel {
     position: absolute;
     inset: 0;
-    background-color: #588bfa;
+    background-color: #3e7bfa;
     z-index: 3;
     transform: translateX(0);
-    transition: transform 0.75s ease-in-out;
+    transition: transform 0.5s ease-in-out;
   }
 
   .panel-1 {
@@ -504,7 +503,7 @@ Answer concisely and reference specific details from the overview when relevant.
   }
 
   .panel-2 {
-    background-color: #3e7bfa;
+    background-color: #588bfa;
     z-index: 3;
   }
 
@@ -512,6 +511,10 @@ Answer concisely and reference specific details from the overview when relevant.
     transform: translateX(100%);
   }
 </style>
+
+
+
+
 
 
 </body>
