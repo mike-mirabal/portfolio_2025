@@ -136,6 +136,11 @@ main {
   margin: 0;
 }
 
+/* Ensure swiper container is not covered by app bar */
+.swiper {
+  margin-top: var(--appbar-h);
+}
+
 /* ——————————— HERO SLIDER CAPTION LAYOUT ——————————— */
 #hero-slider figcaption {
   font-size: 0.75rem; /* smaller font for captions */
@@ -147,6 +152,8 @@ main {
   box-sizing: border-box;
   text-align: left;  /* optional: align like project content */
 }
+
+
 
 .swiper-slide figure {
   display: flex;

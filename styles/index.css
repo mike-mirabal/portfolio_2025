@@ -254,7 +254,7 @@ main, #content, .page-content, .main-container {
   flex: 1;
   max-width: 900px;
   margin: 0 auto;
-  padding: calc(var(--appbar-h) + 1rem) 1rem 0 1rem;
+  padding: 1rem 1rem 0 1rem;
 
 }
 
@@ -266,14 +266,13 @@ main, #content, .page-content, .main-container {
   max-width: 900px;
   margin-left: auto;
   margin-right: auto;
- 
 }
 
 
 .projects-subheading {
   font-size: 2.5rem;
   font-weight: 800;
-  margin-top: 1rem;
+   margin-top: var(--appbar-h);
 }
 .page-sublead {
   font-size: 1.1rem;
