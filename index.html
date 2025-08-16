@@ -46,10 +46,26 @@
 
   <!-- MAIN -->
 
-<!-- Hero Header -->
+<!-- Hero Header - version 1
 <div class="hero-header">
   <div class="main-container">
     <h1 id="projectsSubheading" class="projects-subheading">
+      Creating Impact Through Design and Innovation
+    </h1>
+    <p class="page-sublead">
+      From brand strategy to AI workflows, I design visuals, tools, and experiences that connect with real people.
+    </p>
+    <p class="page-kicker">⬇️ See what I've been working on.</p>
+  </div>
+</div>
+-->
+
+<!-- Modified Hero Header with Dual Panel Animation -->
+<div class="hero-header" id="heroHeader" style="background-color: transparent; position: relative; overflow: hidden;">
+  <div class="hero-panel panel-1" id="heroPanel1"></div>
+  <div class="hero-panel panel-2" id="heroPanel2"></div>
+  <div class="main-container" style="position: relative; z-index: 2;">
+    <h1 id="projectsSubheading" class="projects-subheading transition-all duration-700 ease-in-out opacity-100 translate-y-0">
       Creating Impact Through Design and Innovation
     </h1>
     <p class="page-sublead">
@@ -386,6 +402,116 @@ Answer concisely and reference specific details from the overview when relevant.
     if (e.key === 'Escape') closeProjectChatModal();
   });
 </script>
+
+<!-- Hero Transition Animation -->
+<script>
+  // Slide-out panels on load
+  window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => document.getElementById('heroPanel1').classList.add('slide-out'), 200);
+    setTimeout(() => document.getElementById('heroPanel2').classList.add('slide-out'), 600);
+  });
+
+  const heroContentMap = {
+    all: {
+      heading: 'Creating Impact Through Design and Innovation'
+    },
+    featured: {
+      heading: 'Delivering Creative Excellence For Every Project'
+    },
+    ai: {
+      heading: 'Designing Workflows that Enhance Productivity'
+    },
+    brand: {
+      heading: 'Building Identities that Connect and Convert'
+    },
+    creative: {
+      heading: 'Bringing Ideas to Life with Visual Storytelling'
+    },
+    ux: {
+      heading: 'Crafting Experiences that Drive Engagement'
+    },
+    operations: {
+      heading: 'Streamlining Systems for Better Outcomes'
+    },
+    strategy: {
+      heading: 'Developing Strategies That Inspire Results'
+    }
+  };
+
+  function animateHeroTransition(filterKey) {
+    const heading = document.getElementById('projectsSubheading');
+    const content = heroContentMap[filterKey] || heroContentMap['all'];
+
+    // Animate out
+    heading.classList.remove('opacity-100', 'translate-y-0');
+    heading.classList.add('opacity-0', 'translate-y-6', 'scale-95');
+
+    setTimeout(() => {
+      // Swap content
+      heading.textContent = content.heading;
+
+      // Animate in
+      heading.classList.remove('opacity-0', 'translate-y-6', 'scale-95');
+      heading.classList.add('opacity-100', 'translate-y-0');
+    }, 300);
+  }
+
+  // Extend selectFilter to animate hero
+  const originalSelectFilter = window.selectFilter;
+  window.selectFilter = function(button) {
+    const filter = button.textContent.trim().toLowerCase();
+    animateHeroTransition(filter);
+    originalSelectFilter(button);
+  }
+</script>
+
+<style>
+  .projects-subheading {
+    transition: all 0.7s ease-in-out;
+  }
+
+  .translate-y-6 {
+    transform: translateY(2rem);
+  }
+
+  .translate-y-0 {
+    transform: translateY(0);
+  }
+
+  .opacity-0 {
+    opacity: 0;
+  }
+
+  .opacity-100 {
+    opacity: 1;
+  }
+
+  .scale-95 {
+    transform: scale(0.95);
+  }
+
+  .hero-panel {
+    position: absolute;
+    inset: 0;
+    background-color: #588bfa;
+    z-index: 3;
+    transform: translateX(0);
+    transition: transform 0.75s ease-in-out;
+  }
+
+  .panel-1 {
+    z-index: 4;
+  }
+
+  .panel-2 {
+    background-color: #3e7bfa;
+    z-index: 3;
+  }
+
+  .hero-panel.slide-out {
+    transform: translateX(100%);
+  }
+</style>
 
 
 </body>
