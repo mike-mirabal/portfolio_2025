@@ -38,136 +38,8 @@ html, body {
 body.no-scroll { overflow: hidden; }
 
 /* ========================================================================== 
-   LEGACY HEADER & SIDE NAV (kept for other pages)
+   APP BAR (Material style)
    ========================================================================== */
-.header {
-  position: relative;
-  height: var(--header-height);
-  padding: 0 1rem;
-  display: flex;
-  align-items: center;
-}
-
-/* Hamburger button */
-.nav-toggle {
-  position: absolute;
-  left: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  cursor: pointer;
-  z-index: 1002;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 24px;
-  height: 18px;
-}
-.nav-toggle .bar {
-  height: 3px;
-  width: 100%;
-  background-color: var(--text);
-  border-radius: 2px;
-  transition: all 0.3s ease;
-}
-/* Hamburger → X transform when side nav open */
-.side-nav.open ~ .header .nav-toggle .bar:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
-.side-nav.open ~ .header .nav-toggle .bar:nth-child(2) { opacity: 0; }
-.side-nav.open ~ .header .nav-toggle .bar:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
-
-/* Global (pill) theme switch used on other pages) */
-.theme-switch {
-  position: absolute;
-  right: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 40px; 
-  height: 20px;
-  background: var(--muted);
-  border-radius: 10px;
-  cursor: pointer;
-}
-.theme-switch::after {
-  content: '';
-  position: absolute;
-  top: 2px; left: 2px;
-  width: 16px; height: 16px;
-  background: var(--bg);
-  border-radius: 50%;
-  transition: transform 0.3s ease;
-}
-[data-theme="dark"] .theme-switch::after { transform: translateX(20px); }
-
-/* Side Nav (for pages that use it) */
-.side-nav {
-  position: fixed;
-  top: var(--header-height);
-  left: -400px;                      /* hidden until .open */
-  width: 180px;
-  height: calc(100vh - var(--header-height));
-  background: var(--bg);
-  box-shadow: 2px 0 8px rgba(0,0,0,0.1);
-  transition: left 0.3s ease;
-  z-index: 1001;
-  padding: 1rem;
-}
-.side-nav.open { left: 0; }
-
-.side-nav .nav-list { list-style: none; margin: 0; padding: 0; }
-.side-nav .nav-list > li { margin: 0.5rem 0; }
-
-.side-nav a,
-.side-nav .sub-toggle {
-  background: transparent;
-  border: none;
-  color: var(--text);
-  text-decoration: none;
-  font-size: 1rem;
-  padding: 0.125rem 0;
-  cursor: pointer;
-  display: inline-block;
-}
-.side-nav .sub-toggle { display: inline-flex; align-items: center; }
-.side-nav a:hover,
-.side-nav .sub-toggle:hover { color: var(--accent); }
-
-.side-nav .sub-toggle::after {
-  content: '›';
-  margin-left: 0.5rem;
-  transition: transform 0.2s ease;
-}
-.side-nav .has-sub.open > .sub-toggle::after { transform: rotate(90deg); }
-
-.side-nav .sub-list {
-  list-style: none;
-  margin: 0.25rem 0 0 1.5rem;
-  padding: 0;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease;
-}
-.side-nav .has-sub.open > .sub-list { max-height: 500px; }
-.side-nav .sub-list li a {
-  color: var(--text);
-  font-size: 1rem;
-  text-decoration: none;
-  display: inline-block;
-  padding: 0;
-  transition: color 0.2s ease, background 0.2s ease;
-}
-.side-nav .sub-list li a:hover { color: var(--accent); }
-
-/* Page content nudge when side nav is open (desktop) */
-#pageContent { transition: margin-left 0.3s ease; }
-.side-nav.open + #pageContent { margin-left: 250px; }
-
-/* ========================================================================== 
-   PROJECTS PAGE — APP BAR (Material style)
-   ========================================================================== */
-
-/* Hide legacy header/nav on the projects page */
-.header, #navToggle, #sideNav { display: none !important; }
 
 /* App bar is fixed across pages */
 .appbar {
@@ -255,8 +127,61 @@ main, #content, .page-content, .main-container {
   max-width: 900px;
   margin: 0 auto;
   padding: 1rem 1rem 0 1rem;
-
 }
+
+.hero-header {
+  padding-top: var(--appbar-h);
+}
+
+.projects-subheading {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-top: 0;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.page-sublead {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--text);
+  opacity: 0.9;
+  margin: 0 0 1.25rem 0;
+}
+
+.page-kicker {
+  font-size: 0.95rem;
+  color: var(--text);
+  opacity: 0.9;
+  margin: 0 0 1rem 0;
+}
+
+.hero-heading {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-top: 0;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.projects-heading {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#projectsSubheading:empty {
+  display: none;
+}
+
+
 
 
 /* Keep hero texts aligned with container gutters */
@@ -269,24 +194,6 @@ main, #content, .page-content, .main-container {
 }
 
 
-.projects-subheading {
-  font-size: 2.5rem;
-  font-weight: 800;
-   margin-top: var(--appbar-h);
-}
-.page-sublead {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  color: var(--text);
-  opacity: 0.9;
-  margin: 0 0 1.25rem 0;            /* more space before kicker */
-}
-.page-kicker {
-  font-size: 0.95rem;
-  color: var(--text);
-  opacity: 0.9;
-  margin: 0 0 1rem 0;
-}
 
 /* ========================================================================== 
    PROJECTS PAGE — STICKY CONTROLS (Projects heading + Filters)

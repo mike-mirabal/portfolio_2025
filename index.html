@@ -1,55 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+  <!-- HEAD -->
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Portfolio – Mike Mirabal</title>
   <link rel="stylesheet" href="styles/index.css" />
-  <!-- Base styles for the project page 
-  <link rel="stylesheet" href="styles/projects.css"> -->
   <link rel="icon" type="image/png" href="assets/favicon.png" />
 </head>
+
+<!-- BODY -->
 <body id="top" data-theme="light">
 <div class="page-wrapper">
   
-  <!-- SIDE NAV  (hidden) -->
-   <!-- 
-  <nav id="sideNav" class="side-nav" aria-hidden="true">
-    <ul class="nav-list">
-      <!-- New Chat now points to the old homepage, renamed to chat.html
-      <li><a href="chat.html">New Chat</a></li>
-      <li class="has-sub">
-        <button class="sub-toggle">Contact Mike</button>
-        <ul class="sub-list">
-          <li><a href="mailto:info@mikemirabal.com">Email</a></li>
-          <li><a href="https://linkedin.com/in/mikemirabal" target="_blank">LinkedIn</a></li>
-        </ul>
-      </li>
-      <li class="has-sub">
-        <button class="sub-toggle">Projects</button>
-        <ul class="sub-list">
-          <!-- IMPORTANT: point all project links to index.html now
-          <li><a href="index.html?filter=all">View All</a></li>
-          <li><a href="index.html?filter=brand">Brand</a></li>
-          <li><a href="index.html?filter=creative">Creative</a></li>
-          <li><a href="index.html?filter=digital">Digital</a></li>
-          <li><a href="index.html?filter=innovation">Innovation</a></li>
-          <li><a href="index.html?filter=operations">Operations</a></li>
-          <li><a href="index.html?filter=product">Product</a></li>
-        </ul>
-      </li>
-    </ul>
-  </nav>
- -->
+  
 
   <!-- HEADER -->
   <!-- APP BAR (Material-style) -->
 <header class="appbar" role="banner">
   <div class="appbar-inner">
     <div class="appbar-left">
+      <!-- Home -->
     <a href="https://mikemirabal.com" class="logo-link" aria-label="Mike Mirabal Portfolio">
     <img src="/assets/icons/icon_appbar_home.svg" alt="Home Icon" width="24" height="24">
     </a>
+    <!-- Title -->
       <h1 class="appbar-title" aria-label="Mike Mirabal Portfolio">Mike Mirabal&nbsp;|&nbsp;Portfolio</h1>
     </div>
     <div class="appbar-right">
@@ -57,56 +32,67 @@
         <a class="icon-btn" href="mailto:info@mikemirabal.com" aria-label="Email Mike" title="Email Mike">
         <img src="/assets/icons/icon_appbar_mail.svg" alt="Mail Icon" width="24" height="24">
       </a>
-    
-      <!-- Theme toggle as icon button with sun/moon -->
+      <!-- Light / Dark -->
       <button class="icon-btn theme-switch" id="themeSwitch" onclick="toggleTheme()" aria-label="Toggle theme">
-  <!-- Light mode icon -->
-  <img class="icon-light" src="assets/icons/icon_appbar_lightmode.svg" alt="Light mode" width="24" height="24">
-  <!-- Dark mode icon -->
-  <img class="icon-dark" src="assets/icons/icon_appbar_darkmode.svg" alt="Dark mode" width="24" height="24">
-</button>
-
+        <!-- Light icon -->
+        <img class="icon-light" src="assets/icons/icon_appbar_lightmode.svg" alt="Light mode" width="24" height="24">
+        <!-- Dark icon -->
+        <img class="icon-dark" src="assets/icons/icon_appbar_darkmode.svg" alt="Dark mode" width="24" height="24">
+      </button>
     </div>
   </div>
 </header>
 
 
   <!-- MAIN -->
-<!-- Page hero text -->
- <div class="main-container">
-<h1 id="projectsSubheading" class="projects-subheading">
-  Creating Impact Through Design and Innovation
-</h1>
-<p class="page-sublead">
-  From brand strategy to AI workflows, I design visuals, tools, and experiences that connect with real people.
-</p>
-<p class="page-kicker">⬇️ See what I've been working on.</p>
-</div>  
 
-<!-- Projects Section -->
-  <div id="pageContent" class="main-container">
-    <h1 id="projectsSubheading" class="projects-subheading"></h1>
-<h3 class="section-title">Projects</h3>
-    <!-- Sticky controls: sticks beneath the blue app bar when scrolling -->
-<div class="sticky-controls" role="region" aria-label="Project controls">
-  <div class="sticky-inner">
-    <div class="filters">
-      <button class="active" onclick="selectFilter(this)">All</button>
-      <button onclick="selectFilter(this)">Featured</button>
-      <button onclick="selectFilter(this)">AI</button>
-      <button onclick="selectFilter(this)">Brand</button>
-      <button onclick="selectFilter(this)">Creative</button>
-      <button onclick="selectFilter(this)">UX</button>
-      <button onclick="selectFilter(this)">Operations</button>
-      <button onclick="selectFilter(this)">Strategy</button>
-    </div>
+<!-- Hero Header -->
+<div class="hero-header">
+  <div class="main-container">
+    <h1 id="projectsSubheading" class="projects-subheading">
+      Creating Impact Through Design and Innovation
+    </h1>
+    <p class="page-sublead">
+      From brand strategy to AI workflows, I design visuals, tools, and experiences that connect with real people.
+    </p>
+    <p class="page-kicker">⬇️ See what I've been working on.</p>
   </div>
 </div>
 
-    <div class="grid" id="projectGrid"></div>
-
-    <p class="back-to-top"><a href="#top">Back to top ↑</a></p>
+<!-- Projects Section -->
+<div class="projects-section">
+  <div class="main-container">
+    <h3 class="section-title">Projects</h3>
   </div>
+</div>
+
+
+
+
+
+<div class="main-container">
+<!-- Sticky controls: sticks beneath the blue app bar when scrolling -->
+  <div class="sticky-controls" role="region" aria-label="Project controls">
+    <div class="sticky-inner">
+      <div class="filters">
+        <button class="active" onclick="selectFilter(this)">All</button>
+        <button onclick="selectFilter(this)">Featured</button>
+        <button onclick="selectFilter(this)">AI</button>
+        <button onclick="selectFilter(this)">Brand</button>
+        <button onclick="selectFilter(this)">Creative</button>
+        <button onclick="selectFilter(this)">UX</button>
+        <button onclick="selectFilter(this)">Operations</button>
+        <button onclick="selectFilter(this)">Strategy</button>
+      </div>
+    </div>
+</div>
+<!-- Project Cards Grid --> 
+  <div class="grid" id="projectGrid"></div>
+    
+<!-- Back to Top Link --> 
+  <p class="back-to-top"><a href="#top">Back to top ↑</a></p>
+  </div>
+</div> <!-- End main container -->
 
   <!-- FOOTER -->
   <footer class="compact-footer">
@@ -222,7 +208,7 @@
       card.style.display = filter === 'all' || tags.includes(filter) ? '' : 'none';
     });
 
-   document.getElementById('projectsSubheading').textContent = ({
+  document.getElementById('projectsSubheading').textContent = ({
   all:        'Creating Impact Through Design and Innovation',
   featured:   'Delivering Creative Excellence For Every Project',
   ai:         'Designing Workflows that Enhance Productivity',
@@ -231,7 +217,8 @@
   ux:         'Crafting Experiences that Drive Engagement',
   operations: 'Streamlining Systems for Better Outcomes',
   strategy:   'Developing Strategies That Inspire Results'
-})[filter] || 'Projects';
+})[filter] || 'Creating Impact Through Design and Innovation';
+
 
     const newUrl = new URL(window.location);
     newUrl.searchParams.set('filter', filter);
