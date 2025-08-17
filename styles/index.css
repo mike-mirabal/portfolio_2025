@@ -151,12 +151,75 @@ main, #content, .page-content, .main-container {
   margin: 0 0 1.25rem 0;
 }
 
+.page-kicker-row {
+  display: flex;
+  align-items: center;  /* ← fixes vertical alignment */
+  gap: 0.5rem;
+}
+
 .page-kicker {
   font-size: 0.95rem;
   color: var(--text);
   opacity: 0.9;
-  margin: 0 0 1rem 0;
+  margin: 0;
+  padding-top: 0;
 }
+
+/* AVATAR STYLES */
+.avatar-wrapper {
+  display: inline-block;
+  width: 2.5rem;
+  height: 2.5rem;
+   overflow: visible; /* ← allow head to rotate outside bounds */
+  background-color: transparent;
+}
+
+/* Avatar - Hand Point Down */
+@keyframes pointDown {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(1deg); /* reduced from 15deg to 4deg */
+  }
+}
+
+#hand {
+  transform-origin: top center; /* adjust if needed */
+  animation: pointDown 1.4s ease-in-out infinite;
+}
+
+/* Avatar Inner - head bobble */
+
+.avatar-wrapper:hover #head,
+.avatar-wrapper:active #head {
+  animation: bobbleHead 0.4s ease-in-out;
+  transform-origin: center bottom; /* Adjust to pivot at neck */
+}
+
+
+.avatar-inner {
+  display: block;  /* instead of inline-block */
+  width: 100%;
+  height: auto;
+  transition: transform 0.2s ease;
+}
+
+.avatar-wrapper:hover .avatar-inner,
+.avatar-wrapper:active .avatar-inner {
+  animation: bobbleHead 0.4s ease-in-out;
+  transform-origin: center bottom; /* Pivot from neck */
+}
+
+@keyframes bobbleHead {
+  0%   { transform: rotate(0deg); }
+  20%  { transform: rotate(0.6deg); }
+  40%  { transform: rotate(-0.6deg); }
+  60%  { transform: rotate(0.6deg); }
+  80%  { transform: rotate(-0.6deg); }
+  100% { transform: rotate(0deg); }
+}
+
 
 .hero-heading {
   font-size: 2.5rem;
@@ -186,8 +249,7 @@ main, #content, .page-content, .main-container {
 
 /* Keep hero texts aligned with container gutters */
 .projects-subheading,
-.page-sublead,
-.page-kicker {
+.page-sublead {
   max-width: 900px;
   margin-left: auto;
   margin-right: auto;
@@ -855,3 +917,43 @@ h2.chat-heading {
 .scale-95 {
   transform: scale(0.95);
 }
+
+
+
+  .projects-subheading {
+    transition: opacity 1s ease, transform 1s ease;
+    opacity: 0;
+    transform: translateX(-3rem);
+  }
+
+  .fade-slide-in {
+    opacity: 1 !important;
+    transform: translateX(0) !important;
+  }
+
+  .fade-slide-reset {
+    opacity: 0 !important;
+    transform: translateX(-3rem) !important;
+  }
+
+  .hero-panel {
+    position: absolute;
+    inset: 0;
+    background-color: #3e7bfa;
+    z-index: 3;
+    transform: translateX(0);
+    transition: transform 0.25s ease-in-out;
+  }
+
+  .panel-1 {
+    z-index: 4;
+  }
+
+  .panel-2 {
+    background-color: #588bfa;
+    z-index: 3;
+  }
+
+  .hero-panel.slide-out {
+    transform: translateX(100%);
+  }
