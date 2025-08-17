@@ -148,7 +148,7 @@ main, #content, .page-content, .main-container {
   line-height: 1.6;
   color: var(--text);
   opacity: 0.9;
-  margin: 0 0 1.25rem 0;
+  margin: 0 0 1.5rem 0;
 }
 
 .page-kicker-row {
