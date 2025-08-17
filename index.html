@@ -61,7 +61,7 @@
 -->
 
 <!-- Modified Hero Header with Dual Panel Animation -->
-<div class="hero-header" id="heroHeader" style="background-color: transparent; position: relative; overflow: hidden;">
+<div class="hero-header" id="heroHeader" style="background-image: linear-gradient(to bottom, var(--chatbg), var(--bg)); position: relative; overflow: hidden;">
   <div class="hero-panel panel-1" id="heroPanel1"></div>
   <div class="hero-panel panel-2" id="heroPanel2"></div>
   <div class="main-container" style="position: relative; z-index: 2;">
@@ -405,15 +405,26 @@ Answer concisely and reference specific details from the overview when relevant.
 
 <!-- Hero Transition Animation -->
 <script>
-  // Slide-out panels on load
+  // Slide-out panels on load + set initial hero heading from current filter
   window.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => document.getElementById('heroPanel1').classList.add('slide-out'), 100);
-    setTimeout(() => document.getElementById('heroPanel2').classList.add('slide-out'), 400);
+    setTimeout(() => document.getElementById('heroPanel1').classList.add('slide-out'), 50);
+    setTimeout(() => document.getElementById('heroPanel2').classList.add('slide-out'), 200);
 
-    // Trigger initial hero heading animation
     const heading = document.getElementById('projectsSubheading');
-    heading.classList.add('fade-slide-reset');
 
+    // Determine the current filter from URL or active button
+    const params = new URLSearchParams(location.search);
+    const urlFilter = (params.get('filter') || '').toLowerCase();
+    const activeBtn = document.querySelector('.filters button.active');
+    const btnFilter = activeBtn ? activeBtn.textContent.trim().toLowerCase() : '';
+    const currentFilter = urlFilter || btnFilter || 'all';
+
+    // Apply the correct heading BEFORE animating
+    const initial = (heroContentMap[currentFilter] || heroContentMap.all);
+    heading.textContent = initial.heading;
+
+    // Trigger initial hero heading animation (slide in from left, no bounce)
+    heading.classList.add('fade-slide-reset');
     setTimeout(() => {
       heading.classList.remove('fade-slide-reset');
       heading.classList.add('fade-slide-in');
@@ -421,35 +432,19 @@ Answer concisely and reference specific details from the overview when relevant.
   });
 
   const heroContentMap = {
-    all: {
-      heading: 'Creating Impact Through Design and Innovation'
-    },
-    featured: {
-      heading: 'Delivering Creative Excellence For Every Project'
-    },
-    ai: {
-      heading: 'Designing Workflows that Enhance Productivity'
-    },
-    brand: {
-      heading: 'Building Identities that Connect and Convert'
-    },
-    creative: {
-      heading: 'Bringing Ideas to Life with Visual Storytelling'
-    },
-    ux: {
-      heading: 'Crafting Experiences that Drive Engagement'
-    },
-    operations: {
-      heading: 'Streamlining Systems for Better Outcomes'
-    },
-    strategy: {
-      heading: 'Developing Strategies That Inspire Results'
-    }
+    all: { heading: 'Creating Impact Through Design and Innovation' },
+    featured: { heading: 'Delivering Creative Excellence For Every Project' },
+    ai: { heading: 'Designing Workflows that Enhance Productivity' },
+    brand: { heading: 'Building Identities that Connect and Convert' },
+    creative: { heading: 'Bringing Ideas to Life with Visual Storytelling' },
+    ux: { heading: 'Crafting Experiences that Drive Engagement' },
+    operations: { heading: 'Streamlining Systems for Better Outcomes' },
+    strategy: { heading: 'Developing Strategies That Inspire Results' }
   };
 
   function animateHeroTransition(filterKey) {
     const heading = document.getElementById('projectsSubheading');
-    const content = heroContentMap[filterKey] || heroContentMap['all'];
+    const content = heroContentMap[filterKey] || heroContentMap.all;
 
     // Reset to starting position immediately
     heading.classList.remove('fade-slide-in');
@@ -463,12 +458,13 @@ Answer concisely and reference specific details from the overview when relevant.
     }, 100);
   }
 
-  // Extend selectFilter to animate hero
+  // Extend selectFilter: run the original logic first (cards, URL, etc.),
+  // then run our hero animation so our heading wins if other code also edits it.
   const originalSelectFilter = window.selectFilter;
   window.selectFilter = function(button) {
     const filter = button.textContent.trim().toLowerCase();
-    animateHeroTransition(filter);
     originalSelectFilter(button);
+    animateHeroTransition(filter);
   }
 </script>
 
@@ -495,7 +491,7 @@ Answer concisely and reference specific details from the overview when relevant.
     background-color: #3e7bfa;
     z-index: 3;
     transform: translateX(0);
-    transition: transform 0.5s ease-in-out;
+    transition: transform 0.25s ease-in-out;
   }
 
   .panel-1 {
@@ -511,6 +507,7 @@ Answer concisely and reference specific details from the overview when relevant.
     transform: translateX(100%);
   }
 </style>
+
 
 
 
