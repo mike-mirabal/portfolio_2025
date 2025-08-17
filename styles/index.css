@@ -303,6 +303,19 @@ main, #content, .page-content, .main-container {
   border-color: var(--accent);
 }
 
+/* smooth hide/show for sticky controls */
+.sticky-controls {
+  transition: transform .2s ease, opacity .2s ease;
+  will-change: transform, opacity;
+}
+
+.sticky-controls.is-hidden {
+  transform: translateY(-120%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+
 /* Keep grid spacing consistent on projects */
 .grid { gap: 24px; margin-top: 0.25rem; }
 
@@ -465,6 +478,10 @@ main, #content, .page-content, .main-container {
 /* ========================================================================== 
    ABOUT SECTION
    ========================================================================== */
+
+.about-section {
+  padding-top: 2rem;
+}
 
 /* Make the SVG responsive inside the about photo area */
 .about-photo svg {

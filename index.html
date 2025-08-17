@@ -711,6 +711,26 @@ Answer concisely and reference specific details from the overview when relevant.
   }
 </script>
 
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const sticky = document.querySelector('.sticky-controls');
+    const about  = document.getElementById('about');
+    if (!sticky || !about) return;
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        sticky.classList.add('is-hidden');   // hide when About is in view
+      } else {
+        sticky.classList.remove('is-hidden'); // show again when leaving About
+      }
+    }, {
+      threshold: 0.15 // hide when ~15% of About is visible
+      // Optional: rootMargin: "0px 0px -20% 0px" to hide a bit earlier
+    });
+
+    observer.observe(about);
+  });
+</script>
 
 
 
