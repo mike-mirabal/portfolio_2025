@@ -187,6 +187,12 @@ main, #content, .page-content, .main-container {
   padding: 1rem 1rem 0 1rem;
 }
 
+/* Prevent hero image from being overlapped by the app bar */
+#hero-image {
+  margin-top: var(--appbar-h);
+}
+
+
 .hero-header {
   padding-top: var(--appbar-h);
 }
