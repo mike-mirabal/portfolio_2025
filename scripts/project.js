@@ -40,7 +40,7 @@ function renderProjects(projects, container) {
     const href    = `project.html?slug=${encodeURIComponent(p.slug)}`;
     const company = p.company || '';
     const year    = p.year || '';
-    const heroImg = p.card_img || p.hero_url_1 || '';
+    const heroImg = p.card_img || p.hero_url || '';
     const iconUrl = p.icon || p.logo || p.icon_url || '';
     const title   = p.card_title || p.title || '';
     const desc    = p.short_desc || p.description || p.subtitle || (p.overview ? String(p.overview).split('\n')[0] : '') || '';
@@ -135,6 +135,17 @@ function renderDetail(p) {
         hr.style.marginBottom = '2rem';
         section.appendChild(hr);
 
+        // Inject solution image as full-bleed if present
+        if (key === 'solution' && p.solution_img) {
+          const figure = document.createElement('figure');
+          figure.className = 'full-width-image';
+          figure.innerHTML = `
+            <img src="${p.solution_img}" alt="Solution image" />
+            ${p.solution_caption ? `<figcaption class="caption">${p.solution_caption}</figcaption>` : ''}
+          `;
+          section.insertAdjacentElement('afterbegin', figure);
+        }
+
         contentContainer.appendChild(section);
 
         if (key === 'overview' && p.interactive_link && p.interactive_text) {
@@ -172,77 +183,14 @@ function renderDetail(p) {
     }
   }
 
-  const slidesContainer = document.querySelector('.swiper-wrapper');
-  if (slidesContainer) {
-    slidesContainer.innerHTML = '';
-
-    for (let i = 1; i <= parseInt(p.hero_count); i++) {
-      const type = p[`hero_type_${i}`];
-      const url = p[`hero_url_${i}`];
-      const caption = p[`hero_caption_${i}`] || '';
-
-      if (!url) continue;
-
-      const slide = document.createElement('div');
-      slide.classList.add('swiper-slide');
-
-      if (type === "video") {
-        slide.innerHTML = `
-          <figure>
-            <video controls>
-              <source src="${url}" type="video/mp4">
-            </video>
-            <figcaption class="slide-caption">${caption}</figcaption>
-          </figure>
-        `;
-      } else {
-        slide.innerHTML = `
-          <figure>
-            <a href="${url}" class="glightbox" data-gallery="project-hero">
-              <img src="${url}" alt="Slide image">
-            </a>
-            <figcaption class="slide-caption">${caption}</figcaption>
-          </figure>
-        `;
-      }
-
-      slidesContainer.appendChild(slide);
-    }
-
-    const swiper = new Swiper('.swiper', {
-      effect: 'fade',
-      loop: true,
-      navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
-      on: {
-        init: function () {
-          updateCaptions(this);
-        },
-        slideChange: function () {
-          updateCaptions(this);
-        }
-      }
-    });
-
-    function updateCaptions(swiperInstance) {
-      const allSlides = swiperInstance.slides;
-      allSlides.forEach(slide => {
-        const caption = slide.querySelector('figcaption');
-        if (caption) {
-          caption.style.display = 'none';
-        }
-      });
-
-      const activeSlide = swiperInstance.slides[swiperInstance.activeIndex];
-      if (activeSlide) {
-        const activeCaption = activeSlide.querySelector('figcaption');
-        if (activeCaption) {
-          activeCaption.style.display = 'block';
-        }
-      }
-    }
-
-    const lightbox = GLightbox({
-      selector: '.glightbox'
-    });
+  // Static hero image block (replaces Swiper slider)
+  const heroImageContainer = document.getElementById('hero-image');
+  if (heroImageContainer && p.hero_url) {
+    heroImageContainer.innerHTML = `
+      <figure>
+        <img src="${p.hero_url}" alt="Hero image" style="width: 100%; height: auto;">
+        ${p.hero_caption ? `<figcaption class="caption">${p.hero_caption}</figcaption>` : ''}
+      </figure>
+    `;
   }
 }

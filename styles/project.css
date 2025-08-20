@@ -7,6 +7,23 @@ body {
   color: var(--text);
 }
 
+/* Universal Caption Styling */
+.caption {
+  font-size: 0.75rem;
+  color: var(--muted);
+  display: block;
+  max-width: 900px;
+  padding: 0;
+  margin: 1rem auto;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+
+hr {
+  margin-top: 2rem;
+}
+
 /* ——————————— APP BAR ——————————— */
 .appbar {
   position: fixed;
@@ -25,7 +42,7 @@ main, .main-container {
   padding-top: var(--appbar-h);
 }
 
-
+/* App bar inner container */
 .appbar .appbar-inner {
   max-width: 900px;
   margin: 0 auto;
@@ -36,6 +53,7 @@ main, .main-container {
   gap: 12px;
 }
 
+/* App bar sections */
 .appbar .appbar-left {
   display: flex;
   align-items: center;
@@ -57,7 +75,7 @@ main, .main-container {
   gap: 12px;
 }
 
-/* App bar icon buttons */
+/* App bar icons */
 .appbar .icon-btn {
   display: inline-grid;
   place-items: center;
@@ -78,6 +96,7 @@ main, .main-container {
   background-color: rgba(255,255,255,0.18);
 }
 
+/* Theme switch button */
 .appbar .theme-switch {
   padding: 0;
   position: static;
@@ -115,117 +134,40 @@ main {
  padding-top: 0;
 }
 
-/* ——————————— HERO SLIDER ——————————— */
-#hero-slider {
+
+/* ——————————— HERO IMAGE ——————————— */
+#hero-image {
   width: 100vw;
   margin-left: calc(-50vw + 50%);
-  max-height: none; /* removed height cap to ensure captions show */
-  overflow: visible; /* ensure entire figure visible */
-}
-
-#hero-slider img,
-#hero-slider video {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  max-height: 70vh; /* limit image height to maintain fold visibility */
-}
-
-#hero-slider figure {
   overflow: visible;
+}
+
+#hero-image figure {
   margin: 0;
 }
 
-/* Ensure swiper container is not covered by app bar */
-.swiper {
-  margin-top: var(--appbar-h);
-}
-
-/* ——————————— HERO SLIDER CAPTION LAYOUT ——————————— */
-#hero-slider figcaption {
-  font-size: 0.75rem; /* smaller font for captions */
-  color: var(--muted);
-  display: block; /* ensure visible */
-  max-width: 900px;  /* match your main max-width */
-  padding: 0 1rem;   /* match main padding */
-  margin: 1rem auto 1rem auto; /* top margin of 1rem, auto sides, 0 bottom if desired */
-  box-sizing: border-box;
-  text-align: left;  /* optional: align like project content */
-}
-
-
-
-.swiper-slide figure {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  overflow: visible; /* ensure captions are not clipped */
-  max-height: none; /* allow caption height */
-}
-
-.swiper-slide figcaption {
-  display: none; /* Only show captions on active slide */
-  position: static;
-  margin-top: 0.5rem;
-  color: var(--muted);
-  text-align: center;
-}
-
-.swiper-slide-active figcaption {
+/* Hero image */
+#hero-image img {
   display: block;
-}
-
-.swiper-slide {
-  overflow: visible; /* ensure slide itself allows overflow */
-}
-
-/* ——————————— SWIPER NAV BUTTONS ——————————— */
-.swiper-button-prev,
-.swiper-button-next {
-  color: var(--accent);        /* your accent color for arrows */
-  background: none;            /* remove default background */
-  width: auto;                 /* remove forced size */
+  width: 100%;
   height: auto;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10;
+  max-height: 90vh;
+  object-fit: cover;
 }
 
-.swiper-button-prev {
-  left: 1rem; /* adjust as needed to overlay on image */
+/* Hero image caption */
+#hero-image figcaption {
+  font-size: 0.75rem;
+  color: var(--muted);
+  display: block;
+  max-width: 900px;
+  padding: 0 1rem;
+  margin: 1rem auto;
+  text-align: left;
+  box-sizing: border-box;
 }
 
-.swiper-button-next {
-  right: 1rem; /* adjust as needed to overlay on image */
-}
 
-.swiper-button-prev::after,
-.swiper-button-next::after {
-  font-size: 0.5rem; /* arrow icon size as needed */
-}
-
-/* ——————————— SWIPER PAGINATION ——————————— */
-.swiper-pagination {
-   position: relative; /* ensures it stays in normal document flow */
-   margin: 1rem 0;      /* adjust spacing from image or caption */
-}
-
-.swiper-pagination-bullet {
-  background: var(--accent);
-}
-
-/* Ensure GLightbox hero images remain full width */
-#hero-slider a.glightbox {
-  display: block;       /* make link behave like a block container */
-  width: 100%;          /* fill available width */
-}
-
-#hero-slider a.glightbox img {
-  width: 100%;          /* make image fill its parent link */
-  height: auto;         /* maintain aspect ratio */
-  display: block;       /* remove any inline spacing artifacts */
-}
 
 /* ——————————— PROJECT CONTENT ——————————— */
 .project-header {
@@ -244,6 +186,7 @@ main {
   color: var(--muted);
 }
 
+/* Project overview */
 #project-overview h3 {
   font-size: 1rem;
   font-weight: bold;
@@ -254,21 +197,13 @@ main {
   margin-bottom: 2rem;
 }
 
+
 #overview-text p { /*control paragraph spacing in overview*/
   margin: 1rem 0; /* adjust as needed for tighter or wider spacing */
   /*  line-height: 1.6; */
 }
 
-.caption
-{
-  font-size: 0.75rem;
-  color: var(--muted);
-}
-
-
-hr {
-  margin-top: 2rem;
-}
+/* Project Interactive */
 
 .interactive-link-block {
    margin: 1.5rem 0 1.5rem 0;
@@ -286,6 +221,19 @@ hr {
   font: inherit;
   border-radius: 0;
 }
+
+
+#project-content figure {
+  width: 100%;
+  margin: 2rem 0;
+}
+
+#project-content figure img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 
 
 /* ───────────────────────────────
@@ -326,7 +274,7 @@ hr {
 }
 
 
-/* View All Projects Link */
+/* Back to All Projects Link */
 .view-all-projects {
   text-align: left;
   margin: 2rem 0;
@@ -349,41 +297,3 @@ hr {
   }
 }
 
-/* ——————————— SIDENAV ——————————— */
-.nav-toggle {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 24px;
-  height: 18px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  z-index: 1002;
-}
-
-.nav-toggle .bar {
-  height: 3px;
-  width: 100%;
-  background-color: var(--text);
-  border-radius: 2px;
-  transition: all 0.3s ease;
-}
-
-.nav-toggle.open .bar:nth-child(1) {
-  transform: translateY(7.5px) rotate(45deg);
-}
-
-.nav-toggle.open .bar:nth-child(2) {
-  opacity: 0;
-}
-
-.nav-toggle.open .bar:nth-child(3) {
-  transform: translateY(-7.5px) rotate(-45deg);
-}
-
-/* Disable content push when sidenav opens */
-#pageContent {
-  margin-left: 0 !important;
-}
