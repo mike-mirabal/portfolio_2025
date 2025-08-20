@@ -37,6 +37,64 @@ html, body {
 }
 body.no-scroll { overflow: hidden; }
 
+
+/* ───────────────────────────────
+   TYPOGRAPHY — HEADINGS
+──────────────────────────────── */
+
+h1, h2, h3, h4, p {
+  margin: 0;
+  padding: 0;
+  line-height: 1.3;
+}
+
+/* Headings */
+h1 {
+  font-size: clamp(1.5rem, 5vw, 3rem);  /* Used in #project-title */
+  font-weight: 800;
+  line-height: 1.2;
+  margin: 0.5rem 0 1.5rem 0;
+}
+
+h2 {
+  font-size: 1.5rem; /* You can adjust as needed */
+  font-weight: 700;
+  margin: 1.5rem 0 1rem 0;
+}
+
+h3 {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin: 1.5rem 0 1rem 0;
+}
+
+h4 {
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 1.5rem 0 1rem 0;
+}
+
+/* Special Label Heading (e.g., "Explore this Project") */
+h4.subnav-label {
+  margin: 2rem 0 0 0;
+}
+
+/* Paragraphs */
+p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+#overview-text p {
+  margin: 1rem 0;  /* tighter control on overview spacing */
+}
+
+#project-overview p {
+  margin-bottom: 2rem;  /* larger spacing in overview section */
+}
+
+
 /* ========================================================================== 
    APP BAR (Material style)
    ========================================================================== */
@@ -731,10 +789,10 @@ h2.chat-heading {
   inset: 0;
   background: rgba(0,0,0,0.6);      /* dark overlay for focus */
   display: none;
-  align-items: center;               /* center vertically */
-  justify-content: center;           /* center horizontally */
+  align-items: stretch;               /* center vertically */
+  justify-content: stretch;           /* center horizontally */
   z-index: 1200;
-  padding: 16px;                     /* inset from viewport edges (desktop) */
+  padding: 2rem;                  /* inset from viewport edges (desktop) */
   box-sizing: border-box;
 }
 .projchat-modal[aria-hidden="false"] {
@@ -748,23 +806,24 @@ h2.chat-heading {
   flex-direction: column;
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-
-  /* Desktop / default: centered modal with room around */
-  width: min(900px, 92vw);
-  max-height: 90vh;                  /* leave breathing room top/bottom */
+  width: 100vw;
+  height: calc(100vh - 3rem);  /* leave a 24px cushion at bottom */
+  max-width: none;
+  max-height: none;
   border-radius: 12px;
 }
+
 
 /* Mobile: keep it floating with insets and rounded corners (no full-bleed) */
 @media (max-width: 768px) {
   .projchat-modal {
-    padding: 12px;                   /* slightly smaller inset on mobile */
+    padding: 1rem 1rem 2rem 1rem;                   /* slightly smaller inset on mobile */
   }
-  .projchat-dialog {
-    width: 100%;
-    max-height: 92vh;                /* prevent top/bottom cutoff */
-    border-radius: 10px;             /* still feels like a modal */
-  }
+ .projchat-dialog {
+    height: calc(100vh - 2rem);
+    margin: 12px auto; /* centers with breathing room */
+    border-radius: 12px;
+}
 }
 
 .projchat-header {

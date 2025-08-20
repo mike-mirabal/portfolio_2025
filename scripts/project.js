@@ -106,8 +106,29 @@ function renderDetail(p) {
   document.getElementById('project-title').textContent = p.title;
   document.getElementById('project-meta').textContent = `${p.company} | ${p.year}`;
 
+
   const contentContainer = document.getElementById('project-content');
   if (contentContainer) {
+
+    // ---------- Inject Section Title & Sticky Subnav ----------
+    const headerHTML = `
+      <h4 class="subnav-label">Explore this Project</h4>
+      <nav class="sticky-controls project-subnav">
+        <div class="sticky-inner">
+          <div class="filters">
+            <a href="#overview"><button>Overview</button></a>
+            <a href="#interactive"><button>Interactive</button></a>
+            <a href="#problem"><button>Problem</button></a>
+            <a href="#process"><button>Process</button></a>
+            <a href="#solution"><button>Solution</button></a>
+            <a href="#results"><button>Results</button></a>
+          </div>
+        </div>
+      </nav>
+    `;
+    contentContainer.insertAdjacentHTML('beforebegin', headerHTML);
+    // ------------------------------------------------------------
+
     const sections = [
       { key: 'overview', title: 'Overview' },
       { key: 'problem', title: 'Problem' },
@@ -130,12 +151,22 @@ function renderDetail(p) {
           section.appendChild(pEl);
         });
 
+        if (key === 'overview' && p.role && p.role.trim()) {
+          const roleHeading = document.createElement('h4');
+          roleHeading.textContent = 'My Role';
+          section.appendChild(roleHeading);
+
+          const rolePara = document.createElement('p');
+          rolePara.textContent = p.role.trim();
+          section.appendChild(rolePara);
+        }
+
         const hr = document.createElement('hr');
         hr.style.marginTop = '2rem';
         hr.style.marginBottom = '2rem';
         section.appendChild(hr);
 
-        // Inject solution image as full-bleed if present
+        // Inject solution image if present
         if (key === 'solution' && p.solution_img) {
           const figure = document.createElement('figure');
           figure.className = 'full-width-image';
@@ -155,11 +186,11 @@ function renderDetail(p) {
             <div class="interactive-link-block">
               <h3 id="interactive" style="margin-bottom: 0.5rem;">${headingText}</h3>
               <p class="slide-caption">
-                ${icon ? `<img src="${icon}" alt="icon" class="interactive-icon" style="vertical-align: middle; margin-right: 0.4em; height: 1em;">` : ''}
+                ${icon ? `<img src="${icon}" class="interactive-icon" alt="icon" style="vertical-align: middle; margin-right: 0.4em; height: 1em;">` : ''}
                 ${p.interactive_supporting || ''}
               </p>
               <p style="margin: 0.4rem 0 1rem">
-                <a href="${p.interactive_link}" target="_blank" rel="noopener noreferrer" style="text-decoration: underline; color: var(--accent); border: none; background: none; padding: 0; margin: 0; font: inherit; border-radius: 0;">
+                <a href="${p.interactive_link}" target="_blank" rel="noopener noreferrer" style="text-decoration: underline; color: var(--accent);">
                   ${p.interactive_text}
                 </a>
               </p>
@@ -183,7 +214,7 @@ function renderDetail(p) {
     }
   }
 
-  // Static hero image block (replaces Swiper slider)
+  // Static hero image insertion
   const heroImageContainer = document.getElementById('hero-image');
   if (heroImageContainer && p.hero_url) {
     heroImageContainer.innerHTML = `
