@@ -121,6 +121,7 @@ function renderDetail(p) {
         const section = document.createElement('section');
         const heading = document.createElement('h3');
         heading.textContent = title;
+        heading.setAttribute('id', key);
         section.appendChild(heading);
 
         p[key].split('\n').forEach(para => {
@@ -129,15 +130,19 @@ function renderDetail(p) {
           section.appendChild(pEl);
         });
 
+        const hr = document.createElement('hr');
+        hr.style.marginTop = '2rem';
+        hr.style.marginBottom = '2rem';
+        section.appendChild(hr);
+
         contentContainer.appendChild(section);
 
-        // ───────────────────────────────
-        // INTERACTIVE LINK + SUPPORTING TEXT (after overview only)
-        // ───────────────────────────────
         if (key === 'overview' && p.interactive_link && p.interactive_text) {
           const icon = p.interactive_icon || '';
+          const headingText = p.interactive_heading || 'Further Reading';
           const interactiveHTML = `
             <div class="interactive-link-block">
+              <h3 id="interactive" style="margin-bottom: 0.5rem;">${headingText}</h3>
               <p class="slide-caption">
                 ${icon ? `<img src="${icon}" alt="icon" class="interactive-icon" style="vertical-align: middle; margin-right: 0.4em; height: 1em;">` : ''}
                 ${p.interactive_supporting || ''}
