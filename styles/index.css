@@ -780,65 +780,65 @@ h2.chat-heading {
 }
 
 
-
-/* ──────────────────────────────────────────────────────────────────────────
-   Project Chat Modal — Large Dialog on Desktop, Inset on Mobile
-   ────────────────────────────────────────────────────────────────────────── */
 /* ──────────────────────────────────────────────────────────────────────────
    Project Chat Modal — Large Dialog on Desktop, Inset on Mobile
    ────────────────────────────────────────────────────────────────────────── */
 .projchat-modal {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.6);      /* dark overlay for focus */
+  background: rgba(0,0,0,0.6);
   display: none;
-  align-items: stretch;              /* fill vertical space */
-  justify-content: stretch;          /* fill horizontal space */
+  align-items: stretch;
+  justify-content: stretch;
   z-index: 1200;
-  padding: 2rem;                     /* inset from viewport edges (desktop) */
+  padding: 2rem;                    /* keep your desktop inset */
   box-sizing: border-box;
-}
-.projchat-modal[aria-hidden="false"] {
-  display: flex;
-}
 
+  /* sum of block padding (top + bottom) so JS can subtract it precisely */
+  --modal-pad-block: 4rem;
+}
+.projchat-modal[aria-hidden="false"] { display: flex; }
+
+/* Make dialog a 3-row grid: header | scrollable window | input */
 .projchat-dialog {
   background: var(--bg);
   color: var(--text);
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto 1fr auto;/* header sticks, window scrolls, input sticks */
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(0,0,0,0.25);
   width: 100%;
-  height: calc(100dvh - 4rem);       /* full visible viewport minus modal padding (2rem top + 2rem bottom) */
+  height: calc(100dvh - var(--modal-pad-block)); /* shrink with keyboard on modern browsers */
   max-width: none;
-  max-height: calc(100dvh - 4rem);
-  border-radius: 12px;               /* keep your rounded corners */
+  max-height: calc(100dvh - var(--modal-pad-block));
+  border-radius: 12px;              /* keep your rounded corners */
 }
 
-/* iOS/Safari extra safety (optional fallback) */
+/* iOS/Safari fallback if 100dvh is not honored */
 @supports (-webkit-touch-callout: none) {
   .projchat-dialog {
-    height: calc(100vh - 4rem);
-    max-height: calc(100vh - 4rem);
+    height: calc(100vh - var(--modal-pad-block));
+    max-height: calc(100vh - var(--modal-pad-block));
   }
 }
 
-/* Mobile: keep insets and rounded corners, adapt to keyboard with dynamic vh */
+/* Mobile insets + safe area, keep rounded corners */
 @media (max-width: 768px) {
   .projchat-modal {
-    padding: 1rem 1rem 2rem 1rem;    /* slightly smaller inset on mobile */
+    padding: 1rem 1rem 2rem 1rem;   /* your mobile insets */
+    --modal-pad-block: 3rem;        /* 1rem top + 2rem bottom */
+    padding-bottom: calc(2rem + env(safe-area-inset-bottom));
   }
   .projchat-dialog {
     width: 100%;
-    height: calc(100dvh - 3rem);     /* 1rem top + 2rem bottom padding */
-    max-height: calc(100dvh - 3rem);
-    margin: 12px auto;               /* centers with breathing room */
-    border-radius: 12px;             /* keep your rounded corners */
+    height: calc(100dvh - var(--modal-pad-block));
+    max-height: calc(100dvh - var(--modal-pad-block));
+    margin: 12px auto;              /* keep your breathing room */
+    border-radius: 12px;
   }
 }
 
-/* Sticky header stays visible */
+/* Header stays visible */
 .projchat-header {
   position: sticky;
   top: 0;
@@ -847,27 +847,59 @@ h2.chat-heading {
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  background: #E8F0FE; /* same as card header background */
-  color: var(--text);  /* same as card header text */
+  background: #E8F0FE;
+  color: var(--text);
   border-bottom: 1px solid color-mix(in srgb, var(--muted), transparent 40%);
-  backdrop-filter: saturate(1.1);
+  backdrop-filter: saturate(1.05);
 }
 
-/* Keep header aligned with icon + title left, close right (duplicate retained) */
+/* (duplicate block from your CSS retained) */
 .projchat-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  background: #E8F0FE; /* same as card header background */
+  background: #E8F0FE;
   color: var(--text);
   border-bottom: 1px solid color-mix(in srgb, var(--muted), transparent 40%);
 }
-.projchat-header .projchat-title {
-  display: grid;
-  gap: 2px;
-  color: #1c1c1c;
+.projchat-header .projchat-title { display: grid; gap: 2px; color: #1c1c1c; }
+
+/* Scrollable chat body between sticky header and sticky input */
+.projchat-window {
+  min-height: 0;
+  padding: 12px 16px;
+  overflow-y: auto;
+  background: var(--chatbg);
+  border-bottom: 1px solid color-mix(in srgb, var(--muted), transparent 60%);
+  overscroll-behavior: contain;
+  /* keep the last message above the input */
+  scroll-padding-bottom: calc(80px + env(safe-area-inset-bottom));
 }
+
+/* Sticky input stays above keyboard */
+.projchat-form {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+  padding-bottom: calc(10px + env(safe-area-inset-bottom));
+  background: var(--bg);
+  border-top: 1px solid color-mix(in srgb, var(--muted), transparent 30%);
+}
+
+/* … keep the rest of your bubbles/input styles exactly as-is … */
+
+
+
+
+
+
+
+
+
 /* Chat modal icon matches card topbar style */
 .projchat-icon {
   width: 40px;

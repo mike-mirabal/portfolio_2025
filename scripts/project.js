@@ -27,6 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const p = publishedProjects.find(p => String(p.slug) === slug);
         if (p) renderDetail(p);
       }
+
+      // Initialize chat modal viewport behavior after DOM and content are ready
+      initProjectChatViewportBehavior();
     })
     .catch(err => console.error('CSV load error:', err));
 });
@@ -223,5 +226,80 @@ function renderDetail(p) {
         ${p.hero_caption ? `<figcaption class="caption">${p.hero_caption}</figcaption>` : ''}
       </figure>
     `;
+  }
+}
+
+/**
+ * Project Chat Modal viewport behavior:
+ * - Keeps the dialog sized to the visible viewport (accounts for mobile keyboards)
+ * - Ensures header and input remain visible
+ * - Scrolls chat window to bottom when focusing the input
+ */
+function initProjectChatViewportBehavior() {
+  const modal = document.querySelector('.projchat-modal');
+  const dialog = document.querySelector('.projchat-dialog');
+
+  if (!modal || !dialog) return;
+
+  // Compute the dialog height using the visible viewport and subtract modal block padding
+  const setDialogHeightFromViewport = () => {
+    // Sum of the actual computed padding top + bottom on the modal container
+    const styles = getComputedStyle(modal);
+    const padTop = parseFloat(styles.paddingTop) || 0;
+    const padBottom = parseFloat(styles.paddingBottom) || 0;
+    const padBlock = padTop + padBottom;
+
+    const vv = window.visualViewport;
+    const visibleHeight = vv && typeof vv.height === 'number' ? vv.height : window.innerHeight;
+
+    const h = Math.max(0, visibleHeight - padBlock);
+    dialog.style.height = h + 'px';
+    dialog.style.maxHeight = h + 'px';
+  };
+
+  // Observe aria-hidden changes to react right when the modal opens/closes
+  const mo = new MutationObserver((mutations) => {
+    for (const m of mutations) {
+      if (m.type === 'attributes' && m.attributeName === 'aria-hidden') {
+        const isOpen = modal.getAttribute('aria-hidden') === 'false';
+        if (isOpen) {
+          setDialogHeightFromViewport();
+          // After opening, scroll chat to bottom so last message is visible
+          const win = modal.querySelector('.projchat-window');
+          if (win) {
+            // Defer to next frame so layout has settled
+            requestAnimationFrame(() => win.scrollTo({ top: win.scrollHeight }));
+          }
+        }
+      }
+    }
+  });
+  mo.observe(modal, { attributes: true, attributeFilter: ['aria-hidden'] });
+
+  // Update height while keyboard animates / device rotates
+  if (window.visualViewport) {
+    visualViewport.addEventListener('resize', setDialogHeightFromViewport);
+    visualViewport.addEventListener('scroll', setDialogHeightFromViewport);
+  } else {
+    window.addEventListener('resize', setDialogHeightFromViewport);
+  }
+
+  // Ensure the input is visible and not covered by keyboard on focus
+  document.addEventListener('focusin', (e) => {
+    const form = e.target && e.target.closest && e.target.closest('.projchat-form');
+    if (form) {
+      const win = modal.querySelector('.projchat-window');
+      if (win) {
+        // Scroll the chat body to the bottom where the latest message/input is
+        requestAnimationFrame(() => win.scrollTo({ top: win.scrollHeight, behavior: 'smooth' }));
+      }
+      // Recalculate dialog height in case the keyboard just opened
+      setDialogHeightFromViewport();
+    }
+  });
+
+  // If the modal starts open for any reason, size it immediately
+  if (modal.getAttribute('aria-hidden') === 'false') {
+    setDialogHeightFromViewport();
   }
 }
