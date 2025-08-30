@@ -316,6 +316,8 @@ function renderProjects(projects, container) {
  *  - Optional media per section via renderSectionMedia
  *    CSV columns you can add per section (overview/problem/process/solution/results):
  *      <key>_media_type, <key>_media_url, <key>_media_caption, <key>_media_alt>
+ *
+ * CHANGE REQUESTED: Media now renders at the END of each section, after the text.
  */
 function renderDetail(p) {
   document.title = `${p.title} | Mike Mirabal`;
@@ -363,15 +365,7 @@ function renderDetail(p) {
         heading.setAttribute('id', key);
         section.appendChild(heading);
 
-        // Render optional media block first (if provided)
-        const mediaHTML = renderSectionMedia(p, key);
-        if (mediaHTML) {
-          const mediaWrapper = document.createElement('div');
-          mediaWrapper.innerHTML = mediaHTML;
-          section.appendChild(mediaWrapper);
-        }
-
-        // Render rich text (paragraphs + bullets)
+        // Render rich text (paragraphs + bullets) FIRST
         const richHTML = renderRichText(p[key]);
         if (richHTML) {
           const richDiv = document.createElement('div');
@@ -379,7 +373,7 @@ function renderDetail(p) {
           section.appendChild(richDiv);
         }
 
-        // Overview-specific "My Role" (preserved)
+        // Overview-specific "My Role" (preserved) BEFORE media
         if (key === 'overview' && p.role && p.role.trim()) {
           const roleHeading = document.createElement('h4');
           roleHeading.textContent = 'My Role';
@@ -388,6 +382,14 @@ function renderDetail(p) {
           const rolePara = document.createElement('div');
           rolePara.innerHTML = renderRichText(p.role.trim());
           section.appendChild(rolePara);
+        }
+
+        // Render optional media block LAST (per your request)
+        const mediaHTML = renderSectionMedia(p, key);
+        if (mediaHTML) {
+          const mediaWrapper = document.createElement('div');
+          mediaWrapper.innerHTML = mediaHTML;
+          section.appendChild(mediaWrapper);
         }
 
         const hr = document.createElement('hr');

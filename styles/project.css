@@ -167,6 +167,21 @@ h4.subnav-label {
   margin: 2rem 0 0 0;
 }
 
+
+/* Better spacing for bullet/numbered lists in project sections */
+#project-content ul,
+#project-content ol {
+  margin: 1rem 0 1.5rem;   /* space above/below lists */
+  padding-left: 1.5rem;    /* indent bullets from text */
+}
+
+#project-content li {
+  margin-bottom: 0.5rem;   /* space between individual bullets */
+  line-height: 1.6;        /* more breathing room inside lines */
+}
+
+/* Sticky controls */
+
 .sticky-controls .sticky-inner {
   max-width: none;
   width: 100%;
