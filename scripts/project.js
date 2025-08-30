@@ -56,6 +56,17 @@ function autoLink(text) {
 }
 
 /**
+ * Apply lightweight inline formatting after escaping:
+ * - Bold: **text** -> <strong>text</strong>
+ * Then autolink URLs.
+ */
+function applyFormatting(text) {
+  let safe = escapeHTML(text);
+  safe = safe.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  return autoLink(safe);
+}
+
+/**
  * Render simple "rich" text from CSV into HTML with support for:
  * - paragraphs (blank line = new paragraph)
  * - unordered lists: lines starting with "- ", "* ", or "• "
@@ -97,7 +108,7 @@ function renderRichText(cellText) {
     // Unordered list markers
     const ulMatch = /^(?:[-*•])\s+(.*)$/.exec(line);
     if (ulMatch) {
-      const item = autoLink(escapeHTML(ulMatch[1].trim()));
+      const item = applyFormatting(ulMatch[1].trim());
       if (!listBuffer || listBuffer.type !== 'ul') {
         flushList();
         listBuffer = { type: 'ul', items: [] };
@@ -109,7 +120,7 @@ function renderRichText(cellText) {
     // Ordered list markers like "1. Item"
     const olMatch = /^(\d+)\.\s+(.*)$/.exec(line);
     if (olMatch) {
-      const item = autoLink(escapeHTML(olMatch[2].trim()));
+      const item = applyFormatting(olMatch[2].trim());
       if (!listBuffer || listBuffer.type !== 'ol') {
         flushList();
         listBuffer = { type: 'ol', items: [] };
@@ -120,7 +131,7 @@ function renderRichText(cellText) {
 
     // Normal paragraph line. If there's an open list, close it first.
     flushList();
-    const paragraphHTML = autoLink(escapeHTML(line.trim()));
+    const paragraphHTML = applyFormatting(line.trim());
     blocks.push(`<p>${paragraphHTML}</p>`);
   }
 
