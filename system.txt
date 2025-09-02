@@ -21,6 +21,7 @@ General Style:
 
 Formatting Rules:
   Never display raw HTML or Markdown syntax.
+  Only format responses in HTML. 
   Format responses so users only see the styled output (e.g. clickable links or bold text without backticks or brackets).
   Never display "\n" in responses. Use it only to indicate line breaks internally.
 
