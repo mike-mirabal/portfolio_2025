@@ -164,13 +164,14 @@ function renderSectionMedia(p, key) {
 
   if (!type || !url) return '';
 
-  // Simple helpers
   const isYouTube = /(?:youtube\.com\/watch\?v=|youtu\.be\/)/i.test(url);
   const isVimeo = /vimeo\.com\/\d+/i.test(url);
   const looksLikeVideoFile = /\.(mp4|webm|ogg)(\?.*)?$/i.test(url);
   const looksLikeImageFile = /\.(png|jpe?g|gif|webp|svg)(\?.*)?$/i.test(url);
+  const looksLikeAudioFile = /\.(mp3|wav|ogg|m4a|aac)(\?.*)?$/i.test(url);
 
-  if (type === 'image' || (type === '' && looksLikeImageFile)) {
+  // IMAGE
+  if (type === 'image' || (!type && looksLikeImageFile)) {
     const safeUrl = escapeHTML(url);
     return `
       <figure class="full-width-image">
@@ -180,9 +181,9 @@ function renderSectionMedia(p, key) {
     `;
   }
 
-  if (type === 'video') {
+  // VIDEO
+  if (type === 'video' || (!type && (isYouTube || isVimeo || looksLikeVideoFile))) {
     if (isYouTube) {
-      // Convert to embed URL
       let videoId = '';
       const m1 = url.match(/[?&]v=([^&]+)/);
       const m2 = url.match(/youtu\.be\/([^?&]+)/);
@@ -214,13 +215,31 @@ function renderSectionMedia(p, key) {
       const safeUrl = escapeHTML(url);
       return `
         <figure class="video-file">
-          <video src="${safeUrl}" controls playsinline style="max-width:100%; height:auto;"></video>
+          <video src="${safeUrl}" controls playsinline preload="metadata" style="max-width:100%; height:auto;"></video>
           ${caption ? `<figcaption class="caption">${caption}</figcaption>` : ''}
         </figure>
       `;
     }
   }
 
+  // AUDIO (new)
+  if (type === 'audio' || (!type && looksLikeAudioFile)) {
+    const safeUrl = escapeHTML(url);
+    const mime =
+      /\.mp3(\?.*)?$/i.test(url) ? 'audio/mpeg' :
+      /\.m4a|\.aac(\?.*)?$/i.test(url) ? 'audio/mp4' :
+      /\.wav(\?.*)?$/i.test(url) ? 'audio/wav' :
+      /\.ogg(\?.*)?$/i.test(url) ? 'audio/ogg' :
+      '';
+    return `
+      <figure class="audio-file">
+        <audio controls preload="metadata" ${mime ? `type="${mime}"` : ''} src="${safeUrl}"></audio>
+        ${caption ? `<figcaption class="caption">${caption}</figcaption>` : ''}
+      </figure>
+    `;
+  }
+
+  // LINK
   if (type === 'link') {
     const safeUrl = escapeHTML(url);
     return `
@@ -232,6 +251,7 @@ function renderSectionMedia(p, key) {
     `;
   }
 
+  // EMBED
   if (type === 'embed') {
     const safeUrl = escapeHTML(url);
     return `
@@ -242,7 +262,7 @@ function renderSectionMedia(p, key) {
     `;
   }
 
-  // If type is unspecified but URL exists, show as a link fallback.
+  // Fallback
   const safeUrl = escapeHTML(url);
   return `
     <p style="margin: 0.4rem 0 1rem">
@@ -252,6 +272,7 @@ function renderSectionMedia(p, key) {
     </p>
   `;
 }
+
 
 /**
  * Renders project cards into grid container

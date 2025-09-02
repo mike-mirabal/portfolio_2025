@@ -289,6 +289,11 @@ html {
   display: block;
 }
 
+/* Audio player styles */
+#project-content .audio-file { margin: 1rem 0 1.5rem; }
+#project-content .audio-file audio { width: 100%; display: block; }
+
+
 .view-all-projects {
   text-align: left;
   margin: 2rem 0;
