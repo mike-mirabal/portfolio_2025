@@ -142,10 +142,36 @@ function renderRichText(cellText) {
   return blocks.join('');
 }
 
+/* ---------------------------------------------------------------------------
+   MEDIA POSITION HELPER
+   Allows CSV to control whether media renders at the top or bottom of a section.
+
+   CSV options per section (overview/problem/process/solution/results):
+   - <key>_media_type: 'image'|'video'|'audio'|'link'|'embed' (also accepts 'image-top', 'link-bottom', etc.)
+   - <key>_media_position: 'top'|'bottom' (optional; overrides suffix if both provided)
+--------------------------------------------------------------------------- */
+function getMediaConfig(p, key) {
+  let rawType = (p[`${key}_media_type`] || '').toLowerCase().trim();
+  let position = (p[`${key}_media_position`] || '').toLowerCase().trim();
+
+  // If author used "image-top" / "link-bottom" / "video-before" etc., extract suffix
+  const m = rawType.match(/-(top|bottom|before|after)$/);
+  if (m) {
+    const suffix = m[1] === 'before' ? 'top' : (m[1] === 'after' ? 'bottom' : m[1]);
+    if (!position) position = suffix;
+    rawType = rawType.replace(/-(top|bottom|before|after)$/, '');
+  }
+
+  if (position !== 'top' && position !== 'bottom') position = 'bottom';
+
+  return { type: rawType, position };
+}
+
 /**
  * Renders optional supporting media for a given section key.
  * CSV fields supported (all optional, per section key: 'problem'|'process'|'solution'|'results'|'overview'):
- *   <key>_media_type: 'image' | 'video' | 'link' | 'embed'
+ *   <key>_media_type: 'image' | 'video' | 'link' | 'embed' | 'audio'
+ *   <key>_media_position: 'top' | 'bottom' (optional; defaults to 'bottom')
  *   <key>_media_url: URL string (for image/link/video/embed)
  *   <key>_media_caption: optional caption string
  *   <key>_media_alt: optional alt text for images
@@ -153,16 +179,18 @@ function renderRichText(cellText) {
  * Notes:
  * - image: renders <figure><img/><figcaption/></figure>
  * - video: if YouTube/Vimeo URL, embeds via iframe; otherwise renders simple <video controls> if it looks like a file
+ * - audio: renders <audio controls>
  * - link: renders an anchor with underline
  * - embed: renders an iframe with the given URL
  */
 function renderSectionMedia(p, key) {
-  const type = (p[`${key}_media_type`] || '').toLowerCase().trim();
+  // Use the parsed type (position is handled in renderDetail)
+  const { type } = getMediaConfig(p, key);
   const url = (p[`${key}_media_url`] || '').trim();
   const caption = p[`${key}_media_caption`] ? escapeHTML(p[`${key}_media_caption`]) : '';
   const alt = p[`${key}_media_alt`] ? escapeHTML(p[`${key}_media_alt`]) : `${key} media`;
 
-  if (!type || !url) return '';
+  if ((!type && !url) || !url) return '';
 
   const isYouTube = /(?:youtube\.com\/watch\?v=|youtu\.be\/)/i.test(url);
   const isVimeo = /vimeo\.com\/\d+/i.test(url);
@@ -347,9 +375,10 @@ function renderProjects(projects, container) {
  *  - Bullet lists and paragraphs via renderRichText
  *  - Optional media per section via renderSectionMedia
  *    CSV columns you can add per section (overview/problem/process/solution/results):
- *      <key>_media_type, <key>_media_url, <key>_media_caption, <key>_media_alt>
+ *      <key>_media_type, <key>_media_url, <key>_media_caption, <key>_media_alt, <key>_media_position
  *
- * CHANGE REQUESTED: Media now renders at the END of each section, after the text.
+ * CHANGE REQUESTED: Media now renders at the TOP or BOTTOM of each section based on <key>_media_position ('top'|'bottom'), default 'bottom'.
+ * Also: Apply **markdown-style bold** and autolinks to interactive text fields via applyFormatting().
  */
 function renderDetail(p) {
   document.title = `${p.title} | Mike Mirabal`;
@@ -397,7 +426,18 @@ function renderDetail(p) {
         heading.setAttribute('id', key);
         section.appendChild(heading);
 
-        // Render rich text (paragraphs + bullets) FIRST
+        // Determine media position for this section
+        const { position } = getMediaConfig(p, key);
+        const mediaHTML = renderSectionMedia(p, key);
+
+        // If media should go at the TOP (just under heading)
+        if (position === 'top' && mediaHTML) {
+          const mediaWrapperTop = document.createElement('div');
+          mediaWrapperTop.innerHTML = mediaHTML;
+          section.appendChild(mediaWrapperTop);
+        }
+
+        // Render rich text (paragraphs + bullets)
         const richHTML = renderRichText(p[key]);
         if (richHTML) {
           const richDiv = document.createElement('div');
@@ -405,7 +445,7 @@ function renderDetail(p) {
           section.appendChild(richDiv);
         }
 
-        // Overview-specific "My Role" (preserved) BEFORE media
+        // Overview-specific "My Role" (preserved)
         if (key === 'overview' && p.role && p.role.trim()) {
           const roleHeading = document.createElement('h4');
           roleHeading.textContent = 'My Role';
@@ -416,12 +456,11 @@ function renderDetail(p) {
           section.appendChild(rolePara);
         }
 
-        // Render optional media block LAST (per your request)
-        const mediaHTML = renderSectionMedia(p, key);
-        if (mediaHTML) {
-          const mediaWrapper = document.createElement('div');
-          mediaWrapper.innerHTML = mediaHTML;
-          section.appendChild(mediaWrapper);
+        // If media should go at the BOTTOM (after text)
+        if (position === 'bottom' && mediaHTML) {
+          const mediaWrapperBottom = document.createElement('div');
+          mediaWrapperBottom.innerHTML = mediaHTML;
+          section.appendChild(mediaWrapperBottom);
         }
 
         const hr = document.createElement('hr');
@@ -431,20 +470,20 @@ function renderDetail(p) {
 
         contentContainer.appendChild(section);
 
-        // Optional interactive link block (preserved)
+        // Optional interactive link block (preserved) — now with markdown support on text pieces
         if (key === 'overview' && p.interactive_link && p.interactive_text) {
           const icon = p.interactive_icon || '';
           const headingText = p.interactive_heading || 'Further Reading';
           const interactiveHTML = `
             <div class="interactive-link-block">
-              <h3 id="interactive" style="margin-bottom: 0.5rem;">${escapeHTML(headingText)}</h3>
+              <h3 id="interactive" style="margin-bottom: 0.5rem;">${applyFormatting(headingText)}</h3>
               <p class="slide-caption">
                 ${icon ? `<img src="${escapeHTML(icon)}" class="interactive-icon" alt="icon" style="vertical-align: middle; margin-right: 0.4em; height: 1em;">` : ''}
-                ${p.interactive_supporting ? escapeHTML(p.interactive_supporting) : ''}
+                ${p.interactive_supporting ? applyFormatting(p.interactive_supporting) : ''}
               </p>
               <p style="margin: 0.4rem 0 1rem">
                 <a href="${escapeHTML(p.interactive_link)}" target="_blank" rel="noopener noreferrer" style="text-decoration: underline; color: var(--accent);">
-                  ${escapeHTML(p.interactive_text)}
+                  ${applyFormatting(p.interactive_text)}
                 </a>
               </p>
               <hr />
@@ -459,7 +498,7 @@ function renderDetail(p) {
       const linkHTML = `
         <p>
           <a href="${escapeHTML(p.extra_resource_link)}" target="_blank" rel="noopener noreferrer">
-            ${p.extra_resource_text ? escapeHTML(p.extra_resource_text) : 'View More Details'}
+            ${p.extra_resource_text ? applyFormatting(p.extra_resource_text) : 'View More Details'}
           </a>
         </p>
       `;
