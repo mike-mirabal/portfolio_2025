@@ -229,7 +229,7 @@ main, #content, .page-content, .main-container {
   opacity: 0.9;
   margin: 0;
   padding-top: 0;
-  padding-bottom: 2px;
+  padding-bottom: 0.5rem;
 }
 
 /* ---- Ambient Orbs ---- */
