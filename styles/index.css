@@ -229,6 +229,166 @@ main, #content, .page-content, .main-container {
   padding-top: 0;
 }
 
+/* ---- Ambient Orbs ---- */
+.hero--orbs {
+  background: linear-gradient(180deg, var(--chatbg) 0%, var(--bg) 100%);
+}
+
+.hero--orbs::before {
+  background:
+    radial-gradient(200px 200px at 15% 20%, rgba(59,130,246,.22), transparent 60%),
+    radial-gradient(260px 260px at 85% 25%, rgba(16,185,129,.20), transparent 65%),
+    radial-gradient(220px 220px at 60% 85%, rgba(236,72,153,.18), transparent 60%);
+  filter: blur(12px);
+}
+
+.hero--orbs::after {
+  /* gentle drift */
+  background:
+    radial-gradient(150px 150px at 30% 70%, rgba(139,92,246,.22), transparent 60%),
+    radial-gradient(180px 180px at 75% 60%, rgba(234,179,8,.16), transparent 60%);
+  animation: orbs-drift 22s ease-in-out infinite alternate;
+  filter: blur(16px);
+  mix-blend-mode: screen;
+}
+
+@keyframes orbs-drift {
+  0%   { transform: translate3d(0,0,0) scale(1);   opacity: .9; }
+  100% { transform: translate3d(2%, -3%, 0) scale(1.05); opacity: .85; }
+}
+
+/* ---- Gradient Mesh ---- */
+/* ---- Mesh Cloud Background ---- */
+.hero--mesh::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--mesh-bg);
+  background-blend-mode: screen;
+  filter: blur(60px);
+  animation: meshClouds 12s ease-in-out infinite alternate;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+/* Light mode cloudscape */
+[data-theme="light"] .hero--mesh::after {
+  --mesh-bg: 
+    linear-gradient(#e6f3ff, #cce7ff), /* translucent sky */
+    radial-gradient(at 40% 30%, #ffffff 0px, transparent 50%),
+    radial-gradient(at 70% 70%, #f2f2f2 0px, transparent 50%),
+    radial-gradient(at 20% 80%, #ffffff 0px, transparent 50%);
+}
+
+/* Dark mode cloudscape */
+[data-theme="dark"] .hero--mesh::after {
+  --mesh-bg:
+    linear-gradient(#001a33, #001122), /* night sky */
+    radial-gradient(at 40% 30%, #444c55 0px, transparent 50%),
+    radial-gradient(at 70% 70%, #333b44 0px, transparent 50%),
+    radial-gradient(at 20% 80%, #555d66 0px, transparent 50%);
+}
+
+@keyframes meshClouds {
+  0% {
+    background-position: 40% 30%, 70% 70%, 20% 80%;
+  }
+  50% {
+    background-position: 45% 25%, 65% 75%, 25% 70%;
+  }
+  100% {
+    background-position: 40% 30%, 70% 70%, 20% 80%;
+  }
+}
+
+
+/* ---- Noise + Vignette ---- */
+.hero--noise {
+  background: linear-gradient(to bottom, var(--chatbg), var(--bg));
+}
+
+.hero--noise::before {
+  /* film grain – tiny, subtle; data URI SVG so no network hit */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='table' tableValues='0 0 0 0 .04 .04 .04 .04 .04'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 140px 140px;
+  opacity: .7;
+}
+
+.hero--noise::after {
+  /* vignette to anchor content */
+  background:
+    radial-gradient(120% 80% at 50% 10%, transparent 0%, rgba(0,0,0,.06) 60%, rgba(0,0,0,.12) 100%);
+  mix-blend-mode: multiply;
+}
+
+/* ---- Subtle Rings ---- */
+.hero--rings {
+  background:
+    radial-gradient(circle at 50% 35%, rgba(255,255,255,.12), transparent 40%),
+    linear-gradient(to bottom, var(--chatbg), var(--bg));
+}
+
+.hero--rings::before {
+  /* tiled SVG rings with very low contrast */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Cdefs%3E%3CradialGradient id='g' cx='150' cy='150' r='150' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%23ffffff' stop-opacity='.06'/%3E%3Cstop offset='1' stop-color='%23ffffff' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='150' cy='150' r='40' fill='none' stroke='%23ffffff' stroke-opacity='.05' stroke-width='1'/%3E%3Ccircle cx='150' cy='150' r='90' fill='none' stroke='%23ffffff' stroke-opacity='.05' stroke-width='1'/%3E%3Ccircle cx='150' cy='150' r='140' fill='none' stroke='%23ffffff' stroke-opacity='.05' stroke-width='1'/%3E%3Crect width='300' height='300' fill='url(%23g)'/%3E%3C/svg%3E");
+  background-size: 300px 300px;
+  opacity: .8;
+}
+
+.hero--rings::after {
+  /* slow parallax drift for the rings */
+  background: inherit;          /* reuse gradients from base */
+  animation: rings-pan 60s linear infinite;
+  background-position: 0 0;
+  mix-blend-mode: soft-light;
+  opacity: .4;
+}
+
+@keyframes rings-pan {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-30px); }
+}
+
+
+
+/* ---- hero background base (required) ---- */
+.hero-header {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;           /* keeps blending contained */
+  padding-top: var(--appbar-h); /* you already had this */
+  min-height: 42vh;             /* gives the art room to show */
+}
+
+.hero-header::before,
+.hero-header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;                   /* your hero content sits above */
+}
+
+/* keep content above the art */
+.hero-header .main-container,
+.hero-header .page-kicker-row,
+.hero-header .projects-subheading {
+  position: relative;
+  z-index: 2;
+}
+
+
+
+.hero-header .main-container,
+.hero-header .page-kicker-row,
+.hero-header .projects-subheading {
+  position: relative;
+  z-index: 2;
+}
+
+
+
 /* AVATAR STYLES */
 .avatar-wrapper {
   display: inline-block;
