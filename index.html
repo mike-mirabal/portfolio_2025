@@ -53,7 +53,9 @@
     </h1>
     <p class="page-sublead">
       From UX flows and branded visuals to AI prototypes and business strategy, I bring cross-disciplinary skills into one collaborative toolkit. <br>
-    <a href="#about" class="inline-link">Learn more about me →</a></p>
+   <!-- Hide About Me Link
+       <a href="#about" class="inline-link">Learn more about me →</a></p>
+    -->
     
 <div class="page-kicker-row">
   <!-- Avatar  -->
@@ -168,7 +170,7 @@
   
    <!-- Kicker Text -->
     
-<span class="page-kicker">Explore my projects below. Each one combines design, technology, and storytelling in different ways.</span>
+<span class="page-kicker">Check out my work!</span>
   </div>
   <hr>
  
@@ -468,15 +470,16 @@
     });
 
   document.getElementById('projectsSubheading').textContent = ({
-  all:        'Creating Impact Through Design and Innovation',
-  featured:   'Delivering Creative Excellence For Every Project',
-  ai:         'Designing Workflows that Enhance Productivity',
-  brand:      'Building Identities that Connect and Convert',
-  creative:   'Bringing Ideas to Life with Visual Storytelling',
-  ux:         'Crafting Experiences that Drive Engagement',
-  operations: 'Streamlining Systems for Better Outcomes',
-  strategy:   'Developing Strategies That Inspire Results'
-})[filter] || 'Creating Impact Through Design and Innovation';
+  all:        'Exploring the full range of my work across design, technology, and strategy.',
+  featured:   'Selected projects that highlight my most impactful and versatile work.',
+  ai:         'Prototyping with AI to create smarter tools and future-facing experiences.',
+  brand:      'Building branded experiences that connect with audiences in meaningful ways.',
+  creative:   'Visual and conceptual design projects that bring ideas to life.',
+  ux:         'Designing systems and flows that make complex experiences feel simple.',
+  operations: 'Improving processes and workflows to help teams move faster and work smarter.',
+  strategy:   'Uncovering insights and shaping direction through research and iteration.'
+})[filter] || 'Exploring the full range of my work across design, technology, and strategy.';
+
 
 
     const newUrl = new URL(window.location);
@@ -494,14 +497,16 @@
     });
 
     document.getElementById('projectsSubheading').textContent = ({
-      all:'Creating Impact Through Design and Innovation',
-      brand:'Building Identities that Connect and Convert',
-      creative:'Bringing Ideas to Life with Visual Storytelling',
-      digital:'Creating Engaging Digital Touchpoints',
-      innovation:'Exploring What’s Next in Digital Experiences',
-      operations:'Streamlining Systems for Better Outcomes',
-      product:'Designing Experiences that Users Love'
-    })[filter] || 'Projects';
+  all:        'Exploring the full range of my work across design, technology, and strategy.',
+  featured:   'Selected projects that highlight my most impactful and versatile work.',
+  ai:         'Prototyping with AI to create smarter tools and future-facing experiences.',
+  brand:      'Building branded experiences that connect with audiences in meaningful ways.',
+  creative:   'Visual and conceptual design projects that bring ideas to life.',
+  ux:         'Designing systems and flows that make complex experiences feel simple.',
+  operations: 'Improving processes and workflows to help teams move faster and work smarter.',
+  strategy:   'Uncovering insights and shaping direction through research and iteration.'
+})[filter] || 'Exploring the full range of my work across design, technology, and strategy.';
+
   });
 </script>
 
@@ -674,16 +679,17 @@ Answer concisely and reference specific details from the overview when relevant.
     }, 100);
   });
 
-  const heroContentMap = {
-    all: { heading: 'Creating Impact Through Design and Innovation' },
-    featured: { heading: 'Delivering Creative Excellence For Every Project' },
-    ai: { heading: 'Designing Workflows that Enhance Productivity' },
-    brand: { heading: 'Building Identities that Connect and Convert' },
-    creative: { heading: 'Bringing Ideas to Life with Visual Storytelling' },
-    ux: { heading: 'Crafting Experiences that Drive Engagement' },
-    operations: { heading: 'Streamlining Systems for Better Outcomes' },
-    strategy: { heading: 'Developing Strategies That Inspire Results' }
-  };
+ const heroContentMap = {
+  all:        { heading: 'Exploring the full range of my work across design, technology, and strategy.' },
+  featured:   { heading: 'Selected projects that highlight my most impactful and versatile work.' },
+  ai:         { heading: 'Prototyping with AI to create smarter tools and future-facing experiences.' },
+  brand:      { heading: 'Building branded experiences that connect with audiences in meaningful ways.' },
+  creative:   { heading: 'Visual and conceptual design projects that bring ideas to life.' },
+  ux:         { heading: 'Designing systems and flows that make complex experiences feel simple.' },
+  operations: { heading: 'Improving processes and workflows to help teams move faster and work smarter.' },
+  strategy:   { heading: 'Uncovering insights and shaping direction through research and iteration.' }
+};
+
 
   function animateHeroTransition(filterKey) {
     const heading = document.getElementById('projectsSubheading');
