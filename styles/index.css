@@ -6,6 +6,9 @@
   --hero-bg: #feffe3;
   --text: #1c1c1c;
   --accent: #3e7bfa;
+  --link: #3e7bfa;
+  --link-hover: #6a9cfa;
+  --link-visited: #325fcc;
   --muted: #6c6c6c;
   --chatbg: #ececec;
   --chatbubble: #dedede;
@@ -21,6 +24,9 @@
   --hero-bg: #27252b;
   --text: #ffffff;
   --accent: #588bfa;
+  --link: #588bfa;
+  --link-hover: #7aa4ff;
+  --link-visited: #3f65c7;
   --muted: #bbbbbb;
   --chatbg: #202020;
   --chatbubble: #2d2d2d;
@@ -94,6 +100,37 @@ p {
 
 #project-overview p {
   margin-bottom: 2rem;  /* larger spacing in overview section */
+}
+
+/* Links */
+/* Base link styling */
+a {
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+/* LIGHT MODE */
+[data-theme="light"] a {
+  color: var(--link);
+}
+[data-theme="light"] a:visited {
+  color: var(--link-visited);
+}
+[data-theme="light"] a:hover,
+[data-theme="light"] a:focus {
+  color: var(--link-hover);
+}
+
+/* DARK MODE */
+[data-theme="dark"] a {
+  color: var(--link);
+}
+[data-theme="dark"] a:visited {
+  color: var(--link-visited);
+}
+[data-theme="dark"] a:hover,
+[data-theme="dark"] a:focus {
+  color: var(--link-hover);
 }
 
 
@@ -215,6 +252,10 @@ main, #content, .page-content, .main-container {
   color: var(--text);
   opacity: 0.9;
   margin: 0 0 1.5rem 0;
+  width: 70%;
+  margin-left: 0;     /* force align left */
+  margin-right: auto; /* prevent centering */
+  text-align: left;   /* make sure inline content aligns left */
 }
 
 .page-kicker-row {
@@ -491,7 +532,7 @@ main, #content, .page-content, .main-container {
 .projects-subheading,
 .page-sublead {
   max-width: 900px;
-  margin-left: auto;
+  /* margin-left: auto; */ 
   margin-right: auto;
 }
 
