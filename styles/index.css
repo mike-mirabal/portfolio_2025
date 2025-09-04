@@ -258,6 +258,12 @@ main, #content, .page-content, .main-container {
   text-align: left;   /* make sure inline content aligns left */
 }
 
+@media (max-width: 600px) {
+  .page-sublead {
+    width: 100%;
+  }
+}
+
 .page-kicker-row {
   margin-top: auto;
   display: flex;
