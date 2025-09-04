@@ -20,16 +20,6 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
   <!-- GLightbox script -->
   <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js" defer></script>
-
-  <style>
-    #project-title {
-      font-size: clamp(1.5rem, 5vw, 3rem) !important;
-      font-weight: 800 !important;
-      line-height: 1.2 !important;
-      margin-block-start: 0.5rem !important;
-      margin-block-end: 1.5rem !important;
-    }
-  </style>
 </head>
 <body id="top">
 <!-- ──────────────────────────────────────────────────────────────────────────
@@ -39,25 +29,19 @@
   <div class="appbar-inner">
     <div class="appbar-left">
       <a href="index.html" class="logo-link" aria-label="Go to Homepage">
-  <img src="/assets/icons/icon_appbar_home.svg" alt="Home Icon" width="24" height="24">
-</a>
-
+        <img src="/assets/icons/icon_appbar_home.svg" alt="Home Icon" width="24" height="24">
+      </a>
       <h1 class="appbar-title" aria-label="Mike Mirabal Portfolio">Mike Mirabal&nbsp;|&nbsp;Portfolio</h1>
     </div>
     <div class="appbar-right">
-      <!-- Mail -->
       <a class="icon-btn" href="mailto:info@mikemirabal.com" aria-label="Email Mike" title="Email Mike">
         <img src="/assets/icons/icon_appbar_mail.svg" alt="Mail Icon" width="24" height="24">
       </a>
-
-      <!-- Theme toggle (sun/moon) -->
       <button class="icon-btn theme-switch" id="themeSwitch" onclick="toggleTheme()" aria-label="Toggle theme">
-        <!-- Sun (shown in light) -->
         <svg class="icon-sun" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" fill="none">
           <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/>
           <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.7 4.7l2.1 2.1M17.2 17.2l2.1 2.1M4.7 19.3l2.1-2.1M17.2 6.8l2.1-2.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
         </svg>
-        <!-- Moon (shown in dark) -->
         <svg class="icon-moon" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" fill="none">
           <path d="M20 13.5A8.5 8.5 0 1 1 10.5 4a6.5 6.5 0 1 0 9.5 9.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
         </svg>
@@ -66,22 +50,20 @@
   </div>
 </header>
 
-
 <!-- ──────────────────────────────────────────────────────────────────────────
      PAGE CONTENT
 ────────────────────────────────────────────────────────────────────────────── -->
 <div id="pageContent">
   <main class="main-container">
 
-    <!-- Static hero image -->
-<section id="hero-image"></section>
-
-
-    <!-- Project header -->
-    <div class="project-header">
-      <p id="project-meta" class="meta"></p>
-      <h1 id="project-title" class="project-title"></h1>
-    </div>
+    <!-- FULL-BLEED CASE HERO (overlay) -->
+    <header class="case-hero case-hero--bleed" id="caseHero" aria-label="Project hero">
+      <img class="case-hero__img" id="caseHeroImg" alt="" />
+      <div class="main-container case-hero__content">
+        <p class="case-hero__eyebrow meta" id="project-meta"></p>
+        <h1 class="case-hero__title" id="project-title"></h1>
+      </div>
+    </header>
 
     <!-- 🆕 Dynamic project sections -->
     <section id="project-content"></section>
@@ -132,7 +114,7 @@
     }
 
     page.addEventListener('click', () => {
-      if (nav.classList.contains('open')) {
+      if (nav && nav.classList.contains('open')) {
         nav.classList.remove('open');
         if (toggle) toggle.classList.remove('open');
         nav.setAttribute('aria-hidden', 'true');

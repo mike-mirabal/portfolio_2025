@@ -383,9 +383,17 @@ function renderProjects(projects, container) {
 function renderDetail(p) {
   document.title = `${p.title} | Mike Mirabal`;
   const titleEl = document.getElementById('project-title');
-  const metaEl = document.getElementById('project-meta');
+  const metaEl  = document.getElementById('project-meta');
+
   if (titleEl) titleEl.textContent = p.title || '';
-  if (metaEl) metaEl.textContent = `${p.company || ''} | ${p.year || ''}`;
+  if (metaEl)  metaEl.textContent  = `${p.company || ''} | ${p.year || ''}`;
+
+  // --- set hero image (overlay background) ---
+  const heroImg = document.getElementById('caseHeroImg');
+  if (heroImg && p.hero_url) {
+    heroImg.src = escapeHTML(p.hero_url);
+    heroImg.alt = p.hero_alt ? escapeHTML(p.hero_alt) : 'Project hero image';
+  }
 
   const contentContainer = document.getElementById('project-content');
   if (contentContainer) {
@@ -411,10 +419,10 @@ function renderDetail(p) {
 
     const sections = [
       { key: 'overview', title: 'Overview' },
-      { key: 'problem', title: 'Problem' },
-      { key: 'process', title: 'Process' },
+      { key: 'problem',  title: 'Problem'  },
+      { key: 'process',  title: 'Process'  },
       { key: 'solution', title: 'Solution' },
-      { key: 'results', title: 'Results' }
+      { key: 'results',  title: 'Results'  }
     ];
 
     sections.forEach(({ key, title }) => {
@@ -426,18 +434,15 @@ function renderDetail(p) {
         heading.setAttribute('id', key);
         section.appendChild(heading);
 
-        // Determine media position for this section
         const { position } = getMediaConfig(p, key);
         const mediaHTML = renderSectionMedia(p, key);
 
-        // If media should go at the TOP (just under heading)
         if (position === 'top' && mediaHTML) {
           const mediaWrapperTop = document.createElement('div');
           mediaWrapperTop.innerHTML = mediaHTML;
           section.appendChild(mediaWrapperTop);
         }
 
-        // Render rich text (paragraphs + bullets)
         const richHTML = renderRichText(p[key]);
         if (richHTML) {
           const richDiv = document.createElement('div');
@@ -445,7 +450,6 @@ function renderDetail(p) {
           section.appendChild(richDiv);
         }
 
-        // Overview-specific "My Role" (preserved)
         if (key === 'overview' && p.role && p.role.trim()) {
           const roleHeading = document.createElement('h4');
           roleHeading.textContent = 'My Role';
@@ -456,7 +460,6 @@ function renderDetail(p) {
           section.appendChild(rolePara);
         }
 
-        // If media should go at the BOTTOM (after text)
         if (position === 'bottom' && mediaHTML) {
           const mediaWrapperBottom = document.createElement('div');
           mediaWrapperBottom.innerHTML = mediaHTML;
@@ -470,7 +473,6 @@ function renderDetail(p) {
 
         contentContainer.appendChild(section);
 
-        // Optional interactive link block (preserved) — now with markdown support on text pieces
         if (key === 'overview' && p.interactive_link && p.interactive_text) {
           const icon = p.interactive_icon || '';
           const headingText = p.interactive_heading || 'Further Reading';
@@ -505,18 +507,22 @@ function renderDetail(p) {
       contentContainer.insertAdjacentHTML('beforeend', linkHTML);
     }
   }
-
-  // Static hero image insertion
-  const heroImageContainer = document.getElementById('hero-image');
-  if (heroImageContainer && p.hero_url) {
-    heroImageContainer.innerHTML = `
-      <figure>
-        <img src="${escapeHTML(p.hero_url)}" alt="Hero image" style="width: 100%; height: auto;">
-        ${p.hero_caption ? `<figcaption class="caption">${escapeHTML(p.hero_caption)}</figcaption>` : ''}
-      </figure>
-    `;
-  }
 }
+
+
+    if (p.extra_resource_link) {
+      const linkHTML = `
+        <p>
+          <a href="${escapeHTML(p.extra_resource_link)}" target="_blank" rel="noopener noreferrer">
+            ${p.extra_resource_text ? applyFormatting(p.extra_resource_text) : 'View More Details'}
+          </a>
+        </p>
+      `;
+      contentContainer.insertAdjacentHTML('beforeend', linkHTML);
+    }
+  
+
+ 
 
 /**
  * Project Chat Modal viewport behavior:
