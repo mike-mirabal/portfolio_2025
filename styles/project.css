@@ -141,6 +141,11 @@ main { max-width: 900px; margin: 0 auto; padding: 0 1rem; }
   text-wrap: balance;
 }
 
+@media (max-width: 600px) {
+  .case-hero__content {
+    padding-bottom: 0.5rem; /* tighten space below on mobile */
+  }
+}
 
 /* ———————— PROJECT CONTENT ———————— */
 #project-meta { font-size: 0.9rem; color: rgba(255,255,255,.9); }
