@@ -70,17 +70,21 @@ main { max-width: 900px; margin: 0 auto; padding: 0 1rem; }
 /* ———————— FULL-BLEED HERO (overlayed title/meta) ———————— */
 .case-hero {
   position: relative;
-  width: 100vw;                                  /* full-bleed even inside centered main */
+  width: 100vw;
   margin-left: calc(-50vw + 50%);
+  margin-top: 2rem;
   background: #000;
   overflow: hidden;
-  min-height: clamp(320px, 55vh, 540px);         /* prominent but not full screen */
+  min-height: clamp(320px, 55vh, 540px);
 }
 
-/* optional: future "contained" variant support */
+/* optional contained variant */
 .case-hero--contained {
-  width: auto; margin-left: 0;
-  max-width: 900px; margin-right: auto; margin-left: auto;
+  width: auto;
+  margin-left: 0;
+  max-width: 900px;
+  margin-right: auto;
+  margin-left: auto;
   border-radius: 14px;
   box-shadow: 0 20px 50px rgba(0,0,0,.18);
   min-height: clamp(260px, 42vh, 420px);
@@ -88,30 +92,37 @@ main { max-width: 900px; margin: 0 auto; padding: 0 1rem; }
 
 /* background image */
 .case-hero__img {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: center 35%;
   display: block;
+  z-index: 0;                /* explicit */
 }
 
 /* readability scrim */
 .case-hero::after {
   content: "";
-  position: absolute; inset: 0;
-  background:
-    linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.25) 40%, rgba(0,0,0,.65) 100%);
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.25) 40%, rgba(0,0,0,.65) 100%);
   pointer-events: none;
+  z-index: 1;                /* sits above img, below content */
 }
 
-/* content aligned to your 900px grid and anchored to bottom */
+/* content aligned to grid, anchored bottom */
 .case-hero__content {
-  position: relative; z-index: 1;
+  position: relative;
+  z-index: 2;                /* above scrim and img */
   height: 100%;
-  display: flex; flex-direction: column; justify-content: flex-end;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
   gap: .5rem;
   padding: 2rem 1rem 1.5rem;
-  margin-top: 3rem;
+  margin-top: 2rem;
 }
 
 .case-hero__eyebrow {
@@ -130,8 +141,8 @@ main { max-width: 900px; margin: 0 auto; padding: 0 1rem; }
   text-wrap: balance;
 }
 
+
 /* ———————— PROJECT CONTENT ———————— */
-#project-title { /* keep id for JS, class handles styling */ }
 #project-meta { font-size: 0.9rem; color: rgba(255,255,255,.9); }
 
 h4.subnav-label { margin: 2rem 0 0 0; }
