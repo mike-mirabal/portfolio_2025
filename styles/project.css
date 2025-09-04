@@ -149,7 +149,7 @@ main { max-width: 900px; margin: 0 auto; padding: 0 1rem; }
 
 @media (max-width: 600px) {
   .case-hero__title {
-    font-size: clamp(1.75rem, 7vw, 2.25rem); /* slightly bigger */
+    font-size: clamp(2rem, 7vw, 2.25rem); /* slightly bigger */
   }
 }
 
