@@ -185,6 +185,12 @@ main, #content, .page-content, .main-container {
   opacity: 0.6;
 }
 
+@media (max-width: 600px) {
+  .appbar .appbar-title .appbar-title-light {
+    font-size: 14px;
+  }
+}
+
 .appbar-title a {
   color: inherit;          /* always use the title's color */
   text-decoration: none;   /* no underline */
