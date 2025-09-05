@@ -25,30 +25,50 @@
 <!-- ──────────────────────────────────────────────────────────────────────────
      APP BAR (same as index.html)
 ────────────────────────────────────────────────────────────────────────────── -->
-<header class="appbar" role="banner">
-  <div class="appbar-inner">
-    <div class="appbar-left">
-      <a href="index.html" class="logo-link" aria-label="Go to Homepage">
+ <!-- APP BAR (Material-style) -->
+    <header class="appbar" role="banner">
+     <div class="appbar-inner">
+      <!-- APP BAR / LEFT -->
+      <div class="appbar-left">
+        <!-- Avatar Icon -->
+        <a href="#about" class="logo-link" aria-label="About Mike" title="About Mike">
+        <img src="/assets/avatars/avatar_appbar_fill.svg" alt="Avatar Icon" width="30" height="30">
+        </a>
+        <!-- Page Title -->
+        <h1 class="appbar-title" aria-label="Mike Mirabal Portfolio">
+          <a href="#about" class="appbar-title" >Mike Mirabal</a>
+          &nbsp;
+          <span class="appbar-title-light hide-mobile">|</span>
+          &nbsp;
+          <span class="hide-mobile">Portfolio</span>
+        </h1>
+      </div> <!-- End / appbar-left -->
+      <!-- APP BAR / RIGHT -->
+      <div class="appbar-right">
+         <!-- Home Icon -->
+        <a href="https://mikemirabal.com" class="logo-link" aria-label="Go to Homepage" title="Go to Homepage">
         <img src="/assets/icons/icon_appbar_home.svg" alt="Home Icon" width="24" height="24">
-      </a>
-      <h1 class="appbar-title" aria-label="Mike Mirabal Portfolio">Mike Mirabal&nbsp;|&nbsp;Portfolio</h1>
-    </div>
-    <div class="appbar-right">
-      <a class="icon-btn" href="mailto:info@mikemirabal.com" aria-label="Email Mike" title="Email Mike">
-        <img src="/assets/icons/icon_appbar_mail.svg" alt="Mail Icon" width="24" height="24">
-      </a>
-      <button class="icon-btn theme-switch" id="themeSwitch" onclick="toggleTheme()" aria-label="Toggle theme">
-        <svg class="icon-sun" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" fill="none">
-          <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/>
-          <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.7 4.7l2.1 2.1M17.2 17.2l2.1 2.1M4.7 19.3l2.1-2.1M17.2 6.8l2.1-2.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-        </svg>
-        <svg class="icon-moon" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" fill="none">
-          <path d="M20 13.5A8.5 8.5 0 1 1 10.5 4a6.5 6.5 0 1 0 9.5 9.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
-        </svg>
-      </button>
-    </div>
-  </div>
-</header>
+        </a> 
+        <!-- Toggle / Light - Dark -->
+        <button class="icon-btn theme-switch" id="themeSwitch" onclick="toggleTheme()" aria-label="Toggle theme" title="Light / Dark Mode">
+          <!-- Light icon -->
+          <img class="icon-light" src="assets/icons/icon_appbar_lightmode.svg" alt="Light mode" aria-label="Toggle theme"width="24" height="24">
+          <!-- Dark icon -->
+          <img class="icon-dark" src="assets/icons/icon_appbar_darkmode.svg" alt="Dark mode" aria-label="Toggle theme" width="24" height="24">
+        </button>
+        <!-- Divider -->
+        <span class="appbar-title-light"> | </span>
+        <!-- Mail Icon -->
+        <a class="icon-btn" href="mailto:info@mikemirabal.com" aria-label="Email Mike" title="Email Mike">
+          <img src="/assets/icons/icon_appbar_mail.svg" alt="Mail Icon" width="24" height="24">
+        </a>
+        <!-- LinkedIn Icon -->
+         <a class="icon-btn" href="https://www.linkedin.com/in/mikemirabal" aria-label="Connect with Mike" title="Connect with Mike">
+          <img src="/assets/icons/icon_appbar_in.svg" alt="LinkedIn Icon" width="24" height="24">
+         </a>
+      </div> <!-- End / appbar-right -->
+     </div> <!-- End / appbar-inner -->
+    </header>
 
 <!-- ──────────────────────────────────────────────────────────────────────────
      PAGE CONTENT
