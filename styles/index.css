@@ -1504,3 +1504,13 @@ h2.chat-heading {
   .featured-track { scroll-behavior: auto; }
   .feat-card { transition: none; }
 }
+
+/* Hide horizontal scrollbar but keep scrolling */
+.featured-track {
+  -ms-overflow-style: none;    /* IE/Edge legacy */
+  scrollbar-width: none;       /* Firefox */
+}
+.featured-track::-webkit-scrollbar {
+  display: none;               /* Chrome/Safari */
+}
+

@@ -55,6 +55,8 @@
         </h1>
 
 <!-- TEST - FEATURED SECTION -->
+
+
 <!-- Featured Projects (native scroll-snap carousel) -->
 <section class="featured-wrap" aria-label="Featured projects">
   <div class="featured-header">
@@ -62,36 +64,18 @@
 
     <!-- Nav buttons (hidden on small touch screens) -->
     <div class="featured-nav" aria-hidden="true">
-      <button class="feat-btn feat-prev" type="button" aria-label="Previous">
-        &#x2039;
-      </button>
-      <button class="feat-btn feat-next" type="button" aria-label="Next">
-        &#x203A;
-      </button>
+      <button class="feat-btn feat-prev" type="button" aria-label="Previous">&#x2039;</button>
+      <button class="feat-btn feat-next" type="button" aria-label="Next">&#x203A;</button>
     </div>
   </div>
 
-  <div class="featured-track" id="featuredTrack" tabindex="0" role="region" aria-label="Featured project carousel">
-    <!-- Each slide -->
-    <a class="feat-card" href="project.html?slug=spirit-guide" style="--bg:url('assets/featured/ghost-donkey.jpg')">
-      <span class="feat-label">AI Cocktail Chatbot</span>
-    </a>
-
-    <a class="feat-card" href="project.html?slug=brand-kit" style="--bg:url('assets/featured/brand-kit.jpg')">
-      <span class="feat-label">Brand Identity Toolkit</span>
-    </a>
-
-    <a class="feat-card" href="project.html?slug=payments-ux" style="--bg:url('assets/featured/payments.jpg')">
-      <span class="feat-label">Payments UX Flow</span>
-    </a>
-
-    <a class="feat-card" href="project.html?slug=ai-proto" style="--bg:url('assets/featured/ai-proto.jpg')">
-      <span class="feat-label">Gen-AI Prototype</span>
-    </a>
-
-    <!-- add/remove as needed (4–6 total is ideal) -->
-  </div>
+  <!-- JS will fill this with cards -->
+  <div class="featured-track" id="featuredTrack" tabindex="0" role="region" aria-label="Featured project carousel"></div>
 </section>
+
+<!-- Include AFTER PapaParse and before the closing </body> -->
+<script src="scripts/featured.js" defer></script>
+
 
 
         <p class="page-sublead">
@@ -740,7 +724,9 @@ Answer concisely and reference specific details from the overview when relevant.
   }
 </script>
 
-<script>
+
+<!-- -->
+<script> 
   document.addEventListener('DOMContentLoaded', () => {
     const sticky = document.querySelector('.sticky-controls');
     const about  = document.getElementById('about');
@@ -761,6 +747,35 @@ Answer concisely and reference specific details from the overview when relevant.
   });
 </script>
 
+<!-- Featured Projects Scroll Behavior 
+<script>
+(function () {
+  const track = document.getElementById('featuredTrack');
+  if (!track) return;
+
+  // Optional: Arrow keys scroll when the track is focused
+  track.addEventListener('keydown', (e) => {
+    const step = track.clientWidth * 0.8;
+    if (e.key === 'ArrowRight') { track.scrollBy({ left: step, behavior: 'smooth' }); e.preventDefault(); }
+    if (e.key === 'ArrowLeft')  { track.scrollBy({ left: -step, behavior: 'smooth' }); e.preventDefault(); }
+  });
+
+  // Prev/Next buttons
+  const prev = document.querySelector('.feat-prev');
+  const next = document.querySelector('.feat-next');
+  const scrollByOneCard = () => {
+    const card = track.querySelector('.feat-card');
+    const cardWidth = card ? card.offsetWidth + parseFloat(getComputedStyle(track).gap || 12) : 180;
+    return Math.max(cardWidth * 2, track.clientWidth * 0.75); // move ~2 cards
+  };
+
+  if (prev && next) {
+    prev.addEventListener('click', () => track.scrollBy({ left: -scrollByOneCard(), behavior: 'smooth' }));
+    next.addEventListener('click', () => track.scrollBy({ left:  scrollByOneCard(), behavior: 'smooth' }));
+  }
+})();
+</script> 
+-->
 
 
 
