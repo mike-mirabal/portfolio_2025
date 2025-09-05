@@ -180,6 +180,26 @@ main, #content, .page-content, .main-container {
   color: #fff;
   line-height: 1;
 }
+.appbar .appbar-title-light {
+  font-weight: 500;
+  opacity: 0.6;
+}
+
+.appbar-title a {
+  color: inherit;          /* always use the title's color */
+  text-decoration: none;   /* no underline */
+  display: inline-block;   /* keeps layout tidy */
+}
+
+/* Override all pseudo states to look identical */
+.appbar-title a:hover,
+.appbar-title a:focus,
+.appbar-title a:visited,
+.appbar-title a:active {
+  color: inherit;
+  text-decoration: none;
+}
+
 .appbar .appbar-right { display: flex; align-items: center; gap: 12px; }
 
 /* App bar icon buttons (email, LinkedIn, theme) */
