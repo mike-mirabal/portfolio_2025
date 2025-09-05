@@ -1550,3 +1550,27 @@ h2.chat-heading {
     font-size: 0.7rem; /* scale down text slightly */
   }
 }
+
+/* === Featured: subtle load-in animation === */
+.feat-card {
+  opacity: 0;                       /* start hidden */
+  transform: translateX(-12px);     /* slight left offset */
+  will-change: opacity, transform;
+}
+
+/* When the track is flagged to animate, play a staggered entrance */
+.featured-track.animate .feat-card {
+  animation: feat-enter 520ms ease-out forwards;
+  animation-delay: calc(var(--stagger, 70ms) * var(--i, 0));
+}
+
+@keyframes feat-enter {
+  from { opacity: 0; transform: translateX(-12px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .feat-card { opacity: 1; transform: none; animation: none !important; }
+  .featured-track.animate .feat-card { animation: none !important; }
+}
