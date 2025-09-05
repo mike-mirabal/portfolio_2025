@@ -1391,7 +1391,7 @@ h2.chat-heading {
 
 
   
-  /* ===== Featured carousel (native scroll-snap) ===== */
+/* ===== Featured carousel (native scroll-snap) ===== */
 .featured-wrap {
   max-width: 900px;
   margin: 0;
@@ -1411,11 +1411,13 @@ h2.chat-heading {
   font-size: 1rem;
   font-weight: 800;
   letter-spacing: .2px;
+  text-align: left; /* keep left-aligned */
 }
 
-.featured-nav {
-  display: none; /* shown on larger viewports */
-  gap: .5rem;
+/* Hide nav on small; you already hide it outright */
+.featured-nav { display: none; gap: .5rem; }
+@media (min-width: 800px) {
+  .featured-nav { display: flex; }
 }
 
 .feat-btn {
@@ -1439,7 +1441,7 @@ h2.chat-heading {
 .featured-track {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: 160px;          /* card width */
+  grid-auto-columns: 170px;        /* card width */
   gap: 12px;
   overflow-x: auto;
   padding: .5rem 0 .25rem;
@@ -1447,61 +1449,73 @@ h2.chat-heading {
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   outline: none;
+
+  /* Hide scrollbar but keep scrolling */
+  -ms-overflow-style: none;    /* IE/Edge legacy */
+  scrollbar-width: none;       /* Firefox */
+}
+.featured-track::-webkit-scrollbar { display: none; }
+
+/* Card: white surface + rounded + shadow */
+.feat-card {
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  width: 170px;
+  border-radius: 16px;
+  background: var(--chatbg);
+  border: 1px solid rgba(0,0,0,.06);
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  text-decoration: none;
+  overflow: hidden;
+  transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+  color: inherit;
+}
+.feat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,.14);
+  border-color: rgba(0,0,0,.12);
 }
 
-/* Card */
-/* Featured card styles */
-.feat-card {
-  flex: 0 0 auto;
-  width: 160px;
-  height: 160px;
-  border-radius: 0.75rem;
-  background-color: var(--muted-bg, #ddd);
-  background-image: var(--bg);
+/* Square thumbnail with subtle corner rounding inside card */
+.feat-thumb {
+  position: relative;
+  aspect-ratio: 1 / 1;               /* square */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  text-decoration: none;
-  overflow: hidden;
-  position: relative;
-  color: #fff;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
-.feat-card:hover { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(0,0,0,.16); }
 
-/* Text overlay */
-.feat-label {
+/* Optional soft highlight like your sample (fade on the right) */
+.feat-thumb::after {
+  content: "";
   position: absolute;
-  inset: auto 8px 8px 8px;
-  display: inline-block;
-  padding: .4rem .55rem;
-  border-radius: 10px;
-  background: rgba(0,0,0,.45);
-  color: #fff;
-  font-size: .8rem;
-  font-weight: 700;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 55%, rgba(255,255,255,.18));
+  pointer-events: none;
+}
+
+/* Text area */
+.feat-text {
+  padding: .6rem .75rem .8rem;
+  display: grid;
+  gap: .25rem;
+}
+
+.feat-title {
+  font-size: .75rem;
+  font-weight: 600;
   letter-spacing: .2px;
-  line-height: 1.1;
-  text-align: center;
-  backdrop-filter: blur(4px);
+  color: var(--text);
+  line-height: 1.2;
 }
 
-/* Light/Dark subtle tweaks (optional) */
-[data-theme="light"] .feat-label { background: rgba(0,0,0,.42); }
-[data-theme="dark"]  .feat-label { background: rgba(0,0,0,.52); }
-
-/* Show nav on wider screens where mouse use is likely */
-@media (min-width: 800px) {
-  .featured-nav { display: flex; }
-}
-
-/* Larger cards on big screens */
+/* Larger on big screens */
 @media (min-width: 1024px) {
-  .featured-track { grid-auto-columns: 190px; gap: 14px; }
-  .feat-card { width: 190px; height: 190px; border-radius: 18px; }
-  .feat-label { inset: auto 10px 10px 10px; }
+  .featured-track { grid-auto-columns: 200px; gap: 14px; }
+  .feat-card { width: 200px; border-radius: 18px; }
 }
 
 /* Reduced motion */
@@ -1510,16 +1524,7 @@ h2.chat-heading {
   .feat-card { transition: none; }
 }
 
-/* Hide horizontal scrollbar but keep scrolling */
-.featured-track {
-  -ms-overflow-style: none;    /* IE/Edge legacy */
-  scrollbar-width: none;       /* Firefox */
-}
-.featured-track::-webkit-scrollbar {
-  display: none;               /* Chrome/Safari */
-}
-
-/* Hide nav buttons for featured carousel */
+/* Explicitly hide manual nav buttons if you want them gone */
 .feat-prev,
 .feat-next {
   display: none !important;
