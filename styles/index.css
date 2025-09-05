@@ -1388,3 +1388,119 @@ h2.chat-heading {
   .hero-panel.slide-out {
     transform: translateX(100%);
   }
+
+
+  
+  /* ===== Featured carousel (native scroll-snap) ===== */
+.featured-wrap {
+  max-width: 900px;
+  margin: 0;
+  padding: 0;
+}
+
+.featured-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  margin-bottom: .5rem;
+}
+
+.featured-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: .2px;
+}
+
+.featured-nav {
+  display: none; /* shown on larger viewports */
+  gap: .5rem;
+}
+
+.feat-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 18px;
+  border: 1px solid var(--muted);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  line-height: 1;
+  font-size: 1.1rem;
+  display: grid;
+  place-items: center;
+  transition: background .2s, border-color .2s, transform .1s;
+}
+.feat-btn:hover { background: rgba(127,127,127,.08); border-color: var(--text); }
+.feat-btn:active { transform: scale(.97); }
+
+/* Horizontal scroll area */
+.featured-track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 160px;          /* card width */
+  gap: 12px;
+  overflow-x: auto;
+  padding: .5rem 0 .25rem;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  outline: none;
+}
+
+/* Card */
+.feat-card {
+  scroll-snap-align: start;
+  position: relative;
+  display: block;
+  width: 160px;
+  height: 160px;                     /* square */
+  border-radius: 16px;               /* MD3 vibe */
+  background: var(--card, #222) center/cover no-repeat;
+  background-image: var(--bg);
+  text-decoration: none;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,.12), 0 6px 12px rgba(0,0,0,.08);
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.feat-card:hover { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(0,0,0,.16); }
+
+/* Text overlay */
+.feat-label {
+  position: absolute;
+  inset: auto 8px 8px 8px;
+  display: inline-block;
+  padding: .4rem .55rem;
+  border-radius: 10px;
+  background: rgba(0,0,0,.45);
+  color: #fff;
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .2px;
+  line-height: 1.1;
+  text-align: center;
+  backdrop-filter: blur(4px);
+}
+
+/* Light/Dark subtle tweaks (optional) */
+[data-theme="light"] .feat-label { background: rgba(0,0,0,.42); }
+[data-theme="dark"]  .feat-label { background: rgba(0,0,0,.52); }
+
+/* Show nav on wider screens where mouse use is likely */
+@media (min-width: 800px) {
+  .featured-nav { display: flex; }
+}
+
+/* Larger cards on big screens */
+@media (min-width: 1024px) {
+  .featured-track { grid-auto-columns: 190px; gap: 14px; }
+  .feat-card { width: 190px; height: 190px; border-radius: 18px; }
+  .feat-label { inset: auto 10px 10px 10px; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .featured-track { scroll-behavior: auto; }
+  .feat-card { transition: none; }
+}
