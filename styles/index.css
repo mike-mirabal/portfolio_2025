@@ -264,6 +264,7 @@ main, #content, .page-content, .main-container {
   }
 }
 
+/* Page Kicker - avatar and text */
 .page-kicker-row {
   margin-top: auto;
   display: flex;
@@ -1463,18 +1464,22 @@ h2.chat-heading {
   flex-direction: column;
   width: 170px;
   border-radius: 16px;
-  background: var(--chatbg);
-  border: 1px solid rgba(0,0,0,.06);
-  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  background: #E8F0FE;
+  /* border: 1px solid var(--link); */
+  box-shadow: 0 2px 8px rgba(0,0,0,.2);
   text-decoration: none;
   overflow: hidden;
-  transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
   color: inherit;
 }
 .feat-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(0,0,0,.14);
-  border-color: rgba(0,0,0,.12);
+  /*border-color: var(--link-hover); */
+}
+
+.feat-card:visited {
+  /* border-color: var(--link-visited) */
 }
 
 /* Square thumbnail with subtle corner rounding inside card */
@@ -1508,7 +1513,7 @@ h2.chat-heading {
   font-size: .75rem;
   font-weight: 600;
   letter-spacing: .2px;
-  color: var(--text);
+  color: #1c1c1c;
   line-height: 1.2;
 }
 
@@ -1528,4 +1533,20 @@ h2.chat-heading {
 .feat-prev,
 .feat-next {
   display: none !important;
+}
+/* Mobile adjustments: shrink cards on <=600px */
+@media (max-width: 600px) {
+  .featured-track {
+    grid-auto-columns: 136px; /* 80% of 170px */
+    gap: 10px;
+  }
+
+  .feat-card {
+    width: 136px;   /* shrink card width */
+    border-radius: 14px;
+  }
+
+  .feat-title {
+    font-size: 0.7rem; /* scale down text slightly */
+  }
 }

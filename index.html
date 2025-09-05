@@ -28,17 +28,19 @@
       </div> <!-- End / appbar-left -->
       <!-- APP BAR / RIGHT -->
       <div class="appbar-right">
+        <!-- Toggle / Light - Dark -->
+        <button class="icon-btn theme-switch" id="themeSwitch" onclick="toggleTheme()" aria-label="Toggle theme">
+          <!-- Light icon -->
+          <img class="icon-light" src="assets/icons/icon_appbar_lightmode.svg" alt="Light mode" aria-label="Toggle theme"width="24" height="24">
+          <!-- Dark icon -->
+          <img class="icon-dark" src="assets/icons/icon_appbar_darkmode.svg" alt="Dark mode" aria-label="Toggle theme" width="24" height="24">
+        </button>
+        
         <!-- Mail Icon -->
         <a class="icon-btn" href="mailto:info@mikemirabal.com" aria-label="Email Mike" title="Email Mike">
           <img src="/assets/icons/icon_appbar_mail.svg" alt="Mail Icon" width="24" height="24">
         </a>
-        <!-- Toggle / Light - Dark -->
-        <button class="icon-btn theme-switch" id="themeSwitch" onclick="toggleTheme()" aria-label="Toggle theme">
-          <!-- Light icon -->
-          <img class="icon-light" src="assets/icons/icon_appbar_lightmode.svg" alt="Light mode" width="24" height="24">
-          <!-- Dark icon -->
-          <img class="icon-dark" src="assets/icons/icon_appbar_darkmode.svg" alt="Dark mode" width="24" height="24">
-        </button>
+        
       </div> <!-- End / appbar-right -->
      </div> <!-- End / appbar-inner -->
     </header>
@@ -54,11 +56,7 @@
           I design, build, and adapt creative systems that help small teams grow.
         </h1>
 
-<!-- TEST - FEATURED SECTION -->
-
-
-<!-- TEST - FEATURED SECTION -->
-
+<!-- FEATURED SECTION -->
 <!-- Featured Projects (native scroll-snap carousel) -->
 <section class="featured-wrap" aria-label="Featured projects">
   <div class="featured-header">
@@ -80,11 +78,8 @@
     aria-label="Featured project carousel"
   ></div>
 </section>
-
 <!-- Make sure PapaParse is loaded somewhere before this -->
 <script src="scripts/featured.js" defer></script>
-
-
 
         <p class="page-sublead">
           From UX flows to AI prototypes, and branded visuals to business strategy, I bring cross-disciplinary skills in one toolkit. 
@@ -211,7 +206,7 @@
     </div> <!-- End / #heroHeader -->
 
   <!-- PROJECTS SECTION -->
-    <div class="projects-section">
+      <div class="projects-section">
       <div class="main-container">
         <h3 class="section-title">All Projects</h3>
         <!-- Sticky controls: sticks beneath the blue app bar when scrolling -->
@@ -370,7 +365,8 @@
   <!-- Back to Top Link --> 
     <p class="back-to-top"><a href="#top">Back to top ↑</a></p>
       </div> <!-- End / main-container -->
-    </div> <!-- End / projects-section -->
+      </div> <!-- End / projects-section -->
+
   </div> <!-- End / page-wrapper (first div inside <Body>) -->
 
   <!-- FOOTER -->
