@@ -8,6 +8,10 @@
   <title>Portfolio – Mike Mirabal</title>
   <link rel="stylesheet" href="styles/index.css" />
   <link rel="icon" type="image/png" href="assets/favicon.png" />
+
+  <link rel="preconnect" href="https://docs.google.com" crossorigin>
+  <link rel="preconnect" href="https://lh3.googleusercontent.com" crossorigin>
+
 </head>
 
 <!-- BODY -->
@@ -116,8 +120,7 @@
     aria-label="Featured project carousel"
   ></div>
 </section>
-<!-- Make sure PapaParse is loaded somewhere before this -->
-<script src="scripts/featured.js" defer></script>
+
 
 <!-- Add “reveal on scroll” for the big project cards -->
 <script>
@@ -591,8 +594,11 @@
 
 <!-- CSV + project rendering -->
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js" defer></script>
-<script src="scripts/filters.js" defer></script>
-<script src="/scripts/project.js" defer></script> 
+<script src="/scripts/filters.js" defer></script>
+<script src="/scripts/project.js" defer></script>
+<script src="/scripts/featured.js" defer></script>
+<script src="/scripts/perf-mobile.js" defer></script>
+
 
 <!-- Reveal-on-scroll for project cards (place immediately after project.js) -->
 <script>

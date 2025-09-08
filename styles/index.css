@@ -1692,3 +1692,36 @@ h2.chat-heading {
   .feat-card { opacity: 1; transform: none; animation: none !important; }
   .featured-track.animate .feat-card { animation: none !important; }
 }
+
+
+/* ===== Mobile Performance Mode ===== */
+@media (max-width: 768px), (prefers-reduced-motion: reduce) {
+  /* Kill expensive hero effects on mobile */
+  .hero--mesh::after,
+  .hero--noise::before,
+  .hero--noise::after,
+  .hero--rings::before,
+  .hero--rings::after {
+    animation: none !important;
+    filter: none !important;
+    background: none !important;
+    content: none !important;
+  }
+
+  /* Speed up the slide panels */
+  .hero-panel { transition: transform 120ms ease-out !important; }
+
+  /* Lighter cards (shadows are expensive to composite) */
+  .card.card-v03 {
+    box-shadow: none !important;
+    border: 1px solid color-mix(in srgb, var(--muted), transparent 40%) !important;
+  }
+
+  /* Scroll-snap + smooth scrolling can add jank on low-end phones */
+  .featured-track {
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Avoid layout work for off-screen sections */
+#projects, #about { content-visibility: auto; contain-intrinsic-size: 600px; }

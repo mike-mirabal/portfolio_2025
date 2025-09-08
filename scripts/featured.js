@@ -61,7 +61,8 @@
 
         // Preload (so when the card animates in, the image is ready)
         const preload = new Image();
-        preload.onload = () => { thumb.style.backgroundImage = `url("${img}")`; };
+        preload.onload = () => { thumb.dataset.bg = img; // let perf-mobile.js load it when visible
+};
         preload.src = img;
 
         // Text block under image
