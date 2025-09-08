@@ -10,8 +10,16 @@
     return;
   }
 
+  // helpers
   const norm = (v) => (v || '').toString().trim();
   const hasFeaturedTag = (v) => /\bfeatured\b/i.test(norm(v).toLowerCase());
+
+  // small util: return encoded URL, and a fallback if it's .webp
+  const toEncoded = (u) => encodeURI((u || '').trim());
+  const webpFallback = (u) => {
+    // if it's .webp, try a .png fallback beside it
+    return /\.webp(\?.*)?$/i.test(u) ? u.replace(/\.webp(\?.*)?$/i, '.png$1') : u;
+  };
 
   fetch(SHEET_URL)
     .then((res) => res.text())
@@ -40,35 +48,51 @@
         const imgRaw = norm(p.featured_img);
         if (!imgRaw) return;
 
-        // Sanitize + encode URL (prevents space/case oddities)
-        const img = encodeURI(imgRaw);
+        const img = toEncoded(imgRaw);
+        const isWebp = /\.webp(\?.*)?$/i.test(img);
+        const fallback = toEncoded(webpFallback(img));
 
-        // <a> card
+        // anchor card
         const a = document.createElement('a');
         a.className = 'feat-card';
         a.href = slug ? `project.html?slug=${encodeURIComponent(slug)}` : '#';
         a.setAttribute('aria-label', title);
         a.style.setProperty('--i', i);
 
-        // Thumb (IMG instead of background)
+        // thumb container
         const thumb = document.createElement('div');
         thumb.className = 'feat-thumb';
 
-        const image = document.createElement('img');
-        image.src = img;
-        image.alt = title;
-        image.width = 1920;
-        image.height = 1280;
-        image.loading = 'lazy';
-        image.decoding = 'async';
-        image.onerror = () => {
-          console.warn('Featured image failed:', img);
-          image.remove(); // show the soft background if it fails
+        // <picture> for webp + fallback
+        const pic = document.createElement('picture');
+
+        if (isWebp) {
+          const srcWebp = document.createElement('source');
+          srcWebp.type = 'image/webp';
+          srcWebp.srcset = img;      // serve webp when supported
+          pic.appendChild(srcWebp);
+        }
+
+        const imgTag = document.createElement('img');
+        imgTag.alt = title;
+        imgTag.loading = 'lazy';
+        imgTag.decoding = 'async';
+        imgTag.width = 1920;   // intrinsic size of your assets
+        imgTag.height = 1280;
+        imgTag.src = fallback || img; // use fallback if we created one
+
+        // if fallback also fails, show a placeholder so card never looks empty
+        let triedPlaceholder = false;
+        imgTag.onerror = () => {
+          if (triedPlaceholder) return;
+          triedPlaceholder = true;
+          imgTag.src = '/assets/placeholder-card-1920x1280.jpg';
         };
 
-        thumb.appendChild(image);
+        pic.appendChild(imgTag);
+        thumb.appendChild(pic);
 
-        // Text
+        // text block
         const text = document.createElement('div');
         text.className = 'feat-text';
         const t = document.createElement('div');
@@ -86,7 +110,7 @@
         return;
       }
 
-      // Staggered animation trigger
+      // stagger animation trigger
       if (!track.style.getPropertyValue('--stagger')) {
         track.style.setProperty('--stagger', '80ms');
       }
