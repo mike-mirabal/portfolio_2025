@@ -228,13 +228,11 @@
           <div class="sticky-inner">
             <div class="filters">
               <button class="active" onclick="selectFilter(this)">All</button>
-              <button onclick="selectFilter(this)">Featured</button>
               <button onclick="selectFilter(this)">AI</button>
-              <button onclick="selectFilter(this)">Brand</button>
-              <button onclick="selectFilter(this)">Creative</button>
+              <button onclick="selectFilter(this)">Graphic</button>
+              <button onclick="selectFilter(this)">Immersive</button>
+              <button onclick="selectFilter(this)">Service</button>
               <button onclick="selectFilter(this)">UX</button>
-              <button onclick="selectFilter(this)">Operations</button>
-              <button onclick="selectFilter(this)">Strategy</button>
             </div>
           </div> <!-- End / sticky-inner -->
         </div> <!-- End / sticky-controls -->
@@ -495,14 +493,12 @@
     });
 
   document.getElementById('projectsSubheading').textContent = ({
-  all:        'Exploring the full range of my work across design, technology, and strategy.',
-  featured:   'Selected projects that highlight my most impactful and versatile work.',
-  ai:         'Prototyping with AI to create smarter tools and future-facing experiences.',
-  brand:      'Building branded experiences that connect with audiences in meaningful ways.',
-  creative:   'Visual and conceptual design projects that bring ideas to life.',
-  ux:         'Designing systems and flows that make complex experiences feel simple.',
-  operations: 'Improving processes and workflows to help teams move faster and work smarter.',
-  strategy:   'Uncovering insights and shaping direction through research and iteration.'
+   all:        'Exploring the full range of my work across design, technology, and strategy.',
+    ai:         'Prototyping with Generative AI to create smarter tools and future-facing experiences.',
+    graphic:    'Brand, visuals, and graphic systems that communicate with clarity and personality.',
+    immersive:  'Spatial, cinematic, and interactive moments that invite exploration and play.',
+    service:    'Operational design, workflows, and service blueprints that help teams scale.',
+    ux:         'Systems, flows, and interfaces that make complex experiences feel simple.'
 })[filter] || 'Exploring the full range of my work across design, technology, and strategy.';
 
 
@@ -522,14 +518,12 @@
     });
 
     document.getElementById('projectsSubheading').textContent = ({
-  all:        'Exploring the full range of my work across design, technology, and strategy.',
-  featured:   'Selected projects that highlight my most impactful and versatile work.',
-  ai:         'Prototyping with AI to create smarter tools and future-facing experiences.',
-  brand:      'Building branded experiences that connect with audiences in meaningful ways.',
-  creative:   'Visual and conceptual design projects that bring ideas to life.',
-  ux:         'Designing systems and flows that make complex experiences feel simple.',
-  operations: 'Improving processes and workflows to help teams move faster and work smarter.',
-  strategy:   'Uncovering insights and shaping direction through research and iteration.'
+   all:        'Exploring the full range of my work across design, technology, and strategy.',
+    ai:         'Prototyping with Generative AI to create smarter tools and future-facing experiences.',
+    graphic:    'Brand, visuals, and graphic systems that communicate with clarity and personality.',
+    immersive:  'Spatial, cinematic, and interactive moments that invite exploration and play.',
+    service:    'Operational design, workflows, and service blueprints that help teams scale.',
+    ux:         'Systems, flows, and interfaces that make complex experiences feel simple.'
 })[filter] || 'Exploring the full range of my work across design, technology, and strategy.';
 
   });
