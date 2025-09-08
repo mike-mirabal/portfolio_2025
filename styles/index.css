@@ -4,11 +4,13 @@
 :root {
   --bg: #ffffff;
   --hero-bg: #feffe3;
+  --card-bg: #E8F0FE;
   --text: #1c1c1c;
   --accent: #3e7bfa;
   --link: #3e7bfa;
   --link-hover: #6a9cfa;
   --link-visited: #325fcc;
+  --shadow: #a2a2a2;
   --muted: #6c6c6c;
   --chatbg: #ececec;
   --chatbubble: #dedede;
@@ -22,11 +24,13 @@
 [data-theme="dark"] {
   --bg: #1c1c1c;
   --hero-bg: #27252b;
+  --card-bg: #36495D;
   --text: #ffffff;
   --accent: #588bfa;
   --link: #588bfa;
   --link-hover: #7aa4ff;
   --link-visited: #9e9e9e;
+  --shadow: #121b24;
   --muted: #bbbbbb;
   --chatbg: #202020;
   --chatbubble: #2d2d2d;
@@ -698,23 +702,22 @@ a.card:visited {
   display: flex;
   flex-direction: column;
   text-decoration: none;
-  color: inherit;
-
-  border: 2px solid var(--muted);
+  color: var(--text);
+  /* border: 2px solid var(--muted); commented out for now */
   border-radius: 8px; /* Material-like */
   overflow: hidden;
-  background: var(--bg);
-  box-shadow: 0 8px 30px rgba(0,0,0,0.10);
+  background: var(--card-bg);
+  box-shadow: 0 2px 8px var(--shadow);
   transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
 }
 .card.card-v03:hover {
   transform: translateY(-4px);
-  box-shadow: 0 14px 40px rgba(0,0,0,0.14);
-  border-color: var(--accent);
+  box-shadow: 0 6px 16px var(--shadow);
+  /* border-color: var(--accent); */
 }
 
 .card.card-v03:visited {
-  border-color: var(--link-visited);
+  /* border-color: var(--link-visited); */
 }
 
 /* Top meta row: icon | company/year | Ask‑AI (right) */
@@ -787,6 +790,7 @@ a.card:visited {
 
 /* Title (h2) */
 .card.card-v03 .title {
+  color: var(--text);
   margin: 0 0 8px 0;
   font-weight: bold;
   font-size: 24px;
@@ -795,6 +799,7 @@ a.card:visited {
 
 /* Description (body) */
 .card.card-v03 .desc {
+  color: var(--text);
   margin: 0;
   font-size: 16px;
   line-height: 1.6;
@@ -1487,7 +1492,7 @@ h2.chat-heading {
   grid-auto-columns: 170px;        /* card width */
   gap: 12px;
   overflow-x: auto;
-  padding: .5rem 0 .25rem;
+  padding: .5rem 0 1rem;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
@@ -1506,9 +1511,9 @@ h2.chat-heading {
   flex-direction: column;
   width: 170px;
   border-radius: 16px;
-  background: #E8F0FE;
+  background: var(--card-bg);
   /* border: 1px solid var(--link); */
-  box-shadow: 0 2px 8px rgba(0,0,0,.2);
+  box-shadow: 0 2px 8px var(--shadow);
   text-decoration: none;
   overflow: hidden;
   transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
@@ -1516,7 +1521,7 @@ h2.chat-heading {
 }
 .feat-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0,0,0,.14);
+  box-shadow: 0 6px 16px var(--shadow);
   /*border-color: var(--link-hover); */
 }
 
@@ -1553,9 +1558,9 @@ h2.chat-heading {
 
 .feat-title {
   font-size: .75rem;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: .2px;
-  color: #1c1c1c;
+  color: var(--text);
   line-height: 1.2;
 }
 
