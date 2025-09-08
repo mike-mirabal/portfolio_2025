@@ -292,6 +292,10 @@ main, #content, .page-content, .main-container {
 @media (max-width: 600px) {
   .projects-subheading {
     font-size: 1.75rem;
+    margin-top: 1rem;
+     /* never wider than the viewport gutters */
+    max-width: min(100%, calc(100vw - 2rem)); /* 2rem = .main-container’s 1rem side padding */
+    width: 100%;
   }
 }
 
