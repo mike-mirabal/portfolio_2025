@@ -657,21 +657,23 @@ a.card:visited {
   color: var(--link-visited)
 }
 
-/* Mobile: force filters into a 4x2 uniform grid */
+/* Mobile: force filters into a 3x2 uniform grid */
 @media (max-width: 768px) {
   .sticky-controls .filters {
     display: grid !important;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr); /* ← was repeat(4, 1fr) */
     gap: 8px;
     margin: 0;
   }
   .sticky-controls .filters button {
-    flex: initial !important;
+    flex: initial !important;  /* neutralize desktop flex */
     width: 100%;
     min-width: 0;
     padding: 0.45rem 0.5rem;
+    box-sizing: border-box;
   }
 }
+
 
 /* ========================================================================== 
    PROJECT GRID & CARD V03
