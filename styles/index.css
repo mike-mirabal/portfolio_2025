@@ -337,6 +337,43 @@ main,
   z-index: 0;
 }
 
+
+/* ---- FIX: make hero art layers transparent to touch ---- */
+.hero-header::before,
+.hero-header::after,
+.hero-panel,
+.panel-1,
+.panel-2 {
+  pointer-events: none;              /* don't block touches */
+}
+
+/* If you keep the panels around while off-screen, also ensure they can't sit above content */
+.hero-panel {
+  z-index: 0;                        /* below page content */
+}
+
+/* ---- Featured strip: ensure it is the touch target and scrollable ---- */
+.featured-track {
+  position: relative;
+  z-index: 1;                        /* above any background layers */
+  overflow-x: auto;                  /* horizontal scroll container */
+  -webkit-overflow-scrolling: touch; /* momentum scrolling on iOS */
+  touch-action: pan-x;               /* hint: horizontal panning allowed */
+  overscroll-behavior-x: contain;    /* keep horizontal scroll self-contained */
+}
+
+/* Images inside cards shouldn’t eat touches during horizontal swipes */
+.featured-track img {
+  pointer-events: none;
+}
+
+/* Optional: if any wrapper around the featured strip had overflow hidden, kill it horizontally */
+.featured-wrap {
+  overflow-x: visible;
+}
+
+
+
 /* Keep hero content above background art */
 .hero-header .main-container,
 .hero-header .page-kicker-row,
