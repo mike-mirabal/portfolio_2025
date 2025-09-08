@@ -1,4 +1,4 @@
-<script>
+
 /* ---------- 0) Shorten the hero slide timings ---------- */
 window.addEventListener('DOMContentLoaded', () => {
   const p1 = document.getElementById('heroPanel1');
@@ -92,4 +92,4 @@ window.addEventListener('DOMContentLoaded', () => {
     track.querySelectorAll('.feat-thumb').forEach(el => io.observe(el));
   }
 })();
-</script>
+
