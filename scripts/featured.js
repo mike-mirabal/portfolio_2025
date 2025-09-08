@@ -4,251 +4,140 @@
     window.sheetURL ||
     'https://docs.google.com/spreadsheets/d/e/2PACX-1vRAZz5mIVDN9q1EEapOvFb5RFNKN3VRrFK44KVQQlMa-HUmzEZWfseLnXpmaCQNfiXZIQjGcmLcTb1Q/pub?gid=0&single=true&output=csv';
 
-  const track = document.getElementById('featuredTrack');
-  if (!track) {
-    console.error('❌ Featured track container not found (id="featuredTrack").');
-    return;
+  // Build one <a.feat-card> from a CSV row
+  function buildCard(row, index) {
+    const norm = (v) => (v || '').toString().trim();
+    const slug  = norm(row.slug);
+    const title = norm(row.featured_title) || norm(row.card_title) || norm(row.title) || 'Untitled';
+    const img   = norm(row.featured_img);
+
+    if (!img) return null;
+
+    const a = document.createElement('a');
+    a.className = 'feat-card';
+    a.href = slug ? `project.html?slug=${encodeURIComponent(slug)}` : '#';
+    a.setAttribute('aria-label', title);
+    a.style.setProperty('--i', index);
+
+    // Thumb (now an <img> inside)
+    const thumb = document.createElement('div');
+    thumb.className = 'feat-thumb';
+
+    // Use a simple <img>; let CSS control fit/centering
+    const image = document.createElement('img');
+    image.src = encodeURI(img);          // tolerate spaces/non-ascii
+    image.alt = title;
+    image.loading = 'lazy';
+    image.decoding = 'async';
+    image.width = 200;                   // intrinsic ratio 3:2
+    image.height = 133;
+    image.onerror = () => {
+      console.warn('Featured image failed:', img);
+      image.remove(); // keep card; show soft background
+    };
+    thumb.appendChild(image);
+
+    // Text block
+    const text = document.createElement('div');
+    text.className = 'feat-text';
+    const t = document.createElement('div');
+    t.className = 'feat-title';
+    t.textContent = title;
+    text.appendChild(t);
+
+    a.appendChild(thumb);
+    a.appendChild(text);
+    return a;
   }
 
-  // Helpers
-  const norm = (v) => (v || '').toString().trim();
-  const hasFeaturedTag = (v) => /\bfeatured\b/i.test(norm(v).toLowerCase());
-  const toFallbackPng = (url) =>
-    /\.webp(\?.*)?$/i.test(url) ? url.replace(/\.webp(\?.*)?$/i, '.png$1') : url;
+  // Init after DOM is ready so #featuredTrack exists
+  document.addEventListener('DOMContentLoaded', () => {
+    const track = document.getElementById('featuredTrack');
+    if (!track) {
+      console.error('❌ Featured track container not found (id="featuredTrack").');
+      return;
+    }
+    if (typeof Papa === 'undefined') {
+      console.error('❌ PapaParse not loaded before featured.js. Include papaparse <script> first.');
+      return;
+    }
 
-  // Build featured cards from CSV
-  fetch(SHEET_URL)
-    .then((res) => res.text())
-    .then((csv) => {
-      const { data: rows } = Papa.parse(csv.trim(), {
-        header: true,
-        skipEmptyLines: true,
-      });
+    // Make sure the element itself is scrollable on touch devices
+    track.setAttribute('tabindex', '0');
+    track.setAttribute('role', 'region');
+    track.setAttribute('aria-label', 'Featured projects carousel');
+    track.style.overflowX = 'auto';
+    track.style.overflowY = 'hidden';
+    track.style.webkitOverflowScrolling = 'touch';
 
-      const featured = rows.filter((r) => {
-        const published = norm(r.published).toUpperCase() === 'TRUE';
-        const tagHit =
-          hasFeaturedTag(r.tags) ||
-          hasFeaturedTag(r.filter) ||
-          hasFeaturedTag(r.tag);
-        const boolHit = norm(r.featured).toUpperCase() === 'TRUE';
-        return published && (tagHit || boolHit);
-      });
+    // Load CSV → filter → render
+    fetch(SHEET_URL)
+      .then((res) => res.text())
+      .then((csv) => {
+        const { data: rows } = Papa.parse(csv.trim(), {
+          header: true,
+          skipEmptyLines: true,
+        });
 
-      // Clear any existing content
-      track.innerHTML = '';
+        const norm = (v) => (v || '').toString().trim();
+        const hasFeaturedTag = (v) => /\bfeatured\b/i.test(norm(v).toLowerCase());
 
-      // Build cards
-      featured.forEach((p, i) => {
-        const slug = norm(p.slug);
-        const title =
-          norm(p.featured_title) ||
-          norm(p.card_title) ||
-          norm(p.title) ||
-          'Untitled';
-        const imgRaw = norm(p.featured_img);
-        if (!imgRaw) return;
+        const featured = rows.filter((r) => {
+          const published = norm(r.published).toUpperCase() === 'TRUE';
+          const tagHit =
+            hasFeaturedTag(r.tags) ||
+            hasFeaturedTag(r.filter) ||
+            hasFeaturedTag(r.tag);
+          const boolHit = norm(r.featured).toUpperCase() === 'TRUE';
+          return published && (tagHit || boolHit);
+        });
 
-        // Normalize URL (handle spaces/odd chars)
-        const img = encodeURI(imgRaw);
-        const fallback = encodeURI(toFallbackPng(imgRaw));
+        track.innerHTML = '';
+        featured.forEach((row, i) => {
+          const card = buildCard(row, i);
+          if (card) track.appendChild(card);
+        });
 
-        // Clickable card
-        const a = document.createElement('a');
-        a.className = 'feat-card';
-        a.href = slug ? `project.html?slug=${encodeURIComponent(slug)}` : '#';
-        a.setAttribute('aria-label', title);
-        a.style.setProperty('--i', i);
+        if (!track.children.length) {
+          console.warn('ℹ️ No featured cards rendered. Check CSV values for: published, tags/filter/featured, featured_img.');
+          return;
+        }
 
-        // Thumb w/ IMG (keeps aspect ratio & allows lazy/decoding)
-        const thumb = document.createElement('div');
-        thumb.className = 'feat-thumb';
+        // Staggered appearance (CSS listens for .animate)
+        if (!track.style.getPropertyValue('--stagger')) {
+          track.style.setProperty('--stagger', '80ms');
+        }
+        const startAnimation = () => track.classList.add('animate');
 
-        // Prefer WebP, fallback to PNG (same basename)
-        const picture = document.createElement('picture');
-
-        const sourceWebp = document.createElement('source');
-        sourceWebp.type = 'image/webp';
-        sourceWebp.srcset = img;
-
-        const image = document.createElement('img');
-        image.src = /\.webp(\?.*)?$/i.test(imgRaw) ? fallback : img;
-        image.alt = title;
-        image.width = 200;
-        image.height = 133;
-        image.loading = 'lazy';
-        image.decoding = 'async';
-        image.onerror = () => {
-          // If both webp and png fail, remove the image (card still usable)
-          console.warn('Featured image failed:', imgRaw);
-          image.remove();
-        };
-
-        picture.appendChild(sourceWebp);
-        picture.appendChild(image);
-        thumb.appendChild(picture);
-
-        // Text
-        const text = document.createElement('div');
-        text.className = 'feat-text';
-
-        const t = document.createElement('div');
-        t.className = 'feat-title';
-        t.textContent = title;
-
-        text.appendChild(t);
-        a.appendChild(thumb);
-        a.appendChild(text);
-        track.appendChild(a);
-      });
-
-      if (!track.children.length) {
-        console.warn(
-          'ℹ️ No featured cards rendered. Check CSV values for: published, tags/filter/featured, featured_img.'
-        );
-        return;
-      }
-
-      // ---- Animation wiring (staggered fade + slide) ----
-      if (!track.style.getPropertyValue('--stagger')) {
-        track.style.setProperty('--stagger', '80ms');
-      }
-      const startAnimation = () => track.classList.add('animate');
-
-      if ('IntersectionObserver' in window) {
-        const io = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((e) => {
-              if (e.isIntersecting) {
-                startAnimation();
-                io.disconnect();
+        if ('IntersectionObserver' in window) {
+          const io = new IntersectionObserver(
+            (entries) => {
+              for (const e of entries) {
+                if (e.isIntersecting) {
+                  startAnimation();
+                  io.disconnect();
+                  break;
+                }
               }
-            });
+            },
+            { threshold: 0.2 }
+          );
+          io.observe(track);
+        } else {
+          setTimeout(startAnimation, 100);
+        }
+
+        // Desktop nicety: horizontal wheel -> scroll sideways (no effect on touch)
+        track.addEventListener(
+          'wheel',
+          (ev) => {
+            if (Math.abs(ev.deltaX) < Math.abs(ev.deltaY)) {
+              track.scrollLeft += ev.deltaY;
+            }
           },
-          { threshold: 0.2 }
+          { passive: true }
         );
-        io.observe(track);
-      } else {
-        // Fallback for older browsers
-        setTimeout(startAnimation, 100);
-      }
-      // ---- /Animation wiring ----
-
-      // Add interactions (swipe/drag/keys/buttons)
-      addFeaturedInteractions(track);
-    })
-    .catch((err) => console.error('❌ Featured carousel load error:', err));
-
-  // ------------------------------------------------------------------
-  // Interactions that used to live inline in index.html
-  // - Touch/mouse drag to scroll
-  // - Keyboard arrows when focused
-  // - Optional prev/next buttons (if present in DOM)
-  // ------------------------------------------------------------------
-  function addFeaturedInteractions(track) {
-    // Make focusable for keyboard users
-    if (!track.hasAttribute('tabindex')) {
-      track.setAttribute('tabindex', '0');
-    }
-
-    // ---- Touch (mobile) ----
-    let tStartX = 0;
-    let tScrollLeft = 0;
-    let tDown = false;
-
-    track.addEventListener(
-      'touchstart',
-      (e) => {
-        if (!e.touches || !e.touches.length) return;
-        tDown = true;
-        tStartX = e.touches[0].pageX;
-        tScrollLeft = track.scrollLeft;
-      },
-      { passive: true }
-    );
-
-    track.addEventListener(
-      'touchend',
-      () => {
-        tDown = false;
-      },
-      { passive: true }
-    );
-
-    track.addEventListener(
-      'touchmove',
-      (e) => {
-        if (!tDown || !e.touches || !e.touches.length) return;
-        const x = e.touches[0].pageX;
-        const dx = tStartX - x;
-        track.scrollLeft = tScrollLeft + dx;
-      },
-      { passive: true }
-    );
-
-    // ---- Mouse drag (desktop) ----
-    let mDown = false;
-    let mStartX = 0;
-    let mScrollLeft = 0;
-
-    track.addEventListener('mousedown', (e) => {
-      // Only left button
-      if (e.button !== 0) return;
-      mDown = true;
-      mStartX = e.pageX - track.offsetLeft;
-      mScrollLeft = track.scrollLeft;
-      track.classList.add('is-dragging');
-      e.preventDefault();
-    });
-
-    track.addEventListener('mouseleave', () => {
-      mDown = false;
-      track.classList.remove('is-dragging');
-    });
-
-    track.addEventListener('mouseup', () => {
-      mDown = false;
-      track.classList.remove('is-dragging');
-    });
-
-    track.addEventListener('mousemove', (e) => {
-      if (!mDown) return;
-      const x = e.pageX - track.offsetLeft;
-      const walk = x - mStartX;
-      track.scrollLeft = mScrollLeft - walk;
-    });
-
-    // ---- Keyboard arrows when focused ----
-    track.addEventListener('keydown', (e) => {
-      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
-      const amount = scrollByAmount(track);
-      if (e.key === 'ArrowRight') {
-        track.scrollBy({ left: amount, behavior: 'smooth' });
-      } else {
-        track.scrollBy({ left: -amount, behavior: 'smooth' });
-      }
-      e.preventDefault();
-    });
-
-    // ---- Optional prev/next buttons (if present) ----
-    const prev = document.querySelector('.feat-prev');
-    const next = document.querySelector('.feat-next');
-
-    if (prev && next) {
-      prev.addEventListener('click', () =>
-        track.scrollBy({ left: -scrollByAmount(track), behavior: 'smooth' })
-      );
-      next.addEventListener('click', () =>
-        track.scrollBy({ left: scrollByAmount(track), behavior: 'smooth' })
-      );
-    }
-  }
-
-  function scrollByAmount(track) {
-    const card = track.querySelector('.feat-card');
-    const gap = parseFloat(getComputedStyle(track).gap || '12') || 12;
-    const cardWidth = card ? card.offsetWidth : 180;
-    // Move ~2 cards or ~75% of track width, whichever is greater
-    return Math.max(cardWidth * 2 + gap * 2, track.clientWidth * 0.75);
-  }
+      })
+      .catch((err) => console.error('❌ Featured carousel load error:', err));
+  });
 })();

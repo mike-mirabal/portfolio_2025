@@ -1807,3 +1807,39 @@ h2.chat-heading {
     border-color: color-mix(in srgb, var(--muted), transparent 40%);
   }
 }
+
+
+/* ===== Featured: mobile swipe reliability + 3:2 thumbs ===== */
+@media (max-width: 800px) {
+  .featured-track {
+    display: flex;                 /* flex avoids iOS grid+overflow quirk */
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 12px;
+    padding: 0.5rem 0 0.25rem;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .feat-card {
+    flex: 0 0 auto;                /* do not shrink */
+    scroll-snap-align: start;
+  }
+}
+
+/* Make thumbs explicitly 3:2 and center the image */
+.feat-thumb {
+  aspect-ratio: 3 / 2;             /* your images are 1920x1280 */
+  position: relative;
+  overflow: hidden;
+}
+
+.feat-thumb > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;               /* fill the box, crop if needed */
+  object-position: center;         /* crop from the center, not top-left */
+}
