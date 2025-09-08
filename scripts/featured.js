@@ -74,8 +74,8 @@
         const image = document.createElement('img');
         image.src = /\.webp(\?.*)?$/i.test(imgRaw) ? fallback : img;
         image.alt = title;
-        image.width = 1920;
-        image.height = 1280;
+        image.width = 200;
+        image.height = 133;
         image.loading = 'lazy';
         image.decoding = 'async';
         image.onerror = () => {
