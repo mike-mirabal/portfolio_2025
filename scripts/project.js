@@ -249,8 +249,10 @@ function renderProjects(projects, container) {
     const href    = `project.html?slug=${encodeURIComponent(p.slug)}`;
     const company = p.company || '';
     const year    = p.year || '';
-    const heroImg = p.card_img || p.hero_url || '';
-    const iconUrl = p.icon || p.logo || p.icon_url || '';
+    const imgRaw  = (p.card_img || p.hero_url || '').trim();
+    const heroImg = imgRaw ? encodeURI(imgRaw) : '';
+    const iconUrl = (p.icon || p.logo || p.icon_url || '').trim();
+    const iconSrc = iconUrl ? encodeURI(iconUrl) : '';
     const title   = p.card_title || p.title || '';
     const desc    = p.short_desc || p.description || p.subtitle || (p.overview ? String(p.overview).split('\n')[0] : '') || '';
 
@@ -270,7 +272,7 @@ function renderProjects(projects, container) {
     card.innerHTML = `
       <div class="top-meta">
         <div class="company-icon" aria-hidden="true">
-          ${iconUrl ? `<img src="${iconUrl}" alt="">` : `<span class="icon-fallback">${(company || '?').charAt(0)}</span>`}
+          ${iconSrc ? `<img src="${iconSrc}" alt="">` : `<span class="icon-fallback">${(company || '?').charAt(0)}</span>`}
         </div>
         <div class="company-and-year">
           <div class="company">${company}</div>
@@ -285,7 +287,7 @@ function renderProjects(projects, container) {
           data-slug="${p.slug || ''}"
           data-title="${(p.card_title || p.title || '').replace(/"/g,'&quot;')}"
           data-overview="${(p.overview || '').replace(/"/g,'&quot;')}"
-          data-icon="${iconUrl}"
+          data-icon="${iconSrc}"
           onclick="openProjectChatModal(event, this)"
         >
           <img src="/assets/icons/icon_chat_3B82F6.svg" alt="Chat Icon" width="24" height="24">
@@ -294,8 +296,9 @@ function renderProjects(projects, container) {
 
       <div class="hero-img">
         ${heroImg
-          ? `<img src="${heroImg}" alt="${escapeHTML(title)} card image" width="${CARD_IMG_W}" height="${CARD_IMG_H}" loading="lazy" decoding="async">`
-          : ''
+          ? `<img src="${heroImg}" alt="${escapeHTML(title)} card image" width="1920" height="1280" loading="lazy" decoding="async"
+               onerror="console.warn('Card image failed:', this.src); this.src='/assets/placeholder-card-1920x1280.jpg'; this.closest('.card').classList.add('img-error');">`
+          : `<img src="/assets/placeholder-card-1920x1280.jpg" alt="${escapeHTML(title)} card image placeholder" width="1920" height="1280" loading="lazy" decoding="async">`
         }
       </div>
 
@@ -309,6 +312,7 @@ function renderProjects(projects, container) {
     container.appendChild(card);
   });
 }
+
 
 /* ---------------------- render project detail ---------------------- */
 function renderDetail(p) {
