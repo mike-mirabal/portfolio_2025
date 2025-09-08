@@ -2,19 +2,20 @@
 
 const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRAZz5mIVDN9q1EEapOvFb5RFNKN3VRrFK44KVQQlMa-HUmzEZWfseLnXpmaCQNfiXZIQjGcmLcTb1Q/pub?gid=0&single=true&output=csv';
 
+// All your card/hero images are 1920x1280 landscape
+const CARD_IMG_W = 1920;
+const CARD_IMG_H = 1280;
+
 document.addEventListener('DOMContentLoaded', () => {
   fetch(sheetURL)
     .then(res => res.text())
     .then(csvText => {
       const { data: projects } = Papa.parse(csvText.trim(), { header: true, skipEmptyLines: true });
 
-      const publishedProjects = projects.filter(p => p.published && p.published.toUpperCase() === "TRUE");
+      const publishedProjects = projects.filter(p => p.published && String(p.published).toUpperCase() === 'TRUE');
 
-      publishedProjects.sort((a, b) => {
-        const yearA = parseInt(a.year) || 0;
-        const yearB = parseInt(b.year) || 0;
-        return yearB - yearA;
-      });
+      // sort newest first
+      publishedProjects.sort((a, b) => (parseInt(b.year) || 0) - (parseInt(a.year) || 0));
 
       const gridContainer = document.getElementById('projectGrid');
       const slug = new URLSearchParams(window.location.search).get('slug');
@@ -24,19 +25,16 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (slug) {
-        const p = publishedProjects.find(p => String(p.slug) === slug);
-        if (p) renderDetail(p);
+        const match = publishedProjects.find(p => String(p.slug) === slug);
+        if (match) renderDetail(match);
       }
 
-      // Initialize chat modal viewport behavior after DOM and content are ready
       initProjectChatViewportBehavior();
     })
     .catch(err => console.error('CSV load error:', err));
 });
 
-/**
- * Escapes HTML special characters to avoid unintended HTML injection.
- */
+/* ---------------------------- helpers ---------------------------- */
 function escapeHTML(str) {
   return String(str)
     .replace(/&/g, '&amp;')
@@ -44,40 +42,25 @@ function escapeHTML(str) {
     .replace(/>/g, '&gt;');
 }
 
-/**
- * Autolink plain URLs in text (http/https).
- */
 function autoLink(text) {
   const urlRegex = /\bhttps?:\/\/[^\s<)]+/gi;
-  return text.replace(urlRegex, (url) => {
+  return String(text).replace(urlRegex, (url) => {
     const safe = escapeHTML(url);
     return `<a href="${safe}" target="_blank" rel="noopener noreferrer">${safe}</a>`;
   });
 }
 
-/**
- * Apply lightweight inline formatting after escaping:
- * - Bold: **text** -> <strong>text</strong>
- * Then autolink URLs.
- */
 function applyFormatting(text) {
-  let safe = escapeHTML(text);
+  let safe = escapeHTML(String(text));
   safe = safe.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
   return autoLink(safe);
 }
 
 /**
- * Render simple "rich" text from CSV into HTML with support for:
- * - paragraphs (blank line = new paragraph)
- * - unordered lists: lines starting with "- ", "* ", or "• "
- * - ordered lists: lines starting with "1. ", "2. ", etc.
- * - basic URL autolinking
- *
- * Examples for CSV cell (use \n to break lines):
- *   - Item one
- *   - Item two
- *
- *   A new paragraph after the list.
+ * Very small “rich text” renderer for CSV cells:
+ * - blank line = new paragraph
+ * - list lines prefixed with "- ", "* ", or "• " => <ul>
+ * - "1. " => <ol>
  */
 function renderRichText(cellText) {
   if (!cellText) return '';
@@ -88,73 +71,45 @@ function renderRichText(cellText) {
 
   const flushList = () => {
     if (!listBuffer) return;
-    if (listBuffer.type === 'ul') {
-      blocks.push(`<ul>${listBuffer.items.map(li => `<li>${li}</li>`).join('')}</ul>`);
-    } else {
-      blocks.push(`<ol>${listBuffer.items.map(li => `<li>${li}</li>`).join('')}</ol>`);
-    }
+    const tag = listBuffer.type;
+    blocks.push(`<${tag}>${listBuffer.items.map(li => `<li>${li}</li>`).join('')}</${tag}>`);
     listBuffer = null;
   };
 
   for (let raw of lines) {
     const line = raw.replace(/\r/g, '').trimEnd();
 
-    // Blank line => paragraph break
-    if (line.trim() === '') {
-      flushList();
-      continue;
-    }
+    if (line.trim() === '') { flushList(); continue; }
 
-    // Unordered list markers
     const ulMatch = /^(?:[-*•])\s+(.*)$/.exec(line);
     if (ulMatch) {
       const item = applyFormatting(ulMatch[1].trim());
-      if (!listBuffer || listBuffer.type !== 'ul') {
-        flushList();
-        listBuffer = { type: 'ul', items: [] };
-      }
+      if (!listBuffer || listBuffer.type !== 'ul') { flushList(); listBuffer = { type: 'ul', items: [] }; }
       listBuffer.items.push(item);
       continue;
     }
 
-    // Ordered list markers like "1. Item"
     const olMatch = /^(\d+)\.\s+(.*)$/.exec(line);
     if (olMatch) {
       const item = applyFormatting(olMatch[2].trim());
-      if (!listBuffer || listBuffer.type !== 'ol') {
-        flushList();
-        listBuffer = { type: 'ol', items: [] };
-      }
+      if (!listBuffer || listBuffer.type !== 'ol') { flushList(); listBuffer = { type: 'ol', items: [] }; }
       listBuffer.items.push(item);
       continue;
     }
 
-    // Normal paragraph line. If there's an open list, close it first.
     flushList();
-    const paragraphHTML = applyFormatting(line.trim());
-    blocks.push(`<p>${paragraphHTML}</p>`);
+    blocks.push(`<p>${applyFormatting(line.trim())}</p>`);
   }
 
-  // Close any list still open
   flushList();
-
-  // Join blocks; caller will set container.innerHTML
   return blocks.join('');
 }
 
-/* ---------------------------------------------------------------------------
-   MEDIA POSITION HELPER
-   Allows CSV to control whether media renders at the top or bottom of a section.
-
-   CSV options per section (overview/problem/process/solution/results):
-   - <key>_media_type: 'image'|'video'|'audio'|'link'|'embed' (also accepts 'image-top', 'link-bottom', etc.)
-   - <key>_media_position: 'top'|'bottom' (optional; overrides suffix if both provided)
---------------------------------------------------------------------------- */
+/* --------------------- media position helper --------------------- */
 function getMediaConfig(p, key) {
   let rawType = (p[`${key}_media_type`] || '').toLowerCase().trim();
   let position = (p[`${key}_media_position`] || '').toLowerCase().trim();
 
-  // If author used "image-top" / "link-bottom" / "video-before" etc., extract suffix
   const m = rawType.match(/-(top|bottom|before|after)$/);
   if (m) {
     const suffix = m[1] === 'before' ? 'top' : (m[1] === 'after' ? 'bottom' : m[1]);
@@ -163,34 +118,17 @@ function getMediaConfig(p, key) {
   }
 
   if (position !== 'top' && position !== 'bottom') position = 'bottom';
-
   return { type: rawType, position };
 }
 
-/**
- * Renders optional supporting media for a given section key.
- * CSV fields supported (all optional, per section key: 'problem'|'process'|'solution'|'results'|'overview'):
- *   <key>_media_type: 'image' | 'video' | 'link' | 'embed' | 'audio'
- *   <key>_media_position: 'top' | 'bottom' (optional; defaults to 'bottom')
- *   <key>_media_url: URL string (for image/link/video/embed)
- *   <key>_media_caption: optional caption string
- *   <key>_media_alt: optional alt text for images
- *
- * Notes:
- * - image: renders <figure><img/><figcaption/></figure>
- * - video: if YouTube/Vimeo URL, embeds via iframe; otherwise renders simple <video controls> if it looks like a file
- * - audio: renders <audio controls>
- * - link: renders an anchor with underline
- * - embed: renders an iframe with the given URL
- */
+/* ------------------------ section media html ------------------------ */
 function renderSectionMedia(p, key) {
-  // Use the parsed type (position is handled in renderDetail)
   const { type } = getMediaConfig(p, key);
   const url = (p[`${key}_media_url`] || '').trim();
   const caption = p[`${key}_media_caption`] ? escapeHTML(p[`${key}_media_caption`]) : '';
   const alt = p[`${key}_media_alt`] ? escapeHTML(p[`${key}_media_alt`]) : `${key} media`;
 
-  if ((!type && !url) || !url) return '';
+  if (!url && !type) return '';
 
   const isYouTube = /(?:youtube\.com\/watch\?v=|youtu\.be\/)/i.test(url);
   const isVimeo = /vimeo\.com\/\d+/i.test(url);
@@ -198,12 +136,12 @@ function renderSectionMedia(p, key) {
   const looksLikeImageFile = /\.(png|jpe?g|gif|webp|svg)(\?.*)?$/i.test(url);
   const looksLikeAudioFile = /\.(mp3|wav|ogg|m4a|aac)(\?.*)?$/i.test(url);
 
-  // IMAGE
+  // IMAGE (we assume your assets are 1920x1280)
   if (type === 'image' || (!type && looksLikeImageFile)) {
     const safeUrl = escapeHTML(url);
     return `
       <figure class="full-width-image">
-        <img src="${safeUrl}" alt="${alt}" />
+        <img src="${safeUrl}" alt="${alt}" width="${CARD_IMG_W}" height="${CARD_IMG_H}" loading="lazy" decoding="async" />
         ${caption ? `<figcaption class="caption">${caption}</figcaption>` : ''}
       </figure>
     `;
@@ -212,15 +150,16 @@ function renderSectionMedia(p, key) {
   // VIDEO
   if (type === 'video' || (!type && (isYouTube || isVimeo || looksLikeVideoFile))) {
     if (isYouTube) {
-      let videoId = '';
       const m1 = url.match(/[?&]v=([^&]+)/);
       const m2 = url.match(/youtu\.be\/([^?&]+)/);
-      videoId = m1 ? m1[1] : (m2 ? m2[1] : '');
+      const videoId = m1 ? m1[1] : (m2 ? m2[1] : '');
       if (videoId) {
         const embed = `https://www.youtube.com/embed/${encodeURIComponent(videoId)}`;
         return `
           <div class="video-embed">
-            <iframe width="560" height="315" src="${embed}" title="YouTube video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+            <iframe width="560" height="315" src="${embed}" title="YouTube video" frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
             ${caption ? `<div class="caption">${caption}</div>` : ''}
           </div>
         `;
@@ -233,7 +172,8 @@ function renderSectionMedia(p, key) {
         const embed = `https://player.vimeo.com/video/${encodeURIComponent(vimeoId)}`;
         return `
           <div class="video-embed">
-            <iframe src="${embed}" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" title="Vimeo video" allowfullscreen></iframe>
+            <iframe src="${embed}" width="640" height="360" frameborder="0"
+              allow="autoplay; fullscreen; picture-in-picture" title="Vimeo video" allowfullscreen></iframe>
             ${caption ? `<div class="caption">${caption}</div>` : ''}
           </div>
         `;
@@ -250,15 +190,14 @@ function renderSectionMedia(p, key) {
     }
   }
 
-  // AUDIO (new)
+  // AUDIO
   if (type === 'audio' || (!type && looksLikeAudioFile)) {
     const safeUrl = escapeHTML(url);
     const mime =
       /\.mp3(\?.*)?$/i.test(url) ? 'audio/mpeg' :
       /\.m4a|\.aac(\?.*)?$/i.test(url) ? 'audio/mp4' :
       /\.wav(\?.*)?$/i.test(url) ? 'audio/wav' :
-      /\.ogg(\?.*)?$/i.test(url) ? 'audio/ogg' :
-      '';
+      /\.ogg(\?.*)?$/i.test(url) ? 'audio/ogg' : '';
     return `
       <figure class="audio-file">
         <audio controls preload="metadata" ${mime ? `type="${mime}"` : ''} src="${safeUrl}"></audio>
@@ -284,13 +223,15 @@ function renderSectionMedia(p, key) {
     const safeUrl = escapeHTML(url);
     return `
       <div class="embed-iframe" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;">
-        <iframe src="${safeUrl}" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+        <iframe src="${safeUrl}" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
       </div>
       ${caption ? `<div class="caption" style="margin-top:.5rem;">${caption}</div>` : ''}
     `;
   }
 
-  // Fallback
+  // Fallback: plain link
   const safeUrl = escapeHTML(url);
   return `
     <p style="margin: 0.4rem 0 1rem">
@@ -301,10 +242,7 @@ function renderSectionMedia(p, key) {
   `;
 }
 
-
-/**
- * Renders project cards into grid container
- */
+/* ---------------------- render project cards ---------------------- */
 function renderProjects(projects, container) {
   container.innerHTML = '';
   projects.forEach(p => {
@@ -355,11 +293,14 @@ function renderProjects(projects, container) {
       </div>
 
       <div class="hero-img">
-        <img src="${heroImg}" alt="${title} card image">
+        ${heroImg
+          ? `<img src="${heroImg}" alt="${escapeHTML(title)} card image" width="${CARD_IMG_W}" height="${CARD_IMG_H}" loading="lazy" decoding="async">`
+          : ''
+        }
       </div>
 
       <div class="card-content">
-        <h4 class="title">${title}</h4>
+        <h4 class="title">${escapeHTML(title)}</h4>
         ${desc ? `<p class="desc">${escapeHTML(desc)}</p>` : ''}
         ${tagsHtml ? `<div class="tags">${tagsHtml}</div>` : ''}
       </div>
@@ -369,17 +310,7 @@ function renderProjects(projects, container) {
   });
 }
 
-/**
- * Renders project detail page content
- * Supports:
- *  - Bullet lists and paragraphs via renderRichText
- *  - Optional media per section via renderSectionMedia
- *    CSV columns you can add per section (overview/problem/process/solution/results):
- *      <key>_media_type, <key>_media_url, <key>_media_caption, <key>_media_alt, <key>_media_position
- *
- * CHANGE REQUESTED: Media now renders at the TOP or BOTTOM of each section based on <key>_media_position ('top'|'bottom'), default 'bottom'.
- * Also: Apply **markdown-style bold** and autolinks to interactive text fields via applyFormatting().
- */
+/* ---------------------- render project detail ---------------------- */
 function renderDetail(p) {
   document.title = `${p.title} | Mike Mirabal`;
   const titleEl = document.getElementById('project-title');
@@ -388,157 +319,137 @@ function renderDetail(p) {
   if (titleEl) titleEl.textContent = p.title || '';
   if (metaEl)  metaEl.textContent  = `${p.company || ''} | ${p.year || ''}`;
 
-  // --- set hero image (overlay background) ---
+  // hero image for detail page
   const heroImg = document.getElementById('caseHeroImg');
   if (heroImg && p.hero_url) {
     heroImg.src = escapeHTML(p.hero_url);
     heroImg.alt = p.hero_alt ? escapeHTML(p.hero_alt) : 'Project hero image';
+    heroImg.width = CARD_IMG_W;
+    heroImg.height = CARD_IMG_H;
+    heroImg.loading = 'eager';       // show immediately on detail page
+    heroImg.decoding = 'async';
   }
 
   const contentContainer = document.getElementById('project-content');
-  if (contentContainer) {
+  if (!contentContainer) return;
 
-    // ---------- Inject Section Title & Sticky Subnav ----------
-    const headerHTML = `
-      <h4 class="subnav-label">Explore this Project</h4>
-      <nav class="sticky-controls project-subnav">
-        <div class="sticky-inner">
-          <div class="filters">
-            <a href="#overview"><button>Overview</button></a>
-            <a href="#interactive"><button>Interactive</button></a>
-            <a href="#problem"><button>Problem</button></a>
-            <a href="#process"><button>Process</button></a>
-            <a href="#solution"><button>Solution</button></a>
-            <a href="#results"><button>Results</button></a>
-          </div>
+  // ---------- Sticky subnav ----------
+  const headerHTML = `
+    <h4 class="subnav-label">Explore this Project</h4>
+    <nav class="sticky-controls project-subnav">
+      <div class="sticky-inner">
+        <div class="filters">
+          <a href="#overview"><button>Overview</button></a>
+          <a href="#interactive"><button>Interactive</button></a>
+          <a href="#problem"><button>Problem</button></a>
+          <a href="#process"><button>Process</button></a>
+          <a href="#solution"><button>Solution</button></a>
+          <a href="#results"><button>Results</button></a>
         </div>
-      </nav>
-    `;
-    contentContainer.insertAdjacentHTML('beforebegin', headerHTML);
-    // ------------------------------------------------------------
+      </div>
+    </nav>
+  `;
+  contentContainer.insertAdjacentHTML('beforebegin', headerHTML);
 
-    const sections = [
-      { key: 'overview', title: 'Overview' },
-      { key: 'problem',  title: 'Problem'  },
-      { key: 'process',  title: 'Process'  },
-      { key: 'solution', title: 'Solution' },
-      { key: 'results',  title: 'Results'  }
-    ];
+  const sections = [
+    { key: 'overview', title: 'Overview' },
+    { key: 'problem',  title: 'Problem'  },
+    { key: 'process',  title: 'Process'  },
+    { key: 'solution', title: 'Solution' },
+    { key: 'results',  title: 'Results'  }
+  ];
 
-    sections.forEach(({ key, title }) => {
-      if (p[key]) {
-        const section = document.createElement('section');
+  sections.forEach(({ key, title }) => {
+    if (!p[key]) return;
 
-        const heading = document.createElement('h3');
-        heading.textContent = title;
-        heading.setAttribute('id', key);
-        section.appendChild(heading);
+    const section = document.createElement('section');
 
-        const { position } = getMediaConfig(p, key);
-        const mediaHTML = renderSectionMedia(p, key);
+    const heading = document.createElement('h3');
+    heading.textContent = title;
+    heading.setAttribute('id', key);
+    section.appendChild(heading);
 
-        if (position === 'top' && mediaHTML) {
-          const mediaWrapperTop = document.createElement('div');
-          mediaWrapperTop.innerHTML = mediaHTML;
-          section.appendChild(mediaWrapperTop);
-        }
+    const { position } = getMediaConfig(p, key);
+    const mediaHTML = renderSectionMedia(p, key);
 
-        const richHTML = renderRichText(p[key]);
-        if (richHTML) {
-          const richDiv = document.createElement('div');
-          richDiv.innerHTML = richHTML;
-          section.appendChild(richDiv);
-        }
-
-        if (key === 'overview' && p.role && p.role.trim()) {
-          const roleHeading = document.createElement('h4');
-          roleHeading.textContent = 'My Role';
-          section.appendChild(roleHeading);
-
-          const rolePara = document.createElement('div');
-          rolePara.innerHTML = renderRichText(p.role.trim());
-          section.appendChild(rolePara);
-        }
-
-        if (position === 'bottom' && mediaHTML) {
-          const mediaWrapperBottom = document.createElement('div');
-          mediaWrapperBottom.innerHTML = mediaHTML;
-          section.appendChild(mediaWrapperBottom);
-        }
-
-        const hr = document.createElement('hr');
-        hr.style.marginTop = '2rem';
-        hr.style.marginBottom = '2rem';
-        section.appendChild(hr);
-
-        contentContainer.appendChild(section);
-
-        if (key === 'overview' && p.interactive_link && p.interactive_text) {
-          const icon = p.interactive_icon || '';
-          const headingText = p.interactive_heading || 'Further Reading';
-          const interactiveHTML = `
-            <div class="interactive-link-block">
-              <h3 id="interactive" style="margin-bottom: 0.5rem;">${applyFormatting(headingText)}</h3>
-              <p class="slide-caption">
-                ${icon ? `<img src="${escapeHTML(icon)}" class="interactive-icon" alt="icon" style="vertical-align: middle; margin-right: 0.4em; height: 1em;">` : ''}
-                ${p.interactive_supporting ? applyFormatting(p.interactive_supporting) : ''}
-              </p>
-              <p style="margin: 0.4rem 0 1rem">
-                <a href="${escapeHTML(p.interactive_link)}" target="_blank" rel="noopener noreferrer" style="text-decoration: underline; color: var(--accent);">
-                  ${applyFormatting(p.interactive_text)}
-                </a>
-              </p>
-              <hr />
-            </div>
-          `;
-          contentContainer.insertAdjacentHTML('beforeend', interactiveHTML);
-        }
-      }
-    });
-
-    if (p.extra_resource_link) {
-      const linkHTML = `
-        <p>
-          <a href="${escapeHTML(p.extra_resource_link)}" target="_blank" rel="noopener noreferrer">
-            ${p.extra_resource_text ? applyFormatting(p.extra_resource_text) : 'View More Details'}
-          </a>
-        </p>
-      `;
-      contentContainer.insertAdjacentHTML('beforeend', linkHTML);
+    if (position === 'top' && mediaHTML) {
+      const mediaWrapperTop = document.createElement('div');
+      mediaWrapperTop.innerHTML = mediaHTML;
+      section.appendChild(mediaWrapperTop);
     }
+
+    const richHTML = renderRichText(p[key]);
+    if (richHTML) {
+      const richDiv = document.createElement('div');
+      richDiv.innerHTML = richHTML;
+      section.appendChild(richDiv);
+    }
+
+    if (key === 'overview' && p.role && String(p.role).trim()) {
+      const roleHeading = document.createElement('h4');
+      roleHeading.textContent = 'My Role';
+      section.appendChild(roleHeading);
+
+      const rolePara = document.createElement('div');
+      rolePara.innerHTML = renderRichText(String(p.role).trim());
+      section.appendChild(rolePara);
+    }
+
+    if (position === 'bottom' && mediaHTML) {
+      const mediaWrapperBottom = document.createElement('div');
+      mediaWrapperBottom.innerHTML = mediaHTML;
+      section.appendChild(mediaWrapperBottom);
+    }
+
+    const hr = document.createElement('hr');
+    hr.style.marginTop = '2rem';
+    hr.style.marginBottom = '2rem';
+    section.appendChild(hr);
+
+    contentContainer.appendChild(section);
+
+    // Optional interactive link block (after overview)
+    if (key === 'overview' && p.interactive_link && p.interactive_text) {
+      const icon = p.interactive_icon || '';
+      const headingText = p.interactive_heading || 'Further Reading';
+      const interactiveHTML = `
+        <div class="interactive-link-block">
+          <h3 id="interactive" style="margin-bottom: 0.5rem;">${applyFormatting(headingText)}</h3>
+          <p class="slide-caption">
+            ${icon ? `<img src="${escapeHTML(icon)}" class="interactive-icon" alt="icon" style="vertical-align: middle; margin-right: 0.4em; height: 1em;">` : ''}
+            ${p.interactive_supporting ? applyFormatting(p.interactive_supporting) : ''}
+          </p>
+          <p style="margin: 0.4rem 0 1rem">
+            <a href="${escapeHTML(p.interactive_link)}" target="_blank" rel="noopener noreferrer" style="text-decoration: underline; color: var(--accent);">
+              ${applyFormatting(p.interactive_text)}
+            </a>
+          </p>
+          <hr />
+        </div>
+      `;
+      contentContainer.insertAdjacentHTML('beforeend', interactiveHTML);
+    }
+  });
+
+  if (p.extra_resource_link) {
+    const linkHTML = `
+      <p>
+        <a href="${escapeHTML(p.extra_resource_link)}" target="_blank" rel="noopener noreferrer">
+          ${p.extra_resource_text ? applyFormatting(p.extra_resource_text) : 'View More Details'}
+        </a>
+      </p>
+    `;
+    contentContainer.insertAdjacentHTML('beforeend', linkHTML);
   }
 }
 
-
-    if (p.extra_resource_link) {
-      const linkHTML = `
-        <p>
-          <a href="${escapeHTML(p.extra_resource_link)}" target="_blank" rel="noopener noreferrer">
-            ${p.extra_resource_text ? applyFormatting(p.extra_resource_text) : 'View More Details'}
-          </a>
-        </p>
-      `;
-      contentContainer.insertAdjacentHTML('beforeend', linkHTML);
-    }
-  
-
- 
-
-/**
- * Project Chat Modal viewport behavior:
- * - Keeps the dialog sized to the visible viewport (accounts for mobile keyboards)
- * - Ensures header and input remain visible
- * - Scrolls chat window to bottom when focusing the input
- */
+/* ------------- Project Chat Modal viewport behavior ------------- */
 function initProjectChatViewportBehavior() {
   const modal = document.querySelector('.projchat-modal');
   const dialog = document.querySelector('.projchat-dialog');
-
   if (!modal || !dialog) return;
 
-  // Compute the dialog height using the visible viewport and subtract modal block padding
   const setDialogHeightFromViewport = () => {
-    // Sum of the actual computed padding top + bottom on the modal container
     const styles = getComputedStyle(modal);
     const padTop = parseFloat(styles.paddingTop) || 0;
     const padBottom = parseFloat(styles.paddingBottom) || 0;
@@ -552,25 +463,20 @@ function initProjectChatViewportBehavior() {
     dialog.style.maxHeight = h + 'px';
   };
 
-  // Observe aria-hidden changes to react right when the modal opens/closes
   const mo = new MutationObserver((mutations) => {
     for (const m of mutations) {
       if (m.type === 'attributes' && m.attributeName === 'aria-hidden') {
         const isOpen = modal.getAttribute('aria-hidden') === 'false';
         if (isOpen) {
           setDialogHeightFromViewport();
-          // After opening, scroll chat to bottom so last message is visible
           const win = modal.querySelector('.projchat-window');
-          if (win) {
-            requestAnimationFrame(() => win.scrollTo({ top: win.scrollHeight }));
-          }
+          if (win) requestAnimationFrame(() => win.scrollTo({ top: win.scrollHeight }));
         }
       }
     }
   });
   mo.observe(modal, { attributes: true, attributeFilter: ['aria-hidden'] });
 
-  // Update height while keyboard animates / device rotates
   if (window.visualViewport) {
     visualViewport.addEventListener('resize', setDialogHeightFromViewport);
     visualViewport.addEventListener('scroll', setDialogHeightFromViewport);
@@ -578,19 +484,15 @@ function initProjectChatViewportBehavior() {
     window.addEventListener('resize', setDialogHeightFromViewport);
   }
 
-  // Ensure the input is visible and not covered by keyboard on focus
   document.addEventListener('focusin', (e) => {
     const form = e.target && e.target.closest && e.target.closest('.projchat-form');
     if (form) {
       const win = modal.querySelector('.projchat-window');
-      if (win) {
-        requestAnimationFrame(() => win.scrollTo({ top: win.scrollHeight, behavior: 'smooth' }));
-      }
+      if (win) requestAnimationFrame(() => win.scrollTo({ top: win.scrollHeight, behavior: 'smooth' }));
       setDialogHeightFromViewport();
     }
   });
 
-  // If the modal starts open for any reason, size it immediately
   if (modal.getAttribute('aria-hidden') === 'false') {
     setDialogHeightFromViewport();
   }
