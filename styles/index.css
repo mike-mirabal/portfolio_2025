@@ -829,6 +829,45 @@ a.card:visited {
     padding: 0 1.5rem;
   }
 }
+
+/* Projects: prepare cards invisible, then reveal on scroll */
+.card.card-v03 {
+  content-visibility: auto;           /* paint only near viewport */
+  contain-intrinsic-size: 600px;      /* avoids jump while offscreen */
+  /* opacity: 0; */
+  transform: translateY(14px);
+  transition: opacity .35s ease, transform .35s ease;
+}
+
+.card.card-v03.reveal-ready {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .35s ease, transform .35s ease;
+}
+
+.card.card-v03.in {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(var(--reveal-stagger, 70ms) * var(--i, 0));
+}
+
+/* If user prefers reduced motion, just show them */
+@media (prefers-reduced-motion: reduce) {
+  .card.card-v03.reveal-ready,
+  .card.card-v03.in {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* trim heavy shadows during motion for smoother frames */
+.card.card-v03.in:hover {
+  will-change: transform, box-shadow;
+}
+
+
+
 /* ========================================================================== 
    ABOUT SECTION
    ========================================================================== */
@@ -1443,8 +1482,35 @@ h2.chat-heading {
   }
 
 
-  
-/* ===== Featured carousel (native scroll-snap) ===== */
+/* ========================================================================== 
+   FEATURED SECTION
+   ========================================================================== */
+
+/* --- Featured: very quick skeletons while images load --- */
+/* Featured skeletons */
+.feat-skel {
+  width: 170px; height: 170px; border-radius: 16px;
+  background: linear-gradient(90deg, #e8e8e8 0%, #f4f4f4 50%, #e8e8e8 100%);
+  background-size: 200% 100%;
+  animation: feat-skel 0.9s linear infinite;
+  box-shadow: 0 2px 8px rgba(0,0,0,.2);
+}
+@keyframes feat-skel {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+@media (max-width: 600px) {
+  .feat-skel { width: 136px; height: 136px; }
+}
+
+/* Make featured cards fade/slide in quickly */
+.featured-track.animate .feat-card {
+  animation: feat-enter 420ms ease-out forwards;
+  animation-delay: calc(var(--stagger, 60ms) * var(--i, 0));
+}
+
+
+/* ===== Featured: Carousel  ===== */
 .featured-wrap {
   max-width: 900px;
   margin: 0;

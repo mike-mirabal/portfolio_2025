@@ -11,7 +11,31 @@
 </head>
 
 <!-- BODY -->
-<body id="top" data-theme="light">
+<body id="top" data-theme="light"> 
+
+<!-- MicroSplash: Put right after <body> -->
+<div id="microSplash" style="
+  position:fixed; inset:0; z-index:1300; display:grid; place-items:center;
+  background: #1a73e8; color:#fff; font-weight:800; letter-spacing:.3px;">
+  <div class="microSplash">
+    <img src="/assets/avatars/avatar_appbar_fill.svg" alt="Avatar Icon" width="80" height="80">
+  </div>
+  <!-- <span style="opacity:.96">Mike&nbsp;Mirabal</span> -->
+</div>
+
+<script>
+  // Fade it out quickly while hero panels begin animating
+  window.addEventListener('DOMContentLoaded', () => {
+    const s = document.getElementById('microSplash');
+    s.style.transition = 'opacity .18s ease';
+    requestAnimationFrame(() => {
+      s.style.opacity = '0';
+      setTimeout(() => s.remove(), 1000);
+    });
+  });
+</script>
+
+
   <div class="page-wrapper"> <!-- Wrapper for the entire page content, including header and main content -->
   <!-- HEADER SECTION -->
     <!-- APP BAR (Material-style) -->
@@ -95,13 +119,49 @@
 <!-- Make sure PapaParse is loaded somewhere before this -->
 <script src="scripts/featured.js" defer></script>
 
+<!-- Add “reveal on scroll” for the big project cards -->
+<script>
+(function() {
+  const grid = document.getElementById('projectGrid');
+  if (!grid) return;
+
+  // One observer to reveal cards as they enter viewport
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { rootMargin: '0px 0px -10% 0px', threshold: 0.1 });
+
+  // Tag any new cards that project.js adds
+  const tagNewCards = () => {
+    const cards = grid.querySelectorAll('.card.card-v03:not([data-reveal-ready])');
+    cards.forEach((card, idx) => {
+      card.setAttribute('data-reveal-ready', '1');
+      // Assign a stable stagger index based on current order
+      const i = [...grid.querySelectorAll('.card.card-v03')].indexOf(card);
+      card.style.setProperty('--i', i >= 0 ? i : idx);
+      io.observe(card);
+    });
+  };
+
+  // Watch the grid for dynamic inserts
+  const mo = new MutationObserver(tagNewCards);
+  mo.observe(grid, { childList: true });
+
+  // In case some cards are already present
+  tagNewCards();
+})();
+</script>
+
+
         <p class="page-sublead">
           From user-centered design to AI prototypes, and branded visuals to business systems, I bring cross-disciplinary skills in one toolkit. 
         <!-- Hide / About Me Link 
         <br> <a href="#about" class="inline-link">More About Me ↓</a></p>
         -->
-
-
 
         <!-- HERO / Page Kicker -->
         <div class="page-kicker-row">
