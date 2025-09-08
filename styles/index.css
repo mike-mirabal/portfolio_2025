@@ -1472,6 +1472,33 @@ h2.chat-heading {
   display: none;
 }
 
+/* --- Featured slider: enable horizontal swiping/drag --- */
+.featured-track {
+  /* already overflow-x: auto in your CSS, keep that */
+  -webkit-overflow-scrolling: touch;  /* momentum on iOS */
+  overscroll-behavior-x: contain;     /* keep the page from rubber-banding */
+  touch-action: pan-x;                /* tell the browser horizontal pan is intended */
+  cursor: grab;                       /* nice hint on desktop */
+}
+
+.featured-track.is-dragging {
+  cursor: grabbing;
+}
+
+/* Prevent images/links from hijacking the swipe */
+.featured-track .feat-card,
+.featured-track .feat-card * {
+  -webkit-user-drag: none;
+  user-select: none;
+  touch-action: manipulation; /* taps still work, but don’t block pans */
+}
+
+/* Ensure the blue hero panels never block touches after they slide out */
+.hero-panel.slide-out {
+  pointer-events: none; /* they’re visually present during animation but non-interactive */
+}
+
+
 /* Card */
 .feat-card {
   scroll-snap-align: start;
