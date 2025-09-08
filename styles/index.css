@@ -1620,6 +1620,15 @@ h2.chat-heading {
   pointer-events: none;
 }
 
+/* Ensure featured thumbs show the <img> covering the square */
+.feat-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
 /* Text area */
 .feat-text {
   padding: .6rem .75rem .8rem;
