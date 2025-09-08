@@ -136,12 +136,21 @@ function renderSectionMedia(p, key) {
   const looksLikeImageFile = /\.(png|jpe?g|gif|webp|svg)(\?.*)?$/i.test(url);
   const looksLikeAudioFile = /\.(mp3|wav|ogg|m4a|aac)(\?.*)?$/i.test(url);
 
-  // IMAGE (we assume your assets are 1920x1280)
+  // IMAGE (assume 1920x1280)
   if (type === 'image' || (!type && looksLikeImageFile)) {
     const safeUrl = escapeHTML(url);
+    // Step 4: add robust WebP → PNG fallback on error
     return `
       <figure class="full-width-image">
-        <img src="${safeUrl}" alt="${alt}" width="${CARD_IMG_W}" height="${CARD_IMG_H}" loading="lazy" decoding="async" />
+        <img
+          src="${safeUrl}"
+          alt="${alt}"
+          width="${CARD_IMG_W}"
+          height="${CARD_IMG_H}"
+          loading="lazy"
+          decoding="async"
+          onerror="if(!this.dataset.fbk&&/\\.webp(\\?.*)?$/i.test(this.src)){this.dataset.fbk=1;this.src=this.src.replace(/\\.webp(\\?.*)?$/i,'.png$1')}else{this.onerror=null;this.src='/assets/placeholder-card-1920x1280.jpg'}"
+        />
         ${caption ? `<figcaption class="caption">${caption}</figcaption>` : ''}
       </figure>
     `;
@@ -299,7 +308,7 @@ function renderProjects(projects, container) {
     <source type="image/webp" srcset="${heroImg}">
     <img
       src="${/\.webp(\?.*)?$/i.test(heroImg) ? heroImg.replace(/\.webp(\?.*)?$/i, '.png$1') : heroImg}"
-      alt="${title} card image"
+      alt="${escapeHTML(title)} card image"
       loading="lazy"
       decoding="async"
       width="1920"
@@ -330,15 +339,28 @@ function renderDetail(p) {
   if (titleEl) titleEl.textContent = p.title || '';
   if (metaEl)  metaEl.textContent  = `${p.company || ''} | ${p.year || ''}`;
 
-  // hero image for detail page
+  // hero image for detail page (Step 4 fallback added)
   const heroImg = document.getElementById('caseHeroImg');
   if (heroImg && p.hero_url) {
-    heroImg.src = escapeHTML(p.hero_url);
+    const rawUrl = (p.hero_url || '').trim();
     heroImg.alt = p.hero_alt ? escapeHTML(p.hero_alt) : 'Project hero image';
     heroImg.width = CARD_IMG_W;
     heroImg.height = CARD_IMG_H;
     heroImg.loading = 'eager';       // show immediately on detail page
     heroImg.decoding = 'async';
+
+    // WebP → PNG fallback, then placeholder
+    heroImg.onerror = function () {
+      if (!this.dataset.fbk && /\.webp(\?.*)?$/i.test(this.src)) {
+        this.dataset.fbk = '1';
+        this.src = this.src.replace(/\.webp(\?.*)?$/i, '.png$1');
+      } else {
+        this.onerror = null;
+        this.src = '/assets/placeholder-card-1920x1280.jpg';
+      }
+    };
+
+    heroImg.src = rawUrl;
   }
 
   const contentContainer = document.getElementById('project-content');
