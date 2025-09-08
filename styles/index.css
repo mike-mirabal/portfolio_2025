@@ -4,6 +4,7 @@
 :root {
   --bg: #ffffff;
   --hero-bg: #feffe3;
+  --hero-bg-mobile: #EEF0F3;
   --card-bg: #E8F0FE;
   --text: #1c1c1c;
   --accent: #3e7bfa;
@@ -16,7 +17,6 @@
   --chatbubble: #dedede;
   --header-height: 4rem;
   --footer-height: 2rem;
-
   /* Height of the blue app bar (used by sticky controls) */
   --appbar-h: 56px;
 }
@@ -24,6 +24,7 @@
 [data-theme="dark"] {
   --bg: #1c1c1c;
   --hero-bg: #27252b;
+  --hero-bg-mobile: #202B38;
   --card-bg: #36495D;
   --text: #ffffff;
   --accent: #588bfa;
@@ -36,10 +37,12 @@
   --chatbubble: #2d2d2d;
 }
 
+
 /* ========================================================================== 
    BASE / RESET
    ========================================================================== */
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
   padding: 0;
@@ -47,11 +50,44 @@ html, body {
   background: var(--bg);
   color: var(--text);
 }
-body.no-scroll { overflow: hidden; }
 
-/* ───────────────────────────────
-   HIDDEN ELEMENTS
-──────────────────────────────── */
+body.no-scroll {
+  overflow: hidden;
+}
+
+/* Links (base + theme states) */
+a {
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+[data-theme="light"] a {
+  color: var(--link);
+}
+
+[data-theme="light"] a:visited {
+  color: var(--link-visited);
+}
+
+[data-theme="light"] a:hover,
+[data-theme="light"] a:focus {
+  color: var(--link-hover);
+}
+
+[data-theme="dark"] a {
+  color: var(--link);
+}
+
+[data-theme="dark"] a:visited {
+  color: var(--link-visited);
+}
+
+[data-theme="dark"] a:hover,
+[data-theme="dark"] a:focus {
+  color: var(--link-hover);
+}
+
+/* Visibility helpers */
 @media (max-width: 600px) {
   .hide-mobile {
     display: none;
@@ -64,48 +100,46 @@ body.no-scroll { overflow: hidden; }
   }
 }
 
-/* ───────────────────────────────
-   TYPOGRAPHY — HEADINGS
-──────────────────────────────── */
-
-h1, h2, h3, h4, p {
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+p {
   margin: 0;
   padding: 0;
   line-height: 1.3;
 }
 
-/* Headings */
 h1 {
-  font-size: clamp(1.5rem, 5vw, 3rem);  /* Used in #project-title */
+  font-size: clamp(1.5rem, 5vw, 3rem);
   font-weight: 800;
   line-height: 1.2;
-  margin: 0.5rem 0 0.5rem 0;
+  margin: 0.5rem 0;
 }
 
 h2 {
-  font-size: 1.5rem; /* You can adjust as needed */
+  font-size: 1.5rem;
   font-weight: 700;
-  margin: 1.5rem 0 1rem 0;
+  margin: 1.5rem 0 1rem;
 }
 
 h3 {
   font-size: 1.25rem;
   font-weight: bold;
-  margin: 1.5rem 0 1rem 0;
+  margin: 1.5rem 0 1rem;
 }
 
 h4 {
   font-size: 1rem;
   font-weight: bold;
-  margin: 1.5rem 0 1rem 0;
+  margin: 1.5rem 0 1rem;
 }
 
-/* Special Label Heading (e.g., "Explore this Project") */
 h4.subnav-label {
   margin: 2rem 0 0 0;
 }
 
-/* Paragraphs */
 p {
   font-size: 1rem;
   line-height: 1.6;
@@ -113,50 +147,18 @@ p {
 }
 
 #overview-text p {
-  margin: 1rem 0;  /* tighter control on overview spacing */
+  margin: 1rem 0;
 }
 
 #project-overview p {
-  margin-bottom: 2rem;  /* larger spacing in overview section */
-}
-
-/* Links */
-/* Base link styling */
-a {
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-/* LIGHT MODE */
-[data-theme="light"] a {
-  color: var(--link);
-}
-[data-theme="light"] a:visited {
-  color: var(--link-visited);
-}
-[data-theme="light"] a:hover,
-[data-theme="light"] a:focus {
-  color: var(--link-hover);
-}
-
-/* DARK MODE */
-[data-theme="dark"] a {
-  color: var(--link);
-}
-[data-theme="dark"] a:visited {
-  color: var(--link-visited);
-}
-[data-theme="dark"] a:hover,
-[data-theme="dark"] a:focus {
-  color: var(--link-hover);
+  margin-bottom: 2rem;
 }
 
 
 /* ========================================================================== 
    APP BAR (Material style)
    ========================================================================== */
-
-/* App bar is fixed across pages */
+/* App Bar */
 .appbar {
   position: fixed;
   top: 0;
@@ -169,14 +171,17 @@ a {
   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 
-/* Prevent content from tucking under the fixed app bar */
-main, #content, .page-content, .main-container {
+/* Keep content below app bar */
+main,
+#content,
+.page-content,
+.main-container {
   padding-top: var(--appbar-h);
 }
 
-
+/* App Bar Inner */
 .appbar .appbar-inner {
-  max-width: 900px;                 /* match main content width */
+  max-width: 900px;
   margin: 0 auto;
   padding: 12px 16px;
   display: flex;
@@ -190,6 +195,7 @@ main, #content, .page-content, .main-container {
   align-items: center;
   gap: 8px;
 }
+
 .appbar .appbar-title {
   margin: 0;
   font-size: 18px;
@@ -198,6 +204,7 @@ main, #content, .page-content, .main-container {
   color: #fff;
   line-height: 1;
 }
+
 .appbar .appbar-title-light {
   font-weight: 500;
   opacity: 0.6;
@@ -210,12 +217,11 @@ main, #content, .page-content, .main-container {
 }
 
 .appbar-title a {
-  color: inherit;          /* always use the title's color */
-  text-decoration: none;   /* no underline */
-  display: inline-block;   /* keeps layout tidy */
+  color: inherit;
+  text-decoration: none;
+  display: inline-block;
 }
 
-/* Override all pseudo states to look identical */
 .appbar-title a:hover,
 .appbar-title a:focus,
 .appbar-title a:visited,
@@ -224,9 +230,13 @@ main, #content, .page-content, .main-container {
   text-decoration: none;
 }
 
-.appbar .appbar-right { display: flex; align-items: center; gap: 12px; }
+.appbar .appbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
-/* App bar icon buttons (email, LinkedIn, theme) */
+/* App Bar: icon buttons + theme switch */
 .appbar .icon-btn {
   display: inline-grid;
   place-items: center;
@@ -234,35 +244,71 @@ main, #content, .page-content, .main-container {
   height: 32px;
   border-radius: 16px;
   color: #fff;
-  text-decoration: none;
   background: transparent;
   border: none;
   cursor: pointer;
   transition: background-color .2s ease, opacity .2s ease;
 }
-.appbar .icon-btn:hover  { background-color: rgba(255,255,255,0.12); }
-.appbar .icon-btn:active { background-color: rgba(255,255,255,0.18); }
-.appbar .icon-btn svg { display: block; color: currentColor; }
 
-/* App bar theme switch (icon button w/ sun/moon) */
-.appbar .theme-switch { padding: 0; position: static; transform: none; width: 32px; height: 32px; border: none; background: transparent; border-radius: 16px; }
+.appbar .icon-btn:hover {
+  background-color: rgba(255,255,255,0.12);
+}
+
+.appbar .icon-btn:active {
+  background-color: rgba(255,255,255,0.18);
+}
+
+.appbar .icon-btn svg {
+  display: block;
+  color: currentColor;
+}
+
+.appbar .theme-switch {
+  padding: 0;
+  position: static;
+  transform: none;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  border-radius: 16px;
+}
+
 .appbar .theme-switch::before,
-.appbar .theme-switch::after { display: none !important; } /* neutralize global pill */
-.appbar .theme-switch .icon-moon { display: none; }
-[data-theme="dark"] .appbar .theme-switch .icon-sun { display: none; }
-[data-theme="dark"] .appbar .theme-switch .icon-moon { display: block; }
+.appbar .theme-switch::after {
+  display: none !important;
+}
 
-/* Hide dark icon in light mode */
-.icon-dark { display: none; }
-[data-theme="dark"] .icon-dark { display: inline; }
-[data-theme="dark"] .icon-light { display: none; }
+.appbar .theme-switch .icon-moon {
+  display: none;
+}
+
+[data-theme="dark"] .appbar .theme-switch .icon-sun {
+  display: none;
+}
+
+[data-theme="dark"] .appbar .theme-switch .icon-moon {
+  display: block;
+}
+
+/* Icon color helpers */
+.icon-dark {
+  display: none;
+}
+
+[data-theme="dark"] .icon-dark {
+  display: inline;
+}
+
+[data-theme="dark"] .icon-light {
+  display: none;
+}
 
 
 /* ========================================================================== 
    PROJECTS PAGE — HERO TEXT (under app bar)
    ========================================================================== */
-
-/* Layout container used across the page */
+/* Container */
 .main-container {
   flex: 1;
   max-width: 900px;
@@ -270,17 +316,37 @@ main, #content, .page-content, .main-container {
   padding: 1rem 1rem 0 1rem;
 }
 
-/* Prevent hero image from being overlapped by the app bar */
-#hero-image {
-  margin-top: var(--appbar-h);
-}
-
-
+/* Hero header (background shells + spacing) */
 .hero-header {
-  padding-top: var(--appbar-h);
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  isolation: isolate;
+  padding-top: var(--appbar-h) !important;
+  margin: 0.5rem 0 0 0;
+  min-height: 42vh;
+  background-color: var(--bg);
 }
 
-.projects-subheading {
+.hero-header::before,
+.hero-header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Keep hero content above background art */
+.hero-header .main-container,
+.hero-header .page-kicker-row,
+.hero-header .projects-subheading {
+  position: relative;
+  z-index: 2;
+}
+
+/* Headings in hero */
+.hero-heading {
   font-size: 2.5rem;
   font-weight: 800;
   margin-top: 0;
@@ -289,39 +355,74 @@ main, #content, .page-content, .main-container {
   margin-right: auto;
 }
 
+.projects-heading {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin: 2rem auto 0.5rem;
+  max-width: 900px;
+}
+
+#projectsSubheading:empty {
+  display: none;
+}
+
+/* Projects subheading */
+.projects-subheading {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-top: 0;
+  max-width: 900px;
+  margin-right: auto;
+  transition: opacity 1s ease, transform 1s ease;
+  opacity: 0;
+  transform: translateX(-3rem);
+}
+
+/* Mobile fix: prevent right-edge clipping */
 @media (max-width: 600px) {
   .projects-subheading {
     font-size: 1.75rem;
-    margin-top: 1rem;
-     /* never wider than the viewport gutters */
-    max-width: min(100%, calc(100vw - 2rem)); /* 2rem = .main-container’s 1rem side padding */
+    margin: 0 0 1.5rem 0;
+    max-width: min(100%, calc(100vw - 2rem));
     width: 100%;
+    box-sizing: border-box;
+    padding-right: .25rem;
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 }
 
+/* Page sub-lead (and mobile anti-clip) */
 .page-sublead {
   font-size: 1.1rem;
   line-height: 1.6;
   color: var(--text);
-  opacity: 0.9;
-  margin: 0 0 1.5rem 0;
+  /* opacity: 0.9; */
+  margin: 0.5rem 0 1.5rem 0;
   width: 95%;
-  margin-left: 0;     /* force align left */
-  margin-right: auto; /* prevent centering */
-  text-align: left;   /* make sure inline content aligns left */
+  margin-left: 0;
+  margin-right: auto;
+  text-align: left;
 }
 
 @media (max-width: 600px) {
   .page-sublead {
+    font-size: 1rem;
     width: 100%;
+    max-width: min(100%, calc(100vw - 2rem));
+    margin: 0.5rem 0 1rem 0;
+    box-sizing: border-box;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    padding-right: .25rem;
   }
 }
 
-/* Page Kicker - avatar and text */
+/* Page kicker */
 .page-kicker-row {
   margin-top: auto;
   display: flex;
-  align-items: flex-end;  /* ← fixes vertical alignment */
+  align-items: flex-end;
   gap: 1rem;
 }
 
@@ -331,11 +432,11 @@ main, #content, .page-content, .main-container {
   color: var(--muted);
   opacity: 0.9;
   margin: 0;
-  padding-top: 0;
   padding-bottom: 0.5rem;
 }
 
-/* ---- Ambient Orbs ---- */
+/* Hero art variants */
+/* Ambient Orbs */
 .hero--orbs {
   background: linear-gradient(180deg, var(--chatbg) 0%, var(--bg) 100%);
 }
@@ -349,7 +450,6 @@ main, #content, .page-content, .main-container {
 }
 
 .hero--orbs::after {
-  /* gentle drift */
   background:
     radial-gradient(150px 150px at 30% 70%, rgba(139,92,246,.22), transparent 60%),
     radial-gradient(180px 180px at 75% 60%, rgba(234,179,8,.16), transparent 60%);
@@ -359,12 +459,17 @@ main, #content, .page-content, .main-container {
 }
 
 @keyframes orbs-drift {
-  0%   { transform: translate3d(0,0,0) scale(1);   opacity: .9; }
-  100% { transform: translate3d(2%, -3%, 0) scale(1.05); opacity: .85; }
+  0% {
+    transform: translate3d(0,0,0) scale(1);
+    opacity: .9;
+  }
+  100% {
+    transform: translate3d(2%, -3%, 0) scale(1.05);
+    opacity: .85;
+  }
 }
 
-/* ---- Gradient Mesh ---- */
-/* ---- Mesh Cloud Background ---- */
+/* Gradient Mesh */
 .hero--mesh::after {
   content: "";
   position: absolute;
@@ -378,19 +483,17 @@ main, #content, .page-content, .main-container {
   pointer-events: none;
 }
 
-/* Light mode cloudscape */
 [data-theme="light"] .hero--mesh::after {
-  --mesh-bg: 
-    linear-gradient(#e6f3ff, #cce7ff), /* translucent sky */
+  --mesh-bg:
+    linear-gradient(#e6f3ff, #cce7ff),
     radial-gradient(at 40% 30%, #ffffff 0px, transparent 50%),
     radial-gradient(at 70% 70%, #f2f2f2 0px, transparent 50%),
     radial-gradient(at 20% 80%, #ffffff 0px, transparent 50%);
 }
 
-/* Dark mode cloudscape */
 [data-theme="dark"] .hero--mesh::after {
   --mesh-bg:
-    linear-gradient(#001a33, #001122), /* night sky */
+    linear-gradient(#001a33, #001122),
     radial-gradient(at 40% 30%, #444c55 0px, transparent 50%),
     radial-gradient(at 70% 70%, #333b44 0px, transparent 50%),
     radial-gradient(at 20% 80%, #555d66 0px, transparent 50%);
@@ -408,194 +511,119 @@ main, #content, .page-content, .main-container {
   }
 }
 
-
-/* ---- Noise + Vignette ---- */
-.hero--noise {
-  background: linear-gradient(to bottom, var(--chatbg), var(--bg));
-}
-
-.hero--noise::before {
-  /* film grain – tiny, subtle; data URI SVG so no network hit */
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='table' tableValues='0 0 0 0 .04 .04 .04 .04 .04'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 140px 140px;
-  opacity: .7;
-}
-
-.hero--noise::after {
-  /* vignette to anchor content */
-  background:
-    radial-gradient(120% 80% at 50% 10%, transparent 0%, rgba(0,0,0,.06) 60%, rgba(0,0,0,.12) 100%);
-  mix-blend-mode: multiply;
-}
-
-/* ---- Subtle Rings ---- */
-.hero--rings {
-  background:
-    radial-gradient(circle at 50% 35%, rgba(255,255,255,.12), transparent 40%),
-    linear-gradient(to bottom, var(--chatbg), var(--bg));
-}
-
-.hero--rings::before {
-  /* tiled SVG rings with very low contrast */
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Cdefs%3E%3CradialGradient id='g' cx='150' cy='150' r='150' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%23ffffff' stop-opacity='.06'/%3E%3Cstop offset='1' stop-color='%23ffffff' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='150' cy='150' r='40' fill='none' stroke='%23ffffff' stroke-opacity='.05' stroke-width='1'/%3E%3Ccircle cx='150' cy='150' r='90' fill='none' stroke='%23ffffff' stroke-opacity='.05' stroke-width='1'/%3E%3Ccircle cx='150' cy='150' r='140' fill='none' stroke='%23ffffff' stroke-opacity='.05' stroke-width='1'/%3E%3Crect width='300' height='300' fill='url(%23g)'/%3E%3C/svg%3E");
-  background-size: 300px 300px;
-  opacity: .8;
-}
-
-.hero--rings::after {
-  /* slow parallax drift for the rings */
-  background: inherit;          /* reuse gradients from base */
-  animation: rings-pan 60s linear infinite;
-  background-position: 0 0;
-  mix-blend-mode: soft-light;
-  opacity: .4;
-}
-
-@keyframes rings-pan {
-  0%   { transform: translateY(0); }
-  100% { transform: translateY(-30px); }
-}
-
-
-
-/* ---- hero background base (required) ---- */
-.hero-header {
-  position: relative;
-  display: flex;
-  overflow: hidden;
-  isolation: isolate;           /* keeps blending contained */
-  padding-top: var(--appbar-h); /* you already had this */
-  min-height: 42vh;
-  background-color: var(--bg);             /*hero background color */
-}
-
-.hero-header::before,
-.hero-header::after {
-  content: "";
+/* Hero slide panels */
+.hero-panel {
   position: absolute;
   inset: 0;
-  pointer-events: none;
-  z-index: 0;                   /* your hero content sits above */
+  background-color: #3e7bfa;
+  z-index: 3;
+  transform: translateX(0);
+  transition: transform 0.25s ease-in-out;
 }
 
-/* keep content above the art */
-.hero-header .main-container{
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  width: 100%;
+.panel-1 {
+  z-index: 4;
 }
 
-/* keep content above the art */
-.hero-header .main-container,
-.hero-header .page-kicker-row,
-.hero-header .projects-subheading {
-  position: relative;
-  z-index: 2;
+.panel-2 {
+  background-color: #588bfa;
+  z-index: 3;
+}
+
+.hero-panel.slide-out {
+  transform: translateX(100%);
+}
+
+/* Heading entrance helpers */
+.fade-slide-in {
+  opacity: 1 !important;
+  transform: translateX(0) !important;
+}
+
+.fade-slide-reset {
+  opacity: 0 !important;
+  transform: translateX(-3rem) !important;
+}
+
+/* Mobile hero background color */
+@media (max-width: 768px) {
+  .hero-header {
+    background-color: var(--hero-bg-mobile) !important;
+  }
 }
 
 
-
-.hero-header .main-container,
-.hero-header .page-kicker-row,
-.hero-header .projects-subheading {
-  position: relative;
-  z-index: 2;
-}
-
-
-
-/* AVATAR STYLES */
+/* ========================================================================== 
+   AVATAR (hero/top inline avatar)
+   ========================================================================== */
+/* Avatar wrapper + inner */
 .avatar-wrapper {
   display: inline-block;
   width: 2.5rem;
   height: 2.5rem;
-   overflow: visible; /* ← allow head to rotate outside bounds */
+  overflow: visible;
   background-color: transparent;
   margin-bottom: -2px;
 }
 
-/* Avatar - Hand Point Down */
-@keyframes pointDown {
-  0%, 100% {
-    transform: rotate(0deg);
-  }
-  50% {
-    transform: rotate(1deg); /* reduced from 15deg to 4deg */
-  }
-}
-
-#hand {
-  transform-origin: top center; /* adjust if needed */
-  animation: pointDown 1.4s ease-in-out infinite;
-}
-
-/* Avatar Inner - head bobble */
-
-.avatar-wrapper:hover #head,
-.avatar-wrapper:active #head {
-  animation: bobbleHead 0.4s ease-in-out;
-  transform-origin: center bottom; /* Adjust to pivot at neck */
-}
-
-
 .avatar-inner {
-  display: block;  /* instead of inline-block */
+  display: block;
   width: 100%;
   height: auto;
   transition: transform 0.2s ease;
 }
 
+/* Head bobble on hover */
 .avatar-wrapper:hover .avatar-inner,
 .avatar-wrapper:active .avatar-inner {
   animation: bobbleHead 0.4s ease-in-out;
-  transform-origin: center bottom; /* Pivot from neck */
+  transform-origin: center bottom;
 }
 
+/* Tiny “point down” hand wiggle (scoped so it won’t override About’s hand) */
+@keyframes pointDown {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(1deg);
+  }
+}
+
+.avatar-wrapper #hand {
+  transform-origin: top center;
+  animation: pointDown 1.4s ease-in-out infinite;
+}
+
+/* Hover bobble on the head group if present */
+.avatar-wrapper:hover #head,
+.avatar-wrapper:active #head {
+  animation: bobbleHead 0.4s ease-in-out;
+  transform-origin: center bottom;
+}
+
+/* Bobble keyframes */
 @keyframes bobbleHead {
-  0%   { transform: rotate(0deg); }
-  20%  { transform: rotate(0.6deg); }
-  40%  { transform: rotate(-0.6deg); }
-  60%  { transform: rotate(0.6deg); }
-  80%  { transform: rotate(-0.6deg); }
-  100% { transform: rotate(0deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  20% {
+    transform: rotate(0.6deg);
+  }
+  40% {
+    transform: rotate(-0.6deg);
+  }
+  60% {
+    transform: rotate(0.6deg);
+  }
+  80% {
+    transform: rotate(-0.6deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
 }
-
-
-.hero-heading {
-  font-size: 2.5rem;
-  font-weight: 800;
-  margin-top: 0;
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.projects-heading {
-  font-size: 2.25rem;
-  font-weight: 700;
-  margin-top: 2rem;
-  margin-bottom: 0.5rem;
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-#projectsSubheading:empty {
-  display: none;
-}
-
-
-
-
-/* Keep hero texts aligned with container gutters */
-.projects-subheading,
-.page-sublead {
-  max-width: 900px;
-  /* margin-left: auto; */ 
-  margin-right: auto;
-}
-
 
 
 /* ========================================================================== 
@@ -603,24 +631,37 @@ main, #content, .page-content, .main-container {
    ========================================================================== */
 .sticky-controls {
   position: sticky;
-  top: var(--appbar-h);             /* sits directly under app bar */
+  top: var(--appbar-h);
   z-index: 900;
   background: var(--bg);
+  transition: transform .2s ease, opacity .2s ease;
+  will-change: transform, opacity;
 }
+
 .sticky-controls .sticky-inner {
   max-width: 900px;
   margin: 0 auto;
-  padding: 0.75rem 0 0.75rem 0;
+  padding: 0.75rem 0;
 }
-.sticky-controls .section-title { margin: 0 0 0.5rem 0; }
 
-/* Filters (desktop default: flex; mobile overridden to grid) */
+.sticky-controls .section-title {
+  margin: 0 0 0.5rem 0;
+}
+
+.sticky-controls.is-hidden {
+  transform: translateY(-120%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Filters (flex on desktop; grid on mobile) */
 .sticky-controls .filters {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
   margin: 0;
 }
+
 .sticky-controls .filters button {
   flex: 1 1 0%;
   text-align: center;
@@ -633,53 +674,24 @@ main, #content, .page-content, .main-container {
   cursor: pointer;
   transition: border-color 0.2s, background 0.2s;
 }
-.sticky-controls .filters button:hover {
-  background: var(--accent);
-  color: #fff;
-  border-color: var(--accent);
-}
+
+.sticky-controls .filters button:hover,
 .sticky-controls .filters button.active {
   background: var(--accent);
   color: #fff;
   border-color: var(--accent);
 }
 
-/* smooth hide/show for sticky controls */
-.sticky-controls {
-  transition: transform .2s ease, opacity .2s ease;
-  will-change: transform, opacity;
-}
-
-.sticky-controls.is-hidden {
-  transform: translateY(-120%);
-  opacity: 0;
-  pointer-events: none;
-}
-
-
-/* Keep grid spacing consistent on projects */
-.grid { gap: 24px; margin-top: 0.25rem; }
-
-a.card {
-  color: var(--text)
-}
-a.card:hover {
-  color: var(--link)
-}
-a.card:visited {
-  color: var(--link-visited)
-}
-
-/* Mobile: force filters into a 3x2 uniform grid */
+/* Mobile: 3x2 layout for 6 filters */
 @media (max-width: 768px) {
   .sticky-controls .filters {
     display: grid !important;
-    grid-template-columns: repeat(3, 1fr); /* ← was repeat(4, 1fr) */
+    grid-template-columns: repeat(3, 1fr);
     gap: 8px;
     margin: 0;
   }
   .sticky-controls .filters button {
-    flex: initial !important;  /* neutralize desktop flex */
+    flex: initial !important;
     width: 100%;
     min-width: 0;
     padding: 0.45rem 0.5rem;
@@ -687,52 +699,73 @@ a.card:visited {
   }
 }
 
+/* Anchor offsets: first section below sticky filters */
+.sticky-controls + * {
+  scroll-margin-top: calc(var(--appbar-h) + 8px);
+}
+
 
 /* ========================================================================== 
    PROJECT GRID & CARD V03
    ========================================================================== */
+/* Section title */
 .section-title {
   font-size: 1rem;
   font-weight: 700;
   margin: 0 0 0.75rem 0;
 }
 
-
+/* Grid */
 .grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-top: 0.25rem;
 }
+
 @media (max-width: 768px) {
-  .grid { grid-template-columns: 1fr; }
+  .grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Card shell */
+a.card {
+  color: var(--text);
+}
+
+a.card:hover {
+  color: var(--link);
+}
+
+a.card:visited {
+  color: var(--link-visited);
+}
+
 .card.card-v03 {
   display: flex;
   flex-direction: column;
   text-decoration: none;
   color: var(--text);
-  /* border: 2px solid var(--muted); commented out for now */
-  border-radius: 8px; /* Material-like */
+  border-radius: 8px;
   overflow: hidden;
   background: var(--card-bg);
   box-shadow: 0 2px 8px var(--shadow);
   transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  content-visibility: auto;
+  contain-intrinsic-size: 600px;
+  transform: translateY(14px);
 }
+
 .card.card-v03:hover {
   transform: translateY(-4px);
   box-shadow: 0 6px 16px var(--shadow);
-  /* border-color: var(--accent); */
 }
 
-.card.card-v03:visited {
-  /* border-color: var(--link-visited); */
-}
-
-/* Top meta row: icon | company/year | Ask‑AI (right) */
+/* Top meta row */
 .card.card-v03 .top-meta {
   display: grid;
-  grid-template-columns: auto minmax(0,1fr) auto; /* ← three columns, center can shrink */
+  grid-template-columns: auto minmax(0,1fr) auto;
   column-gap: 0.75rem;
   align-items: center;
   padding: 8px 16px;
@@ -740,7 +773,7 @@ a.card:visited {
   border-bottom: 1px solid color-mix(in srgb, var(--muted), transparent 40%);
 }
 
-/* Icon (40x40, no border/background) */
+/* Company icon */
 .card.card-v03 .company-icon {
   width: 40px;
   height: 40px;
@@ -751,17 +784,35 @@ a.card:visited {
   border: none;
   background: transparent;
 }
-.card.card-v03 .company-icon img { width: 100%; height: 100%; object-fit: cover; }
-.card.card-v03 .company-icon .icon-fallback { font-weight: 700; font-size: 0.95rem; opacity: .75; }
 
-/* Company + Year (tight) */
-.card.card-v03 .company-and-year { display: grid; gap: 4px; min-width: 0; }
+.card.card-v03 .company-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card.card-v03 .company-icon .icon-fallback {
+  font-weight: 700;
+  font-size: 0.95rem;
+  opacity: .75;
+}
+
+/* Company + Year */
+.card.card-v03 .company-and-year {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
 .card.card-v03 .company {
   font-weight: bold;
   font-size: 20px;
   line-height: 1.2;
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; /* prevents push */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
+
 .card.card-v03 .year {
   font-size: 12px;
   font-weight: 300;
@@ -769,24 +820,40 @@ a.card:visited {
   line-height: 1.2;
 }
 
-/* Ask‑AI button participates in grid and stays right/centered */
+/* Ask-AI button */
 .top-meta .ask-ai-btn {
   position: static;
   justify-self: end;
   align-self: center;
-  width: 24px; height: 24px;
+  width: 24px;
+  height: 24px;
 }
+
 .card-action.ask-ai-btn {
   margin-left: auto;
-  background: transparent; border: 0; cursor: pointer;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
   color: var(--text);
-  width: 28px; height: 28px; border-radius: 14px;
+  width: 28px;
+  height: 28px;
+  border-radius: 14px;
 }
-.card-action.ask-ai-btn:hover { background: rgba(0,0,0,0.06); }
-[data-theme="dark"] .card-action.ask-ai-btn:hover { background: rgba(255,255,255,0.08); }
 
-/* Hero image */
-.card.card-v03 .hero-img { position: relative; overflow: hidden; }
+.card-action.ask-ai-btn:hover {
+  background: rgba(0,0,0,0.06);
+}
+
+[data-theme="dark"] .card-action.ask-ai-btn:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+/* Card image */
+.card.card-v03 .hero-img {
+  position: relative;
+  overflow: hidden;
+}
+
 .card.card-v03 .hero-img img {
   display: block;
   width: 100%;
@@ -794,19 +861,19 @@ a.card:visited {
   object-fit: cover;
 }
 
-/* Content area (16px padding) */
-.card.card-v03 .card-content { padding: 16px; }
+/* Card content */
+.card.card-v03 .card-content {
+  padding: 16px;
+}
 
-/* Title (h2) */
 .card.card-v03 .title {
   color: var(--text);
-  margin: 0 0 8px 0;
+  margin: 0 0 8px;
   font-weight: bold;
   font-size: 24px;
   line-height: 1.25;
 }
 
-/* Description (body) */
 .card.card-v03 .desc {
   color: var(--text);
   margin: 0;
@@ -815,34 +882,11 @@ a.card:visited {
   opacity: .95;
 }
 
-/* Hide tags entirely on cards */
-.card.card-v03 .tags { display: none !important; }
-
-/* Back to top */
-.back-to-top { text-align: left; margin: 2rem 0; padding: 0; }
-.back-to-top a { color: var(--accent); text-decoration: underline; }
-@media (max-width: 768px) {
-  .back-to-top { text-align: center; padding: 0; }
+.card.card-v03 .tags {
+  display: none !important;
 }
 
-/* Optional: narrower grid container on small tablets */
-@media (min-width: 480px) and (max-width: 768px) {
-  .grid {
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
-  }
-}
-
-/* Projects: prepare cards invisible, then reveal on scroll */
-.card.card-v03 {
-  content-visibility: auto;           /* paint only near viewport */
-  contain-intrinsic-size: 600px;      /* avoids jump while offscreen */
-  /* opacity: 0; */
-  transform: translateY(14px);
-  transition: opacity .35s ease, transform .35s ease;
-}
-
+/* Scroll reveal (queued) */
 .card.card-v03.reveal-ready {
   opacity: 0;
   transform: translateY(14px);
@@ -855,7 +899,6 @@ a.card:visited {
   transition-delay: calc(var(--reveal-stagger, 70ms) * var(--i, 0));
 }
 
-/* If user prefers reduced motion, just show them */
 @media (prefers-reduced-motion: reduce) {
   .card.card-v03.reveal-ready,
   .card.card-v03.in {
@@ -865,22 +908,46 @@ a.card:visited {
   }
 }
 
-/* trim heavy shadows during motion for smoother frames */
 .card.card-v03.in:hover {
   will-change: transform, box-shadow;
 }
 
+/* Back to top */
+.back-to-top {
+  text-align: left;
+  margin: 2rem 0;
+  padding: 0;
+}
+
+.back-to-top a {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .back-to-top {
+    text-align: center;
+    padding: 0;
+  }
+}
+
+/* Optional narrower grid on small tablets */
+@media (min-width: 480px) and (max-width: 768px) {
+  .grid {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+}
 
 
 /* ========================================================================== 
    ABOUT SECTION
    ========================================================================== */
-
 .about-section {
   padding-top: 2rem;
 }
 
-/* Make the SVG responsive inside the about photo area */
 .about-photo svg {
   display: block;
   width: 6rem;
@@ -891,20 +958,21 @@ a.card:visited {
   overflow: visible;
 }
 
-
-/* Subtle hand wave */
+/* Subtle hand wave for About avatar only */
 @keyframes handWave {
-  0%, 100% { transform: rotate(0deg); }
-  30%      { transform: rotate(6deg); } /* tweak for more/less motion */
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  30% {
+    transform: rotate(6deg);
+  }
 }
 
-/* Ensure transforms are relative to the hand’s own bbox */
 #aboutAvatar #hand {
   transform-box: fill-box;
   transform-origin: 50% 90%;
-
   animation: handWave 1.4s ease-in-out infinite;
-  
 }
 
 .about-wrap {
@@ -924,12 +992,10 @@ a.card:visited {
     align-items: left;
     text-align: left;
   }
-
   .about-copy {
     width: 100%;
   }
 }
-
 
 
 /* ========================================================================== 
@@ -938,7 +1004,7 @@ a.card:visited {
 .hero-chat {
   box-sizing: border-box;
   margin: 0 auto;
-  padding: 0 1rem 1rem 1rem;
+  padding: 0 1rem 1rem;
   max-width: 500px;
   height: calc(100vh - var(--header-height) - var(--footer-height));
   display: flex;
@@ -946,12 +1012,14 @@ a.card:visited {
   gap: 1rem;
   border-radius: 0.5rem;
 }
+
 h2.chat-heading {
   margin: 0;
   font-size: 2rem;
   font-weight: bold;
   text-align: center;
 }
+
 .chat-window {
   flex: 1 1 auto;
   min-height: 0;
@@ -960,6 +1028,7 @@ h2.chat-heading {
   border-radius: 0.75rem;
   background: var(--chatbg);
 }
+
 .chat-window .message.bot {
   display: flex;
   align-items: flex-start;
@@ -968,12 +1037,14 @@ h2.chat-heading {
   margin: 0.25rem 10% 0.25rem 0;
   color: var(--text);
 }
+
 .chat-window .message.bot .avatar {
   flex-shrink: 0;
   font-size: 1.25rem;
   line-height: 1.25rem;
   margin-top: 0.25rem;
 }
+
 .chat-window .message.bot .bubble-text {
   background: var(--chatbubble);
   padding: 0.5rem 0.75rem;
@@ -982,6 +1053,7 @@ h2.chat-heading {
   max-width: 100%;
   word-wrap: break-word;
 }
+
 .chat-window .message.user {
   display: flex;
   justify-content: flex-end;
@@ -991,12 +1063,14 @@ h2.chat-heading {
   margin: 0.25rem 0 0.25rem 10%;
   color: white;
 }
+
 .chat-window .message.user .avatar {
   flex-shrink: 0;
   font-size: 1.25rem;
   line-height: 1.25rem;
   margin-top: 0.25rem;
 }
+
 .chat-window .message.user .bubble-text {
   background: var(--accent);
   color: white;
@@ -1007,11 +1081,17 @@ h2.chat-heading {
   word-wrap: break-word;
 }
 
-/* Link colors inside bot messages */
-.chat-window .message.bot a { color: #3e7bfa; text-decoration: underline; }
-[data-theme="dark"] .chat-window .message.bot a { color: #588bfa; }
+/* Links inside bot messages */
+.chat-window .message.bot a {
+  color: #3e7bfa;
+  text-decoration: underline;
+}
 
-/* Typing indicator bubble */
+[data-theme="dark"] .chat-window .message.bot a {
+  color: #588bfa;
+}
+
+/* Typing indicator */
 .bubble-text.typing-indicator {
   max-height: 2.5rem;
   overflow: hidden;
@@ -1021,7 +1101,10 @@ h2.chat-heading {
   justify-content: left;
   background: transparent !important;
 }
-.bubble-text.typing-indicator lottie-player { margin: -3rem -5rem; }
+
+.bubble-text.typing-indicator lottie-player {
+  margin: -3rem -5rem;
+}
 
 /* Chat input form */
 .chat-form {
@@ -1029,6 +1112,7 @@ h2.chat-heading {
   align-items: stretch;
   gap: 0.5rem;
 }
+
 .chat-form input {
   flex: 1 1 auto;
   min-width: 0;
@@ -1040,6 +1124,7 @@ h2.chat-heading {
   font-size: 1rem;
   outline: none;
 }
+
 .btn-send {
   flex: 0 0 auto;
   width: 3rem;
@@ -1054,36 +1139,9 @@ h2.chat-heading {
   cursor: pointer;
   transition: transform 0.2s ease;
 }
-.btn-send:hover { transform: translateY(-2px); }
 
-/* Avatar containers next to chat bubbles */
-.bot-avatar, .user-avatar {
-  flex-shrink: 0;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.bot-avatar img, .user-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  filter: invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0%) contrast(100%); /* default dark text color */
-}
-
-/* In dark mode, flip to white-ish */
-[data-theme="dark"] .bot-avatar img,
-[data-theme="dark"] .user-avatar img {
-  filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
-}
-
-/* Align message rows with avatar + bubble */
-.proj-bot, .proj-user {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+.btn-send:hover {
+  transform: translateY(-2px);
 }
 
 /* Avatar icons that inherit text color via CSS mask */
@@ -1092,7 +1150,7 @@ h2.chat-heading {
   width: 24px;
   height: 24px;
   display: inline-block;
-  background-color: currentColor;            /* ← icon color follows theme text */
+  background-color: currentColor;
   mask-repeat: no-repeat;
   mask-position: center;
   mask-size: contain;
@@ -1101,27 +1159,47 @@ h2.chat-heading {
   -webkit-mask-size: contain;
 }
 
-/* Point each variant at its SVG file */
 .avatar-icon.bot {
   mask-image: url('/assets/icons/icon_chat_bot.svg');
   -webkit-mask-image: url('/assets/icons/icon_chat_bot.svg');
 }
+
 .avatar-icon.user {
   mask-image: url('/assets/icons/icon_chat_user.svg');
   -webkit-mask-image: url('/assets/icons/icon_chat_user.svg');
 }
 
-/* Row layout keeps icon + bubble aligned */
-.proj-bot, .proj-user {
+.proj-bot,
+.proj-user {
+  display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: var(--text); /* ensures avatar uses theme text color */
+  color: var(--text);
+  margin: 6px 0;
 }
 
+.proj-bot {
+  justify-content: flex-start;
+}
 
-/* ──────────────────────────────────────────────────────────────────────────
-   Project Chat Modal — Large Dialog on Desktop, Inset on Mobile
-   ────────────────────────────────────────────────────────────────────────── */
+.proj-user {
+  justify-content: flex-end;
+}
+
+.proj-bubble {
+  max-width: 80%;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: var(--chatbubble);
+  color: var(--text);
+}
+
+.proj-user .proj-bubble {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Project Chat Modal */
 .projchat-modal {
   position: fixed;
   inset: 0;
@@ -1130,30 +1208,29 @@ h2.chat-heading {
   align-items: stretch;
   justify-content: stretch;
   z-index: 1200;
-  padding: 2rem;                    /* keep your desktop inset */
+  padding: 2rem;
   box-sizing: border-box;
-
-  /* sum of block padding (top + bottom) so JS can subtract it precisely */
   --modal-pad-block: 4rem;
 }
-.projchat-modal[aria-hidden="false"] { display: flex; }
 
-/* Make dialog a 3-row grid: header | scrollable window | input */
+.projchat-modal[aria-hidden="false"] {
+  display: flex;
+}
+
 .projchat-dialog {
   background: var(--bg);
   color: var(--text);
   display: grid;
-  grid-template-rows: auto 1fr auto;/* header sticks, window scrolls, input sticks */
+  grid-template-rows: auto 1fr auto;
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(0,0,0,0.25);
   width: 100%;
-  height: calc(100dvh - var(--modal-pad-block)); /* shrink with keyboard on modern browsers */
+  height: calc(100dvh - var(--modal-pad-block));
   max-width: none;
   max-height: calc(100dvh - var(--modal-pad-block));
-  border-radius: 12px;              /* keep your rounded corners */
+  border-radius: 12px;
 }
 
-/* iOS/Safari fallback if 100dvh is not honored */
 @supports (-webkit-touch-callout: none) {
   .projchat-dialog {
     height: calc(100vh - var(--modal-pad-block));
@@ -1161,23 +1238,21 @@ h2.chat-heading {
   }
 }
 
-/* Mobile insets + safe area, keep rounded corners */
 @media (max-width: 768px) {
   .projchat-modal {
-    padding: 1rem 1rem 2rem 1rem;   /* your mobile insets */
-    --modal-pad-block: 3rem;        /* 1rem top + 2rem bottom */
+    padding: 1rem 1rem 2rem;
+    --modal-pad-block: 3rem;
     padding-bottom: calc(2rem + env(safe-area-inset-bottom));
   }
   .projchat-dialog {
     width: 100%;
     height: calc(100dvh - var(--modal-pad-block));
     max-height: calc(100dvh - var(--modal-pad-block));
-    margin: 12px auto;              /* keep your breathing room */
+    margin: 12px auto;
     border-radius: 12px;
   }
 }
 
-/* Header stays visible */
 .projchat-header {
   position: sticky;
   top: 0;
@@ -1192,54 +1267,22 @@ h2.chat-heading {
   backdrop-filter: saturate(1.05);
 }
 
-/* (duplicate block from your CSS retained) */
-.projchat-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 16px;
-  background: #E8F0FE;
-  color: var(--text);
-  border-bottom: 1px solid color-mix(in srgb, var(--muted), transparent 40%);
-}
-.projchat-header .projchat-title { display: grid; gap: 2px; color: #1c1c1c; }
-
-/* Scrollable chat body between sticky header and sticky input */
-.projchat-window {
-  min-height: 0;
-  padding: 12px 16px;
-  overflow-y: auto;
-  background: var(--chatbg);
-  border-bottom: 1px solid color-mix(in srgb, var(--muted), transparent 60%);
-  overscroll-behavior: contain;
-  /* keep the last message above the input */
-  scroll-padding-bottom: calc(80px + env(safe-area-inset-bottom));
+.projchat-header .projchat-title {
+  display: grid;
+  gap: 2px;
+  color: #1c1c1c;
 }
 
-/* Sticky input stays above keyboard */
-.projchat-form {
-  position: sticky;
-  bottom: 0;
-  z-index: 2;
-  display: flex;
-  gap: 8px;
-  padding: 10px;
-  padding-bottom: calc(10px + env(safe-area-inset-bottom));
-  background: var(--bg);
-  border-top: 1px solid color-mix(in srgb, var(--muted), transparent 30%);
+.projchat-title strong {
+  font-size: 1rem;
+  line-height: 1.1;
 }
 
-/* … keep the rest of your bubbles/input styles exactly as-is … */
+.projchat-sub {
+  font-size: 0.8rem;
+  opacity: 0.75;
+}
 
-
-
-
-
-
-
-
-
-/* Chat modal icon matches card topbar style */
 .projchat-icon {
   width: 40px;
   height: 40px;
@@ -1251,25 +1294,11 @@ h2.chat-heading {
   background: transparent;
   margin-right: 12px;
 }
+
 .projchat-icon img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-.projchat-title {
-  display: grid;
-  gap: 2px;
-  color: #1c1c1c;
-}
-
-.projchat-title strong {
-  font-size: 1rem;
-  line-height: 1.1;
-}
-.projchat-sub {
-  font-size: 0.8rem;
-  opacity: 0.75;
 }
 
 .projchat-close {
@@ -1284,48 +1313,17 @@ h2.chat-heading {
   height: 24px;
 }
 
-.projchat-close img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-/* Scrollable chat body between sticky header and sticky input */
 .projchat-window {
   flex: 1 1 auto;
   min-height: 0;
   padding: 12px 16px;
-  overflow-y: auto;                  /* chat scrolls independently */
+  overflow-y: auto;
   background: var(--chatbg);
   border-bottom: 1px solid color-mix(in srgb, var(--muted), transparent 60%);
-  overscroll-behavior: contain;      /* prevent underlying page scroll */
-  scroll-padding-bottom: calc(80px + env(safe-area-inset-bottom)); /* keep last msg above sticky input */
+  overscroll-behavior: contain;
+  scroll-padding-bottom: calc(80px + env(safe-area-inset-bottom));
 }
 
-/* bubbles */
-.proj-bot, .proj-user {
-  display: flex;
-  margin: 6px 0;
-}
-.proj-bot {
-  justify-content: flex-start;
-}
-.proj-user {
-  justify-content: flex-end;
-}
-.proj-bubble {
-  max-width: 80%;
-  padding: 8px 12px;
-  border-radius: 12px;
-  background: var(--chatbubble);
-  color: var(--text);
-}
-.proj-user .proj-bubble {
-  background: var(--accent);
-  color: #fff;
-}
-
-/* Sticky input stays visible above keyboard */
 .projchat-form {
   position: sticky;
   bottom: 0;
@@ -1333,10 +1331,11 @@ h2.chat-heading {
   display: flex;
   gap: 8px;
   padding: 10px;
-  padding-bottom: calc(10px + env(safe-area-inset-bottom)); /* room for notches/home bar */
+  padding-bottom: calc(10px + env(safe-area-inset-bottom));
   background: var(--bg);
   border-top: 1px solid color-mix(in srgb, var(--muted), transparent 30%);
 }
+
 .projchat-form input {
   flex: 1 1 auto;
   min-width: 0;
@@ -1346,6 +1345,7 @@ h2.chat-heading {
   background: var(--chatbg);
   color: var(--text);
 }
+
 .projchat-send {
   width: 40px;
   border-radius: 10px;
@@ -1357,168 +1357,47 @@ h2.chat-heading {
 }
 
 
-
-
-
-/* ========================================================================== 
-   FOOTER
-   ========================================================================== */
-.compact-footer {
-  bottom: 0; left: 0; right: 0;
-  height: var(--footer-height);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.75rem;
-  color: var(--muted);
-  background: var(--bg);
-}
-
-/* ========================================================================== 
-   RESPONSIVE
-   ========================================================================== */
-@media (max-width: 768px) {
-  .hero-chat {
-    padding: 0.75rem;
-    height: calc(100vh - var(--header-height) - var(--footer-height));
-  }
-  h2.chat-heading { font-size: 2rem; }
-  .btn-send { width: 2rem; height: 2rem; font-size: 1rem; }
-}
-
-@media (max-width: 480px) {
-  .hero-chat {
-    padding: 0.5rem 2rem;
-  }
-  .chat-window .message.bot,
-  .chat-window .message.user { font-size: 1.2rem; }
-  .chat-window { flex: 1 1 auto; min-height: 0; }
-
-  .chat-form input { padding: 1rem 1rem; }
-  .chat-form .btn-send {
-    padding: 0 1rem;
-    height: auto;
-    aspect-ratio: 1 / 1;
-    width: auto;
-    line-height: 1;
-    font-size: 3rem;
-  }
-
-  /* Always collapse submenu when side nav closes */
-  .side-nav:not(.open) .has-sub.open > .sub-list { max-height: 0 !important; }
-
-  /* Side nav sizing */
-  .side-nav a,
-  .side-nav .sub-toggle  { font-size: 1.5rem; }
-  .side-nav .sub-list li a { font-size: 1.25rem; margin-bottom: 0.5rem; }
-}
-
-/* ========================================================================== 
-   DARK MODE OVERRIDES
-   ========================================================================== */
-
-/* App bar switches to dark-theme accent blue when in dark mode */
-[data-theme="dark"] .appbar {
-  background: var(--accent);
-}
-
-/* Force card header text (company name + date) to stay dark text in both themes */
-.card .company,
-.card .date,
-.card .year,
-.card .card-header .company,
-.card .card-header .date,
-.card .card-header .year {
-  color: var(--text) !important;
-}
-[data-theme="dark"] .card .company,
-[data-theme="dark"] .card .date,
-[data-theme="dark"] .card .year,
-[data-theme="dark"] .card .card-header .company,
-[data-theme="dark"] .card .card-header .date,
-[data-theme="dark"] .card .card-header .year {
-  color: #1c1c1c !important;
-}
-
-
-.scale-95 {
-  transform: scale(0.95);
-}
-
-
-
-  .projects-subheading {
-    transition: opacity 1s ease, transform 1s ease;
-    opacity: 0;
-    transform: translateX(-3rem);
-  }
-
-  .fade-slide-in {
-    opacity: 1 !important;
-    transform: translateX(0) !important;
-  }
-
-  .fade-slide-reset {
-    opacity: 0 !important;
-    transform: translateX(-3rem) !important;
-  }
-
-  .hero-panel {
-    position: absolute;
-    inset: 0;
-    background-color: #3e7bfa;
-    z-index: 3;
-    transform: translateX(0);
-    transition: transform 0.25s ease-in-out;
-  }
-
-  .panel-1 {
-    z-index: 4;
-  }
-
-  .panel-2 {
-    background-color: #588bfa;
-    z-index: 3;
-  }
-
-  .hero-panel.slide-out {
-    transform: translateX(100%);
-  }
-
-
 /* ========================================================================== 
    FEATURED SECTION
    ========================================================================== */
-
-/* --- Featured: very quick skeletons while images load --- */
-/* Featured skeletons */
+/* Quick skeletons while images load */
 .feat-skel {
-  width: 170px; height: 170px; border-radius: 16px;
+  width: 170px;
+  height: 170px;
+  border-radius: 16px;
   background: linear-gradient(90deg, #e8e8e8 0%, #f4f4f4 50%, #e8e8e8 100%);
   background-size: 200% 100%;
   animation: feat-skel 0.9s linear infinite;
   box-shadow: 0 2px 8px rgba(0,0,0,.2);
 }
+
 @keyframes feat-skel {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
+
 @media (max-width: 600px) {
-  .feat-skel { width: 136px; height: 136px; }
+  .feat-skel {
+    width: 136px;
+    height: 136px;
+  }
 }
 
-/* Make featured cards fade/slide in quickly */
-.featured-track.animate .feat-card {
-  animation: feat-enter 420ms ease-out forwards;
-  animation-delay: calc(var(--stagger, 60ms) * var(--i, 0));
-}
-
-
-/* ===== Featured: Carousel  ===== */
+/* Featured header + track */
 .featured-wrap {
   max-width: 900px;
-  margin: 0;
+  margin: 1rem 0 0 0;
   padding: 0;
+}
+
+@media (max-width: 600px) {
+  .featured-wrap {
+    margin: 0 0 0.5rem 0;
+  }
 }
 
 .featured-header {
@@ -1529,18 +1408,24 @@ h2.chat-heading {
   margin-bottom: .5rem;
 }
 
+/* Featured Section Heading - "Featured Projects */
 .featured-title {
   margin: 0;
   font-size: 1rem;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: .2px;
-  text-align: left; /* keep left-aligned */
+  text-align: left;
 }
 
-/* Hide nav on small; you already hide it outright */
-.featured-nav { display: none; gap: .5rem; }
+.featured-nav {
+  display: none;
+  gap: .5rem;
+}
+
 @media (min-width: 800px) {
-  .featured-nav { display: flex; }
+  .featured-nav {
+    display: flex;
+  }
 }
 
 .feat-btn {
@@ -1557,14 +1442,21 @@ h2.chat-heading {
   place-items: center;
   transition: background .2s, border-color .2s, transform .1s;
 }
-.feat-btn:hover { background: rgba(127,127,127,.08); border-color: var(--text); }
-.feat-btn:active { transform: scale(.97); }
+
+.feat-btn:hover {
+  background: rgba(127,127,127,.08);
+  border-color: var(--text);
+}
+
+.feat-btn:active {
+  transform: scale(.97);
+}
 
 /* Horizontal scroll area */
 .featured-track {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: 170px;        /* card width */
+  grid-auto-columns: 170px;
   gap: 12px;
   overflow-x: auto;
   padding: .5rem 0 1rem;
@@ -1572,14 +1464,15 @@ h2.chat-heading {
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   outline: none;
-
-  /* Hide scrollbar but keep scrolling */
-  -ms-overflow-style: none;    /* IE/Edge legacy */
-  scrollbar-width: none;       /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
-.featured-track::-webkit-scrollbar { display: none; }
 
-/* Card: white surface + rounded + shadow */
+.featured-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* Card */
 .feat-card {
   scroll-snap-align: start;
   display: flex;
@@ -1587,35 +1480,38 @@ h2.chat-heading {
   width: 170px;
   border-radius: 16px;
   background: var(--card-bg);
-  /* border: 1px solid var(--link); */
   box-shadow: 0 2px 8px var(--shadow);
   text-decoration: none;
   overflow: hidden;
   transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
   color: inherit;
+  opacity: 0;
+  transform: translateX(-12px);
+  will-change: opacity, transform;
 }
+
 .feat-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 16px var(--shadow);
-  /*border-color: var(--link-hover); */
 }
 
-.feat-card:visited {
-  /* border-color: var(--link-visited) */
-}
-
-/* Square thumbnail with subtle corner rounding inside card */
+/* Thumb (now an <img> inside) */
 .feat-thumb {
   position: relative;
-  aspect-ratio: 1 / 1;               /* square */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-/* Optional soft highlight like your sample (fade on the right) */
+.feat-thumb > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Subtle highlight */
 .feat-thumb::after {
   content: "";
   position: absolute;
@@ -1624,22 +1520,14 @@ h2.chat-heading {
   pointer-events: none;
 }
 
-/* Ensure featured thumbs show the <img> covering the square */
-.feat-thumb img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-
-/* Text area */
+/* Text */
 .feat-text {
   padding: .6rem .75rem .8rem;
   display: grid;
   gap: .25rem;
 }
 
+/* Featured Card Title */
 .feat-title {
   font-size: .75rem;
   font-weight: 500;
@@ -1648,68 +1536,166 @@ h2.chat-heading {
   line-height: 1.2;
 }
 
-/* Larger on big screens */
-@media (min-width: 1024px) {
-  .featured-track { grid-auto-columns: 200px; gap: 14px; }
-  .feat-card { width: 200px; border-radius: 18px; }
-}
-
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .featured-track { scroll-behavior: auto; }
-  .feat-card { transition: none; }
-}
-
-/* Explicitly hide manual nav buttons if you want them gone */
-.feat-prev,
-.feat-next {
-  display: none !important;
-}
-/* Mobile adjustments: shrink cards on <=600px */
-@media (max-width: 600px) {
-  .featured-track {
-    grid-auto-columns: 136px; /* 80% of 170px */
-    gap: 10px;
-  }
-
-  .feat-card {
-    width: 136px;   /* shrink card width */
-    border-radius: 14px;
-  }
-
-  .feat-title {
-    font-size: 0.7rem; /* scale down text slightly */
-  }
-}
-
-/* === Featured: subtle load-in animation === */
-.feat-card {
-  opacity: 0;                       /* start hidden */
-  transform: translateX(-12px);     /* slight left offset */
-  will-change: opacity, transform;
-}
-
-/* When the track is flagged to animate, play a staggered entrance */
+/* Entrance animation on trigger */
 .featured-track.animate .feat-card {
   animation: feat-enter 520ms ease-out forwards;
   animation-delay: calc(var(--stagger, 70ms) * var(--i, 0));
 }
 
 @keyframes feat-enter {
-  from { opacity: 0; transform: translateX(-12px); }
-  to   { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
-/* Respect reduced motion */
+/* Larger on big screens */
+@media (min-width: 1024px) {
+  .featured-track {
+    grid-auto-columns: 200px;
+    gap: 14px;
+  }
+  .feat-card {
+    width: 200px;
+    border-radius: 18px;
+  }
+}
+
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .feat-card { opacity: 1; transform: none; animation: none !important; }
-  .featured-track.animate .feat-card { animation: none !important; }
+  .featured-track {
+    scroll-behavior: auto;
+  }
+  .feat-card {
+    transition: none;
+    opacity: 1;
+    transform: none;
+    animation: none !important;
+  }
+  .featured-track.animate .feat-card {
+    animation: none !important;
+  }
+}
+
+/* Hide manual nav buttons if not needed */
+.feat-prev,
+.feat-next {
+  display: none !important;
+}
+
+/* Mobile featured sizing */
+@media (max-width: 600px) {
+  .featured-track {
+    grid-auto-columns: 136px;
+    gap: 10px;
+  }
+  .feat-card {
+    width: 136px;
+    border-radius: 14px;
+  }
+  .feat-title {
+    font-size: 0.7rem;
+  }
 }
 
 
-/* ===== Mobile Performance Mode ===== */
-@media (max-width: 768px), (prefers-reduced-motion: reduce) {
-  /* Kill expensive hero effects on mobile */
+/* ========================================================================== 
+   FOOTER
+   ========================================================================== */
+.compact-footer {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--footer-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: var(--muted);
+  background: var(--bg);
+}
+
+
+/* ========================================================================== 
+   RESPONSIVE TWEAKS
+   ========================================================================== */
+@media (max-width: 768px) {
+  .hero-chat {
+    padding: 0.75rem;
+    height: calc(100vh - var(--header-height) - var(--footer-height));
+  }
+  h2.chat-heading {
+    font-size: 2rem;
+  }
+  .btn-send {
+    width: 2rem;
+    height: 2rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-chat {
+    padding: 0.5rem 2rem;
+  }
+  .chat-window .message.bot,
+  .chat-window .message.user {
+    font-size: 1.2rem;
+  }
+  .chat-window {
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+  .chat-form input {
+    padding: 1rem 1rem;
+  }
+  .chat-form .btn-send {
+    padding: 0 1rem;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    width: auto;
+    line-height: 1;
+    font-size: 3rem;
+  }
+}
+
+
+/* ========================================================================== 
+   DARK MODE OVERRIDES
+   ========================================================================== */
+[data-theme="dark"] .appbar {
+  background: var(--accent);
+}
+
+.card .company,
+.card .date,
+.card .year,
+.card .card-header .company,
+.card .card-header .date,
+.card .card-header .year {
+  color: var(--text) !important;
+}
+
+[data-theme="dark"] .card .company,
+[data-theme="dark"] .card .date,
+[data-theme="dark"] .card .year,
+[data-theme="dark"] .card .card-header .company,
+[data-theme="dark"] .card .card-header .date,
+[data-theme="dark"] .card .card-header .year {
+  color: #1c1c1c !important;
+}
+
+
+/* ========================================================================== 
+   PERFORMANCE MODE (Mobile / Reduced motion)
+   ========================================================================== */
+@media (max-width: 768px),
+(prefers-reduced-motion: reduce) {
+  /* Kill heavy hero effects on light devices */
   .hero--mesh::after,
   .hero--noise::before,
   .hero--noise::after,
@@ -1720,71 +1706,65 @@ h2.chat-heading {
     background: none !important;
     content: none !important;
   }
-
-  /* Speed up the slide panels */
-  .hero-panel { transition: transform 120ms ease-out !important; }
-
-  /* Lighter cards (shadows are expensive to composite) */
+  /* Force mobile hero background */
+  .hero-header {
+    background-color: var(--hero-bg-mobile) !important;
+  }
+  /* Speed up slide panels */
+  .hero-panel {
+    transition: transform 120ms ease-out !important;
+  }
+  /* Cheaper card compositing (big cards) */
   .card.card-v03 {
     box-shadow: none !important;
     border: 1px solid color-mix(in srgb, var(--muted), transparent 40%) !important;
   }
-
-  /* Scroll-snap + smooth scrolling can add jank on low-end phones */
+  /* Scroll-snap smoothness can be janky on older phones */
   .featured-track {
     scroll-behavior: auto !important;
   }
 }
 
 /* Avoid layout work for off-screen sections */
-#projects, #about { content-visibility: auto; contain-intrinsic-size: 600px; }
-
-
-/* Featured thumb uses an <img> now */
-.feat-thumb {
-  position: relative;
-  aspect-ratio: 1 / 1;
-  overflow: hidden;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-}
-.feat-thumb > img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+#projects,
+#about {
+  content-visibility: auto;
+  contain-intrinsic-size: 600px;
 }
 
-/* === Appbar/hero spacing (final) ===
-   Keep the hero under the fixed appbar, but avoid double padding from the
-   global ".main-container { padding-top: var(--appbar-h) }" rule. */
-.hero-header {
-  padding-top: var(--appbar-h) !important;  /* space under appbar */
-  margin-top: 1rem !important;                  /* no extra margin */
-}
-.hero-header .main-container {
-  padding-top: 0 !important;                 /* cancel the global pad inside hero */
+
+/* ========================================================================== 
+   MISC UTILS
+   ========================================================================== */
+.scale-95 {
+  transform: scale(0.95);
 }
 
-/* Anchors / first element below sticky filters shouldn't be hidden */
-.sticky-controls + * { scroll-margin-top: calc(var(--appbar-h) + 8px); }
 
-/* ---- FIX: page sub-lead clipping on mobile ---- */
-@media (max-width: 600px) {
-  .page-sublead {
-    /* never wider than the viewport gutters */
-    max-width: min(100%, calc(100vw - 2rem)); /* 2rem = .main-container’s 1rem side padding */
-    width: 100%;
-    margin: 0;                 /* kill weird auto margins */
-    box-sizing: border-box;
-    overflow-wrap: anywhere;   /* wrap long words/URLs */
-    word-break: break-word;
+/* ========================================================================== 
+   PERFORMANCE: FLATTEN CARDS ON MOBILE
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* Big project cards */
+  .card.card-v03 {
+    box-shadow: none;
+    border: 1px solid color-mix(in srgb, var(--muted), transparent 40%);
+    transform: none;
   }
-}
-
-/* (Optional, if you still see edge-hugging text) add a tiny safety inset */
-@media (max-width: 600px) {
-  .hero-header .main-container .page-sublead {
-    padding-right: .25rem;     /* micro breathing room on the right edge */
+  .card.card-v03:hover {
+    box-shadow: none;
+    transform: none;
+    border-color: color-mix(in srgb, var(--muted), transparent 40%);
+  }
+  /* Featured cards */
+  .feat-card {
+    box-shadow: none;
+    border: 1px solid color-mix(in srgb, var(--muted), transparent 40%);
+    transform: none;
+  }
+  .feat-card:hover {
+    box-shadow: none;
+    transform: none;
+    border-color: color-mix(in srgb, var(--muted), transparent 40%);
   }
 }
