@@ -1473,30 +1473,34 @@ h2.chat-heading {
 }
 
 /* --- Featured slider: enable horizontal swiping/drag --- */
+/* --- Featured slider: enable real horizontal swiping --- */
 .featured-track {
-  /* already overflow-x: auto in your CSS, keep that */
+  /* you already have overflow-x: auto; keep it */
   -webkit-overflow-scrolling: touch;  /* momentum on iOS */
-  overscroll-behavior-x: contain;     /* keep the page from rubber-banding */
-  touch-action: pan-x;                /* tell the browser horizontal pan is intended */
-  cursor: grab;                       /* nice hint on desktop */
+  overscroll-behavior-x: contain;     /* avoid page rubber band */
+  touch-action: pan-x;                 /* declare horizontal pan */
+  cursor: grab;
+  position: relative;
+  z-index: 1;                          /* sit above any BG art */
 }
 
 .featured-track.is-dragging {
   cursor: grabbing;
 }
 
-/* Prevent images/links from hijacking the swipe */
+/* Prevent children from hijacking the swipe */
 .featured-track .feat-card,
 .featured-track .feat-card * {
   -webkit-user-drag: none;
   user-select: none;
-  touch-action: manipulation; /* taps still work, but don’t block pans */
+  touch-action: manipulation; /* taps OK; don’t block pan-x */
 }
 
-/* Ensure the blue hero panels never block touches after they slide out */
+/* Panels should not block touches once they’re sliding away */
 .hero-panel.slide-out {
-  pointer-events: none; /* they’re visually present during animation but non-interactive */
+  pointer-events: none;
 }
+
 
 
 /* Card */

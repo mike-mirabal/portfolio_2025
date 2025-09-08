@@ -952,7 +952,7 @@ Answer concisely and reference specific details from the overview when relevant.
   });
 </script>
 
-<!-- Featured Projects Scroll Behavior 
+<!-- Featured Projects Scroll Behavior -->
 <script>
 (function () {
   const track = document.getElementById('featuredTrack');
@@ -980,8 +980,71 @@ Answer concisely and reference specific details from the overview when relevant.
   }
 })();
 </script> 
--->
 
+
+<script>
+/* After your current heroPanel slide-out code */
+(function () {
+  // 1) When panels finish sliding out, remove them from layout so they can’t block swipes
+  ['heroPanel1', 'heroPanel2'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('transitionend', () => {
+      if (el.classList.contains('slide-out')) {
+        el.style.display = 'none';          // completely gone from hit testing
+      }
+    });
+  });
+
+  // 2) Drag-to-scroll on featuredTrack (works with touch & mouse)
+  const track = document.getElementById('featuredTrack');
+  if (!track) return;
+
+  let down = false, moved = false, startX = 0, startScroll = 0;
+
+  const getX = (e) => e.touches ? e.touches[0].clientX : e.clientX;
+
+  const onDown = (e) => {
+    down = true;
+    moved = false;
+    startX = getX(e);
+    startScroll = track.scrollLeft;
+    track.classList.add('is-dragging');
+  };
+
+  const onMove = (e) => {
+    if (!down) return;
+    const dx = getX(e) - startX;
+    if (Math.abs(dx) > 4) moved = true;
+    if (e.cancelable) e.preventDefault();   // keep it horizontal
+    track.scrollLeft = startScroll - dx;
+  };
+
+  const onUp = () => {
+    down = false;
+    track.classList.remove('is-dragging');
+  };
+
+  const onClick = (e) => {
+    if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; }
+  };
+
+  // Pointer Events (modern)
+  track.addEventListener('pointerdown', onDown, { passive: true });
+  track.addEventListener('pointermove', onMove, { passive: false });
+  window.addEventListener('pointerup', onUp, { passive: true });
+  window.addEventListener('pointercancel', onUp, { passive: true });
+  track.addEventListener('click', onClick, true);
+
+  // Fallback for old iOS without Pointer Events
+  if (!('PointerEvent' in window)) {
+    track.addEventListener('touchstart', onDown, { passive: true });
+    track.addEventListener('touchmove', onMove, { passive: false });
+    track.addEventListener('touchend', onUp, { passive: true });
+    track.addEventListener('touchcancel', onUp, { passive: true });
+  }
+})();
+</script>
 
 
 
