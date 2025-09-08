@@ -446,7 +446,7 @@
       Mike Mirabal © 2025 | Powered by Aigentask
     </footer>
 
-<!-- !!! Stray </div> ? !!! --> 
+
 
 <!-- PROJECT CHAT MODAL -->
 <div id="projectChatModal" class="projchat-modal" aria-hidden="true" role="dialog" aria-label="Project AI Chat">
@@ -592,7 +592,66 @@
 <!-- CSV + project rendering -->
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js" defer></script>
 <script src="scripts/filters.js" defer></script>
-<script src="/scripts/project.js" defer></script>
+<script src="/scripts/project.js" defer></script> 
+
+<!-- Reveal-on-scroll for project cards (place immediately after project.js) -->
+<script>
+(function() {
+  const grid = document.getElementById('projectGrid');
+  if (!grid) return;
+
+  // Reveal helper
+  const reveal = (el) => {
+    el.classList.add('in');
+    el.classList.remove('reveal-ready');
+    if (io) io.unobserve(el);
+  };
+
+  // IntersectionObserver with a slightly early trigger
+  const io = ('IntersectionObserver' in window)
+    ? new IntersectionObserver((entries) => {
+        entries.forEach((e) => e.isIntersecting && reveal(e.target));
+      }, { root: null, rootMargin: '0px 0px -15% 0px', threshold: 0.15 })
+    : null;
+
+  // Tag any new cards that show up in the grid
+  const tagNewCards = () => {
+    const cards = grid.querySelectorAll('.card.card-v03:not(.reveal-ready):not(.in)');
+    cards.forEach((card) => {
+      // Only hide once we’re actively watching the card
+      card.classList.add('reveal-ready');
+
+      // Stagger based on DOM order
+      const i = Array.prototype.indexOf.call(grid.children, card);
+      card.style.setProperty('--i', (i >= 0 ? i : 0));
+
+      if (io) {
+        io.observe(card);
+      } else {
+        // No IO support → show immediately
+        card.classList.add('in');
+        card.classList.remove('reveal-ready');
+      }
+    });
+  };
+
+  // Watch for inserts from project.js
+  const mo = new MutationObserver(tagNewCards);
+  mo.observe(grid, { childList: true });
+
+  // In case some cards were already present
+  if (document.readyState !== 'loading') tagNewCards();
+  else document.addEventListener('DOMContentLoaded', tagNewCards);
+
+  // Safety: if anything goes wrong, make sure cards are visible
+  setTimeout(() => {
+    grid.querySelectorAll('.card.card-v03.reveal-ready:not(.in)')
+        .forEach(el => { el.classList.add('in'); el.classList.remove('reveal-ready'); });
+  }, 1500);
+})();
+</script>
+
+
 
 
 <!-- Project Chat Script -->
