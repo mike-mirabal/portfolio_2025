@@ -1742,11 +1742,16 @@ h2.chat-heading {
   display: block;
 }
 
-/* Fix double top padding under the fixed appbar on the hero */
-.hero-header { padding-top: 0 !important; margin-top: var(--appbar-h); }
+/* === Appbar/hero spacing (final) ===
+   Keep the hero under the fixed appbar, but avoid double padding from the
+   global ".main-container { padding-top: var(--appbar-h) }" rule. */
+.hero-header {
+  padding-top: var(--appbar-h) !important;  /* space under appbar */
+  margin-top: 1rem !important;                  /* no extra margin */
+}
+.hero-header .main-container {
+  padding-top: 0 !important;                 /* cancel the global pad inside hero */
+}
 
-/* The .main-container inside the hero already sits under the appbar */
-.hero-header .main-container { padding-top: 0 !important; }
-
-/* When sticky filters appear under the appbar, ensure content you jump to isn't hidden */
+/* Anchors / first element below sticky filters shouldn't be hidden */
 .sticky-controls + * { scroll-margin-top: calc(var(--appbar-h) + 8px); }

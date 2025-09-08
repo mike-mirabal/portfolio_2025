@@ -295,12 +295,19 @@ function renderProjects(projects, container) {
       </div>
 
       <div class="hero-img">
-        ${heroImg
-          ? `<img src="${heroImg}" alt="${escapeHTML(title)} card image" width="1920" height="1280" loading="lazy" decoding="async"
-               onerror="console.warn('Card image failed:', this.src); this.src='/assets/placeholder-card-1920x1280.jpg'; this.closest('.card').classList.add('img-error');">`
-          : `<img src="/assets/placeholder-card-1920x1280.jpg" alt="${escapeHTML(title)} card image placeholder" width="1920" height="1280" loading="lazy" decoding="async">`
-        }
-      </div>
+  <picture>
+    <source type="image/webp" srcset="${heroImg}">
+    <img
+      src="${/\.webp(\?.*)?$/i.test(heroImg) ? heroImg.replace(/\.webp(\?.*)?$/i, '.png$1') : heroImg}"
+      alt="${title} card image"
+      loading="lazy"
+      decoding="async"
+      width="1920"
+      height="1280"
+      onerror="this.src='/assets/placeholder-card-1920x1280.jpg'"
+    >
+  </picture>
+</div>
 
       <div class="card-content">
         <h4 class="title">${escapeHTML(title)}</h4>
