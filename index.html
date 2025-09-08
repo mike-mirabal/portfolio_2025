@@ -599,75 +599,6 @@
 <script src="/scripts/project.js" defer></script>
 <script src="/scripts/perf-mobile.js" defer></script>
 
-<!-- Featured slider: enable horizontal swiping/drag -->
-<script>
-(function () {
-  const track = document.getElementById('featuredTrack');
-  if (!track) return;
-
-  let isDown = false;
-  let startX = 0;
-  let startScroll = 0;
-  let moved = false;
-
-  // Pointer events unify mouse & touch
-  const onDown = (e) => {
-    isDown = true;
-    moved = false;
-    track.classList.add('is-dragging');
-
-    // Support touch and mouse
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    startX = clientX;
-    startScroll = track.scrollLeft;
-  };
-
-  const onMove = (e) => {
-    if (!isDown) return;
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const dx = clientX - startX;
-
-    // Threshold to count as a drag (prevents accidental taps)
-    if (Math.abs(dx) > 4) moved = true;
-
-    // Prevent default so the page doesn’t vertical-scroll when you intend to swipe horizontally
-    if (e.cancelable) e.preventDefault();
-    track.scrollLeft = startScroll - dx;
-  };
-
-  const onUp = () => {
-    isDown = false;
-    track.classList.remove('is-dragging');
-  };
-
-  // If we dragged, kill the next click so a card doesn’t accidentally open
-  const onClick = (e) => {
-    if (moved) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-    moved = false;
-  };
-
-  // Listeners
-  track.addEventListener('pointerdown', onDown, { passive: true });
-  track.addEventListener('pointermove', onMove, { passive: false });
-  window.addEventListener('pointerup', onUp, { passive: true });
-  window.addEventListener('pointercancel', onUp, { passive: true });
-
-  // For older iOS Safari without Pointer Events, fall back to touch*
-  if (!('PointerEvent' in window)) {
-    track.addEventListener('touchstart', onDown, { passive: true });
-    track.addEventListener('touchmove', onMove, { passive: false });
-    track.addEventListener('touchend', onUp, { passive: true });
-    track.addEventListener('touchcancel', onUp, { passive: true });
-  }
-
-  // Prevent accidental opens after a drag
-  track.addEventListener('click', onClick, true);
-})();
-</script>
-
 
 <!-- Reveal-on-scroll for project cards (place immediately after project.js) -->
 <script>
@@ -952,38 +883,8 @@ Answer concisely and reference specific details from the overview when relevant.
   });
 </script>
 
-<!-- Featured Projects Scroll Behavior -->
-<script>
-(function () {
-  const track = document.getElementById('featuredTrack');
-  if (!track) return;
 
-  // Optional: Arrow keys scroll when the track is focused
-  track.addEventListener('keydown', (e) => {
-    const step = track.clientWidth * 0.8;
-    if (e.key === 'ArrowRight') { track.scrollBy({ left: step, behavior: 'smooth' }); e.preventDefault(); }
-    if (e.key === 'ArrowLeft')  { track.scrollBy({ left: -step, behavior: 'smooth' }); e.preventDefault(); }
-  });
-
-  // Prev/Next buttons
-  const prev = document.querySelector('.feat-prev');
-  const next = document.querySelector('.feat-next');
-  const scrollByOneCard = () => {
-    const card = track.querySelector('.feat-card');
-    const cardWidth = card ? card.offsetWidth + parseFloat(getComputedStyle(track).gap || 12) : 180;
-    return Math.max(cardWidth * 2, track.clientWidth * 0.75); // move ~2 cards
-  };
-
-  if (prev && next) {
-    prev.addEventListener('click', () => track.scrollBy({ left: -scrollByOneCard(), behavior: 'smooth' }));
-    next.addEventListener('click', () => track.scrollBy({ left:  scrollByOneCard(), behavior: 'smooth' }));
-  }
-})();
-</script> 
-
-
-<script>
-/* After your current heroPanel slide-out code */
+<script> /* After your current heroPanel slide-out code */
 (function () {
   // 1) When panels finish sliding out, remove them from layout so they can’t block swipes
   ['heroPanel1', 'heroPanel2'].forEach(id => {
