@@ -1764,3 +1764,23 @@ h2.chat-heading {
 
 /* Anchors / first element below sticky filters shouldn't be hidden */
 .sticky-controls + * { scroll-margin-top: calc(var(--appbar-h) + 8px); }
+
+/* ---- FIX: page sub-lead clipping on mobile ---- */
+@media (max-width: 600px) {
+  .page-sublead {
+    /* never wider than the viewport gutters */
+    max-width: min(100%, calc(100vw - 2rem)); /* 2rem = .main-container’s 1rem side padding */
+    width: 100%;
+    margin: 0;                 /* kill weird auto margins */
+    box-sizing: border-box;
+    overflow-wrap: anywhere;   /* wrap long words/URLs */
+    word-break: break-word;
+  }
+}
+
+/* (Optional, if you still see edge-hugging text) add a tiny safety inset */
+@media (max-width: 600px) {
+  .hero-header .main-container .page-sublead {
+    padding-right: .25rem;     /* micro breathing room on the right edge */
+  }
+}
