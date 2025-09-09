@@ -98,75 +98,28 @@
           I design, build, and adapt creative systems that help small teams grow.
         </h1>
 
-<!-- FEATURED SECTION -->
-<!-- Featured Projects (native scroll-snap carousel) -->
-<section class="featured-wrap" aria-label="Featured projects">
-  <div class="featured-header">
-    <h2 class="featured-title">Featured Projects</h2>
 
-    <!-- Nav buttons (kept in DOM for future, but hidden via CSS) -->
-    <div class="featured-nav" aria-hidden="true">
-      <button class="feat-btn feat-prev" type="button" aria-label="Previous">&#x2039;</button>
-      <button class="feat-btn feat-next" type="button" aria-label="Next">&#x203A;</button>
-    </div>
+<!-- FEATURED SECTION -->
+<!-- Featured strip (inside hero, between subheading and sublead) -->
+<section class="featured-wrap" aria-label="Featured Projects">
+  <div class="featured-header">
+    <h3 class="featured-title">Featured Projects</h3>
+    <!-- (no arrows/buttons by request) -->
   </div>
 
-  <!-- JS will fill this with cards -->
-  <div
-    class="featured-track"
-    id="featuredTrack"
-    tabindex="0"
-    role="region"
-    aria-label="Featured project carousel"
-  ></div>
+  <!-- Horizontal scroll track -->
+  <div id="featuredTrack" class="featured-track" tabindex="0" role="region" aria-label="Featured projects carousel">
+    <!-- JS (featured.js) will populate cards here -->
+  </div>
 </section>
 
 
-<!-- Add “reveal on scroll” for the big project cards -->
-<script>
-(function() {
-  const grid = document.getElementById('projectGrid');
-  if (!grid) return;
 
-  // One observer to reveal cards as they enter viewport
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((e) => {
-      if (e.isIntersecting) {
-        e.target.classList.add('in');
-        io.unobserve(e.target);
-      }
-    });
-  }, { rootMargin: '0px 0px -10% 0px', threshold: 0.1 });
-
-  // Tag any new cards that project.js adds
-  const tagNewCards = () => {
-    const cards = grid.querySelectorAll('.card.card-v03:not([data-reveal-ready])');
-    cards.forEach((card, idx) => {
-      card.setAttribute('data-reveal-ready', '1');
-      // Assign a stable stagger index based on current order
-      const i = [...grid.querySelectorAll('.card.card-v03')].indexOf(card);
-      card.style.setProperty('--i', i >= 0 ? i : idx);
-      io.observe(card);
-    });
-  };
-
-  // Watch the grid for dynamic inserts
-  const mo = new MutationObserver(tagNewCards);
-  mo.observe(grid, { childList: true });
-
-  // In case some cards are already present
-  tagNewCards();
-})();
-</script>
-
-
+<!-- HERO / PAGE SUBLEAD -->
         <p class="page-sublead">
           From user-centered design to AI prototypes, and branded visuals to business systems, I bring cross-disciplinary skills in one toolkit. 
-        <!-- Hide / About Me Link 
-        <br> <a href="#about" class="inline-link">More About Me ↓</a></p>
-        -->
 
-        <!-- HERO / Page Kicker -->
+<!-- HERO / Page Kicker -->
         <div class="page-kicker-row">
           <!-- Avatar Wrapper -->
           <div class="avatar-wrapper">
@@ -276,12 +229,50 @@
               </svg>
             </div> <!-- End / avatar-inner -->
         <!-- HERO / Kicker Text -->
-        <span class="page-kicker">Leveraging generative AI to help teams work faster.</span>
+        <!-- <span class="page-kicker">Leveraging generative AI to help teams work faster.</span> -->
           </div> <!--End / avatar-wrapper -->
         </div> <!-- End / page-kicker-row -->
       </div> <!-- End / main-container -->
     </div> <!-- End / #heroHeader -->
 
+<!-- Add “reveal on scroll” for the big project cards -->
+<script>
+(function() {
+  const grid = document.getElementById('projectGrid');
+  if (!grid) return;
+
+  // One observer to reveal cards as they enter viewport
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { rootMargin: '0px 0px -10% 0px', threshold: 0.1 });
+
+  // Tag any new cards that project.js adds
+  const tagNewCards = () => {
+    const cards = grid.querySelectorAll('.card.card-v03:not([data-reveal-ready])');
+    cards.forEach((card, idx) => {
+      card.setAttribute('data-reveal-ready', '1');
+      // Assign a stable stagger index based on current order
+      const i = [...grid.querySelectorAll('.card.card-v03')].indexOf(card);
+      card.style.setProperty('--i', i >= 0 ? i : idx);
+      io.observe(card);
+    });
+  };
+
+  // Watch the grid for dynamic inserts
+  const mo = new MutationObserver(tagNewCards);
+  mo.observe(grid, { childList: true });
+
+  // In case some cards are already present
+  tagNewCards();
+})();
+</script>
+
+   
   <!-- PROJECTS SECTION -->
       <div class="projects-section">
       <div class="main-container">
@@ -550,7 +541,7 @@
 <script src="/scripts/featured.js" defer></script>
 <script src="/scripts/filters.js" defer></script>
 <script src="/scripts/project.js" defer></script>
-<script src="/scripts/perf-mobile.js" defer></script>
+<!-- <script src="/scripts/perf-mobile.js" defer></script> -->
 
 
 <!-- Reveal-on-scroll for project cards (place immediately after project.js) -->
@@ -843,11 +834,20 @@ Answer concisely and reference specific details from the overview when relevant.
   ['heroPanel1', 'heroPanel2'].forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
-    el.addEventListener('transitionend', () => {
+
+    let hidden = false;
+    const hidePanel = () => {
+      if (hidden) return;
       if (el.classList.contains('slide-out')) {
-        el.style.display = 'none';          // completely gone from hit testing
+        hidden = true;
+        el.style.display = 'none'; // completely gone from hit testing
       }
-    });
+    };
+
+    el.addEventListener('transitionend', hidePanel);
+
+    // Fallback timer in case transitionend doesn't fire
+    setTimeout(hidePanel, 500); // 500ms is longer than the transition (250ms)
   });
 
   // 2) Drag-to-scroll on featuredTrack (works with touch & mouse)
@@ -890,16 +890,99 @@ Answer concisely and reference specific details from the overview when relevant.
   window.addEventListener('pointercancel', onUp, { passive: true });
   track.addEventListener('click', onClick, true);
 
-  // Fallback for old iOS without Pointer Events
-  if (!('PointerEvent' in window)) {
+   // Fallback for old iOS without Pointer Events
+   if (!('PointerEvent' in window)) {
     track.addEventListener('touchstart', onDown, { passive: true });
     track.addEventListener('touchmove', onMove, { passive: false });
     track.addEventListener('touchend', onUp, { passive: true });
     track.addEventListener('touchcancel', onUp, { passive: true });
+   }
+})();
+
+</script>
+
+<!-- Microsplash -->
+<script>
+(function () {
+  function killSplash() {
+    const s = document.getElementById('microsplash');
+    if (!s) return;
+    // mark as gone and then fully remove after a tick
+    s.classList.add('is-gone');
+    s.setAttribute('aria-hidden', 'true');
+    // fully remove after transition, or after 600ms fallback
+    const done = () => s.classList.add('is-removed');
+    s.addEventListener('transitionend', done, { once: true });
+    setTimeout(done, 600);
+  }
+
+  function assertFeaturedGestures() {
+    const track = document.getElementById('featuredTrack');
+    if (!track) return;
+
+    // Hard assert: track is the only horizontal scroller here.
+    track.style.overflowX = 'auto';
+    track.style.overflowY = 'hidden';
+    track.style.touchAction = 'pan-x';        // accept horizontal swipes
+    track.style.webkitOverflowScrolling = 'touch';
+    track.style.overscrollBehaviorX = 'contain';
+
+    // If any ancestor accidentally has touch-action:none, this helps override.
+    // (This does not affect clicks on links inside the cards.)
+    track.querySelectorAll('img, picture, svg').forEach(el => {
+      el.style.pointerEvents = 'none';
+      el.style.userSelect = 'none';
+      el.style.webkitUserDrag = 'none';
+    });
+
+    // Optional: small drag-to-scroll helper that never blocks taps
+    let isDragging = false;
+    let startX = 0, startScroll = 0;
+
+    const onDown = (e) => {
+      isDragging = true;
+      startX = (e.touches ? e.touches[0].clientX : e.clientX);
+      startScroll = track.scrollLeft;
+      track.classList.add('is-dragging');
+    };
+    const onMove = (e) => {
+      if (!isDragging) return;
+      const x = (e.touches ? e.touches[0].clientX : e.clientX);
+      const dx = x - startX;
+      track.scrollLeft = startScroll - dx;
+      // Do NOT preventDefault here—keeps links tappable
+    };
+    const onUp = () => {
+      isDragging = false;
+      track.classList.remove('is-dragging');
+    };
+
+    track.addEventListener('pointerdown', onDown, { passive: true });
+    window.addEventListener('pointermove', onMove, { passive: true });
+    window.addEventListener('pointerup', onUp, { passive: true });
+    window.addEventListener('pointercancel', onUp, { passive: true });
+  }
+
+  // If a splash exists and is mid-animation, wait for it; otherwise proceed.
+  const splash = document.getElementById('microsplash');
+  if (splash) {
+    // if your splash dispatches a custom event, hook it here
+    splash.addEventListener('animationend', () => {
+      killSplash();
+      assertFeaturedGestures();
+    }, { once: true });
+
+    // also fail-safe after 1s in case no event fires
+    setTimeout(() => {
+      killSplash();
+      assertFeaturedGestures();
+    }, 1000);
+  } else {
+    // no splash present, just assert gestures immediately
+    assertFeaturedGestures();
   }
 })();
 </script>
-
 
 
 

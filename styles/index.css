@@ -1,4 +1,4 @@
-/* ========================================================================== 
+/* ==========================================================================
    VARIABLES & THEME
    ========================================================================== */
 :root {
@@ -38,7 +38,7 @@
 }
 
 
-/* ========================================================================== 
+/* ==========================================================================
    BASE / RESET
    ========================================================================== */
 html,
@@ -53,6 +53,13 @@ body {
 
 body.no-scroll {
   overflow: hidden;
+}
+
+/* Prevent page from panning horizontally */
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 /* Links (base + theme states) */
@@ -155,7 +162,7 @@ p {
 }
 
 
-/* ========================================================================== 
+/* ==========================================================================
    APP BAR (Material style)
    ========================================================================== */
 /* App Bar */
@@ -305,7 +312,30 @@ main,
 }
 
 
-/* ========================================================================== 
+/* ==========================================================================
+   MICRO SPLASH SAFETY
+   ========================================================================== */
+#microsplash {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: auto;
+  opacity: 1;
+}
+
+#microsplash.is-gone,
+#microsplash[aria-hidden="true"] {
+  pointer-events: none !important;
+  opacity: 0;
+  visibility: hidden;
+}
+
+#microsplash.is-removed {
+  display: none !important;
+}
+
+
+/* ==========================================================================
    PROJECTS PAGE — HERO TEXT (under app bar)
    ========================================================================== */
 /* Container */
@@ -320,12 +350,14 @@ main,
 .hero-header {
   position: relative;
   display: flex;
-  overflow: hidden;
+  overflow-x: clip;
+  overflow-y: visible;
   isolation: isolate;
   padding-top: var(--appbar-h) !important;
   margin: 0.5rem 0 0 0;
   min-height: 42vh;
   background-color: var(--bg);
+  touch-action: auto;
 }
 
 .hero-header::before,
@@ -337,42 +369,19 @@ main,
   z-index: 0;
 }
 
-
-/* ---- FIX: make hero art layers transparent to touch ---- */
-.hero-header::before,
-.hero-header::after,
+/* Panels / background art never eat gestures */
 .hero-panel,
 .panel-1,
-.panel-2 {
-  pointer-events: none;              /* don't block touches */
+.panel-2,
+.hero-header::before,
+.hero-header::after {
+  pointer-events: none !important;
+  touch-action: auto;
 }
 
-/* If you keep the panels around while off-screen, also ensure they can't sit above content */
 .hero-panel {
-  z-index: 0;                        /* below page content */
+  z-index: 0;
 }
-
-/* ---- Featured strip: ensure it is the touch target and scrollable ---- */
-.featured-track {
-  position: relative;
-  z-index: 1;                        /* above any background layers */
-  overflow-x: auto;                  /* horizontal scroll container */
-  -webkit-overflow-scrolling: touch; /* momentum scrolling on iOS */
-  touch-action: pan-x;               /* hint: horizontal panning allowed */
-  overscroll-behavior-x: contain;    /* keep horizontal scroll self-contained */
-}
-
-/* Images inside cards shouldn’t eat touches during horizontal swipes */
-.featured-track img {
-  pointer-events: none;
-}
-
-/* Optional: if any wrapper around the featured strip had overflow hidden, kill it horizontally */
-.featured-wrap {
-  overflow-x: visible;
-}
-
-
 
 /* Keep hero content above background art */
 .hero-header .main-container,
@@ -434,7 +443,6 @@ main,
   font-size: 1.1rem;
   line-height: 1.6;
   color: var(--text);
-  /* opacity: 0.9; */
   margin: 0.5rem 0 1.5rem 0;
   width: 95%;
   margin-left: 0;
@@ -590,10 +598,9 @@ main,
 }
 
 
-/* ========================================================================== 
+/* ==========================================================================
    AVATAR (hero/top inline avatar)
    ========================================================================== */
-/* Avatar wrapper + inner */
 .avatar-wrapper {
   display: inline-block;
   width: 2.5rem;
@@ -610,14 +617,12 @@ main,
   transition: transform 0.2s ease;
 }
 
-/* Head bobble on hover */
 .avatar-wrapper:hover .avatar-inner,
 .avatar-wrapper:active .avatar-inner {
   animation: bobbleHead 0.4s ease-in-out;
   transform-origin: center bottom;
 }
 
-/* Tiny “point down” hand wiggle (scoped so it won’t override About’s hand) */
 @keyframes pointDown {
   0%,
   100% {
@@ -633,14 +638,12 @@ main,
   animation: pointDown 1.4s ease-in-out infinite;
 }
 
-/* Hover bobble on the head group if present */
 .avatar-wrapper:hover #head,
 .avatar-wrapper:active #head {
   animation: bobbleHead 0.4s ease-in-out;
   transform-origin: center bottom;
 }
 
-/* Bobble keyframes */
 @keyframes bobbleHead {
   0% {
     transform: rotate(0deg);
@@ -663,7 +666,7 @@ main,
 }
 
 
-/* ========================================================================== 
+/* ==========================================================================
    PROJECTS PAGE — STICKY CONTROLS (Projects heading + Filters)
    ========================================================================== */
 .sticky-controls {
@@ -742,17 +745,15 @@ main,
 }
 
 
-/* ========================================================================== 
+/* ==========================================================================
    PROJECT GRID & CARD V03
    ========================================================================== */
-/* Section title */
 .section-title {
   font-size: 1rem;
   font-weight: 700;
   margin: 0 0 0.75rem 0;
 }
 
-/* Grid */
 .grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -766,7 +767,6 @@ main,
   }
 }
 
-/* Card shell */
 a.card {
   color: var(--text);
 }
@@ -799,7 +799,6 @@ a.card:visited {
   box-shadow: 0 6px 16px var(--shadow);
 }
 
-/* Top meta row */
 .card.card-v03 .top-meta {
   display: grid;
   grid-template-columns: auto minmax(0,1fr) auto;
@@ -810,7 +809,6 @@ a.card:visited {
   border-bottom: 1px solid color-mix(in srgb, var(--muted), transparent 40%);
 }
 
-/* Company icon */
 .card.card-v03 .company-icon {
   width: 40px;
   height: 40px;
@@ -834,7 +832,6 @@ a.card:visited {
   opacity: .75;
 }
 
-/* Company + Year */
 .card.card-v03 .company-and-year {
   display: grid;
   gap: 4px;
@@ -857,7 +854,6 @@ a.card:visited {
   line-height: 1.2;
 }
 
-/* Ask-AI button */
 .top-meta .ask-ai-btn {
   position: static;
   justify-self: end;
@@ -885,15 +881,14 @@ a.card:visited {
   background: rgba(255,255,255,0.08);
 }
 
-/* Card image */
 .card.card-v03 .hero-img {
   position: relative;
-  aspect-ratio: 3/2; /*1920 x 1280 */
+  aspect-ratio: 3 / 2;
   overflow: hidden;
 }
 
 .card.card-v03 .hero-img img {
-  position:absolute;
+  position: absolute;
   inset: 0;
   display: block;
   width: 100%;
@@ -901,7 +896,6 @@ a.card:visited {
   object-fit: cover;
 }
 
-/* Card content */
 .card.card-v03 .card-content {
   padding: 16px;
 }
@@ -926,7 +920,6 @@ a.card:visited {
   display: none !important;
 }
 
-/* Scroll reveal (queued) */
 .card.card-v03.reveal-ready {
   opacity: 0;
   transform: translateY(14px);
@@ -952,7 +945,6 @@ a.card:visited {
   will-change: transform, box-shadow;
 }
 
-/* Back to top */
 .back-to-top {
   text-align: left;
   margin: 2rem 0;
@@ -971,7 +963,6 @@ a.card:visited {
   }
 }
 
-/* Optional narrower grid on small tablets */
 @media (min-width: 480px) and (max-width: 768px) {
   .grid {
     max-width: 500px;
@@ -981,7 +972,7 @@ a.card:visited {
 }
 
 
-/* ========================================================================== 
+/* ==========================================================================
    ABOUT SECTION
    ========================================================================== */
 .about-section {
@@ -998,7 +989,6 @@ a.card:visited {
   overflow: visible;
 }
 
-/* Subtle hand wave for About avatar only */
 @keyframes handWave {
   0%,
   100% {
@@ -1038,7 +1028,7 @@ a.card:visited {
 }
 
 
-/* ========================================================================== 
+/* ==========================================================================
    CHAT (used on chat/assistant page)
    ========================================================================== */
 .hero-chat {
@@ -1121,7 +1111,6 @@ h2.chat-heading {
   word-wrap: break-word;
 }
 
-/* Links inside bot messages */
 .chat-window .message.bot a {
   color: #3e7bfa;
   text-decoration: underline;
@@ -1131,7 +1120,6 @@ h2.chat-heading {
   color: #588bfa;
 }
 
-/* Typing indicator */
 .bubble-text.typing-indicator {
   max-height: 2.5rem;
   overflow: hidden;
@@ -1146,7 +1134,6 @@ h2.chat-heading {
   margin: -3rem -5rem;
 }
 
-/* Chat input form */
 .chat-form {
   display: flex;
   align-items: stretch;
@@ -1184,7 +1171,6 @@ h2.chat-heading {
   transform: translateY(-2px);
 }
 
-/* Avatar icons that inherit text color via CSS mask */
 .avatar-icon {
   flex-shrink: 0;
   width: 24px;
@@ -1239,7 +1225,6 @@ h2.chat-heading {
   color: #fff;
 }
 
-/* Project Chat Modal */
 .projchat-modal {
   position: fixed;
   inset: 0;
@@ -1397,11 +1382,10 @@ h2.chat-heading {
 }
 
 
-/* ========================================================================== 
-   FEATURED SECTION
+/* ==========================================================================
+   FEATURED SECTION (authoritative)
    ========================================================================== */
-
-/* Quick skeletons while images load */
+/* Skeleton while images load */
 .feat-skel {
   width: 170px;
   height: 170px;
@@ -1413,8 +1397,12 @@ h2.chat-heading {
 }
 
 @keyframes feat-skel {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 @media (max-width: 600px) {
@@ -1424,12 +1412,13 @@ h2.chat-heading {
   }
 }
 
-/* Wrapper */
+/* Wrapper + header */
 .featured-wrap {
-  position: relative;                 /* ensure z-index context */
+  position: relative;
   max-width: 900px;
   margin: 1rem 0 0 0;
   padding: 0;
+  overflow-x: visible;
 }
 
 @media (max-width: 600px) {
@@ -1438,7 +1427,6 @@ h2.chat-heading {
   }
 }
 
-/* Header */
 .featured-header {
   display: flex;
   align-items: center;
@@ -1447,7 +1435,6 @@ h2.chat-heading {
   margin-bottom: .5rem;
 }
 
-/* "Featured Projects" title */
 .featured-title {
   margin: 0;
   font-size: 1rem;
@@ -1456,13 +1443,16 @@ h2.chat-heading {
   text-align: left;
 }
 
-/* (You said no arrows/buttons, keep hidden) */
+/* You said “no arrows/buttons” – keep hidden (safe if added later) */
 .featured-nav {
   display: none;
   gap: .5rem;
 }
+
 @media (min-width: 800px) {
-  .featured-nav { display: flex; }
+  .featured-nav {
+    display: flex;
+  }
 }
 
 .feat-btn {
@@ -1479,62 +1469,61 @@ h2.chat-heading {
   place-items: center;
   transition: background .2s, border-color .2s, transform .1s;
 }
+
 .feat-btn:hover {
   background: rgba(127,127,127,.08);
   border-color: var(--text);
 }
+
 .feat-btn:active {
   transform: scale(.97);
 }
 
-/* ---------------- Horizontal scroll area (CONSOLIDATED) ---------------- */
+/* Horizontal scroll area (the ONLY horizontal scroller) */
 .featured-track {
   position: relative;
-  z-index: 1;                          /* above hero art layers */
+  z-index: 2;
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: 170px;            /* card width */
+  grid-auto-columns: 170px;
   gap: 12px;
-
-  overflow-x: auto;                    /* enable swipe/scroll */
+  overflow-x: auto !important;
   overflow-y: hidden;
-  padding: .5rem 0 1rem;
-
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;   /* iOS momentum */
-  overscroll-behavior-x: contain;      /* keep swipe self-contained */
-
-  /* CRITICAL: force horizontal pan; override any earlier rules */
+  -webkit-overflow-scrolling: touch;
   touch-action: pan-x !important;
-
-  /* polish */
+  overscroll-behavior-x: contain;
+  padding: .5rem 0 1rem;
   outline: none;
   -ms-overflow-style: none;
   scrollbar-width: none;
   cursor: grab;
 }
-.featured-track:active { cursor: grabbing; }
-.featured-track::-webkit-scrollbar { display: none; }
+
+.featured-track:active {
+  cursor: grabbing;
+}
+
+.featured-track::-webkit-scrollbar {
+  display: none;
+}
 
 /* Prevent children from hijacking the swipe */
 .featured-track .feat-card,
 .featured-track .feat-card * {
   -webkit-user-drag: none;
   user-select: none;
+  touch-action: auto;
 }
 
-/* Media should not absorb taps during swipe */
-.feat-card img,
-.feat-card picture,
-.feat-card svg {
+.featured-track img,
+.featured-track picture,
+.featured-track svg {
   pointer-events: none;
 }
 
-/* If hero slide panels exist, never block touches once they slide away */
-.hero-panel.slide-out { pointer-events: none; }
-
-/* Card */
+/* Individual card */
 .feat-card {
   scroll-snap-align: start;
   display: flex;
@@ -1547,38 +1536,38 @@ h2.chat-heading {
   overflow: hidden;
   transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
   color: inherit;
-
-  /* entrance animation initial state */
   opacity: 0;
   transform: translateX(-12px);
   will-change: opacity, transform;
 }
+
 .feat-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 16px var(--shadow);
 }
 
-/* Thumb (uses an <img> inside) */
+/* Thumb (square) with image fully visible */
 .featured-track .feat-thumb {
   width: 100%;
   position: relative;
-  aspect-ratio: 3 / 2;                 /* 1920 x 1280 */
+  aspect-ratio: 1 / 1;
   overflow: hidden;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
+
 .featured-track .feat-thumb > img {
-  position: absolute !important;
-  inset: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  display: block !important;
-  object-fit: contain !important;      /* fit INSIDE the card */
-  object-position: center !important;  /* center the image */
-  max-width: none !important;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  max-width: none;
 }
 
-/* Soft highlight */
+/* Subtle highlight */
 .feat-thumb::after {
   content: "";
   position: absolute;
@@ -1593,22 +1582,30 @@ h2.chat-heading {
   display: grid;
   gap: .25rem;
 }
+
 .feat-title {
-  font-size: .6rem;
+  font-size: .75rem;
   font-weight: 500;
   letter-spacing: .2px;
   color: var(--text);
   line-height: 1.2;
 }
 
-/* Entrance animation on trigger */
+/* Entrance animation (staggered) */
 .featured-track.animate .feat-card {
   animation: feat-enter 520ms ease-out forwards;
   animation-delay: calc(var(--stagger, 70ms) * var(--i, 0));
 }
+
 @keyframes feat-enter {
-  from { opacity: 0; transform: translateX(-12px); }
-  to   { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 /* Larger on big screens */
@@ -1621,24 +1618,6 @@ h2.chat-heading {
     width: 200px;
     border-radius: 18px;
   }
-}
-
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .featured-track { scroll-behavior: auto; }
-  .feat-card {
-    transition: none;
-    opacity: 1;
-    transform: none;
-    animation: none !important;
-  }
-  .featured-track.animate .feat-card { animation: none !important; }
-}
-
-/* Hide manual nav buttons if not needed */
-.feat-prev,
-.feat-next {
-  display: none !important;
 }
 
 /* Mobile featured sizing */
@@ -1656,8 +1635,94 @@ h2.chat-heading {
   }
 }
 
+/* Flex fallback for iOS grid+overflow quirks */
+@media (max-width: 800px) {
+  .featured-track {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 12px;
+    padding: 0.5rem 0 0.25rem;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+  .feat-card {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+  }
+}
 
-/* ========================================================================== 
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .featured-track {
+    scroll-behavior: auto;
+  }
+  .feat-card {
+    transition: none;
+    opacity: 1;
+    transform: none;
+    animation: none !important;
+  }
+  .featured-track.animate .feat-card {
+    animation: none !important;
+  }
+}
+/* ===========================================================
+   FEATURED — M3 "Hero carousel" on mobile only
+   =========================================================== */
+@media (max-width: 600px) {
+  /* Turn the track into a center-snapping, full-width hero rail */
+  .featured-track.hero-mode {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 12px;
+    padding: 0.25rem 0 1rem;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
+    overscroll-behavior-x: contain;
+  }
+
+  /* Each card takes most of the viewport width and snaps to center */
+  .featured-track.hero-mode .feat-card {
+    flex: 0 0 86vw;
+    width: auto;
+    scroll-snap-align: center;
+    border-radius: 18px;
+    transform: scale(0.92);
+    opacity: 0.85;
+    transition: transform 240ms ease, opacity 240ms ease;
+    box-shadow: none; /* your perf-mobile flatten rule */
+    border: 1px solid color-mix(in srgb, var(--muted), transparent 40%);
+  }
+
+  /* The focused (center) card pops a bit larger */
+  .featured-track.hero-mode .feat-card.is-current {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  /* Make the image area feel more “hero” – 3:2 still matches your assets */
+  .featured-track.hero-mode .feat-thumb {
+    aspect-ratio: 3 / 2;
+  }
+
+  .featured-track.hero-mode .feat-thumb > img {
+    object-fit: cover;     /* hero look */
+    object-position: center;
+  }
+
+  /* Slightly larger title for the hero */
+  .featured-track.hero-mode .feat-title {
+    font-size: 0.9rem;
+    line-height: 1.25;
+  }
+}
+
+
+
+/* ==========================================================================
    FOOTER
    ========================================================================== */
 .compact-footer {
@@ -1674,7 +1739,7 @@ h2.chat-heading {
 }
 
 
-/* ========================================================================== 
+/* ==========================================================================
    RESPONSIVE TWEAKS
    ========================================================================== */
 @media (max-width: 768px) {
@@ -1718,7 +1783,7 @@ h2.chat-heading {
 }
 
 
-/* ========================================================================== 
+/* ==========================================================================
    DARK MODE OVERRIDES
    ========================================================================== */
 [data-theme="dark"] .appbar {
@@ -1744,12 +1809,11 @@ h2.chat-heading {
 }
 
 
-/* ========================================================================== 
+/* ==========================================================================
    PERFORMANCE MODE (Mobile / Reduced motion)
    ========================================================================== */
 @media (max-width: 768px),
 (prefers-reduced-motion: reduce) {
-  /* Kill heavy hero effects on light devices */
   .hero--mesh::after,
   .hero--noise::before,
   .hero--noise::after,
@@ -1760,20 +1824,16 @@ h2.chat-heading {
     background: none !important;
     content: none !important;
   }
-  /* Force mobile hero background */
   .hero-header {
     background-color: var(--hero-bg-mobile) !important;
   }
-  /* Speed up slide panels */
   .hero-panel {
     transition: transform 120ms ease-out !important;
   }
-  /* Cheaper card compositing (big cards) */
   .card.card-v03 {
     box-shadow: none !important;
     border: 1px solid color-mix(in srgb, var(--muted), transparent 40%) !important;
   }
-  /* Scroll-snap smoothness can be janky on older phones */
   .featured-track {
     scroll-behavior: auto !important;
   }
@@ -1787,7 +1847,7 @@ h2.chat-heading {
 }
 
 
-/* ========================================================================== 
+/* ==========================================================================
    MISC UTILS
    ========================================================================== */
 .scale-95 {
@@ -1795,11 +1855,10 @@ h2.chat-heading {
 }
 
 
-/* ========================================================================== 
+/* ==========================================================================
    PERFORMANCE: FLATTEN CARDS ON MOBILE
    ========================================================================== */
 @media (max-width: 768px) {
-  /* Big project cards */
   .card.card-v03 {
     box-shadow: none;
     border: 1px solid color-mix(in srgb, var(--muted), transparent 40%);
@@ -1810,7 +1869,6 @@ h2.chat-heading {
     transform: none;
     border-color: color-mix(in srgb, var(--muted), transparent 40%);
   }
-  /* Featured cards */
   .feat-card {
     box-shadow: none;
     border: 1px solid color-mix(in srgb, var(--muted), transparent 40%);
@@ -1823,38 +1881,3 @@ h2.chat-heading {
   }
 }
 
-
-/* ===== Featured: mobile swipe reliability + 3:2 thumbs ===== */
-@media (max-width: 800px) {
-  .featured-track {
-    display: flex;                 /* flex avoids iOS grid+overflow quirk */
-    overflow-x: auto;
-    overflow-y: hidden;
-    gap: 12px;
-    padding: 0.5rem 0 0.25rem;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .feat-card {
-    flex: 0 0 auto;                /* do not shrink */
-    scroll-snap-align: start;
-  }
-}
-
-/* Make thumbs explicitly 3:2 and center the image */
-.feat-thumb {
-  aspect-ratio: 3 / 2;             /* your images are 1920x1280 */
-  position: relative;
-  overflow: hidden;
-}
-
-.feat-thumb > img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;               /* fill the box, crop if needed */
-  object-position: center;         /* crop from the center, not top-left */
-}
