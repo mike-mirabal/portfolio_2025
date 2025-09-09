@@ -1400,6 +1400,7 @@ h2.chat-heading {
 /* ========================================================================== 
    FEATURED SECTION
    ========================================================================== */
+
 /* Quick skeletons while images load */
 .feat-skel {
   width: 170px;
@@ -1412,12 +1413,8 @@ h2.chat-heading {
 }
 
 @keyframes feat-skel {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 
 @media (max-width: 600px) {
@@ -1427,8 +1424,9 @@ h2.chat-heading {
   }
 }
 
-/* Featured header + track */
+/* Wrapper */
 .featured-wrap {
+  position: relative;                 /* ensure z-index context */
   max-width: 900px;
   margin: 1rem 0 0 0;
   padding: 0;
@@ -1440,6 +1438,7 @@ h2.chat-heading {
   }
 }
 
+/* Header */
 .featured-header {
   display: flex;
   align-items: center;
@@ -1448,7 +1447,7 @@ h2.chat-heading {
   margin-bottom: .5rem;
 }
 
-/* Featured Section Heading - "Featured Projects */
+/* "Featured Projects" title */
 .featured-title {
   margin: 0;
   font-size: 1rem;
@@ -1457,15 +1456,13 @@ h2.chat-heading {
   text-align: left;
 }
 
+/* (You said no arrows/buttons, keep hidden) */
 .featured-nav {
   display: none;
   gap: .5rem;
 }
-
 @media (min-width: 800px) {
-  .featured-nav {
-    display: flex;
-  }
+  .featured-nav { display: flex; }
 }
 
 .feat-btn {
@@ -1482,66 +1479,60 @@ h2.chat-heading {
   place-items: center;
   transition: background .2s, border-color .2s, transform .1s;
 }
-
 .feat-btn:hover {
   background: rgba(127,127,127,.08);
   border-color: var(--text);
 }
-
 .feat-btn:active {
   transform: scale(.97);
 }
 
-/* Horizontal scroll area */
+/* ---------------- Horizontal scroll area (CONSOLIDATED) ---------------- */
 .featured-track {
+  position: relative;
+  z-index: 1;                          /* above hero art layers */
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: 170px;
+  grid-auto-columns: 170px;            /* card width */
   gap: 12px;
-  overflow-x: auto;
+
+  overflow-x: auto;                    /* enable swipe/scroll */
+  overflow-y: hidden;
   padding: .5rem 0 1rem;
+
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
+  -webkit-overflow-scrolling: touch;   /* iOS momentum */
+  overscroll-behavior-x: contain;      /* keep swipe self-contained */
+
+  /* CRITICAL: force horizontal pan; override any earlier rules */
+  touch-action: pan-x !important;
+
+  /* polish */
   outline: none;
   -ms-overflow-style: none;
   scrollbar-width: none;
-}
-
-.featured-track::-webkit-scrollbar {
-  display: none;
-}
-
-/* --- Featured slider: enable horizontal swiping/drag --- */
-/* --- Featured slider: enable real horizontal swiping --- */
-.featured-track {
-  /* you already have overflow-x: auto; keep it */
-  -webkit-overflow-scrolling: touch;  /* momentum on iOS */
-  overscroll-behavior-x: contain;     /* avoid page rubber band */
-  touch-action: pan-x;                 /* declare horizontal pan */
   cursor: grab;
-  position: relative;
-  z-index: 1;                          /* sit above any BG art */
 }
-
-.featured-track.is-dragging {
-  cursor: grabbing;
-}
+.featured-track:active { cursor: grabbing; }
+.featured-track::-webkit-scrollbar { display: none; }
 
 /* Prevent children from hijacking the swipe */
 .featured-track .feat-card,
 .featured-track .feat-card * {
   -webkit-user-drag: none;
   user-select: none;
-  touch-action: manipulation; /* taps OK; don’t block pan-x */
 }
 
-/* Panels should not block touches once they’re sliding away */
-.hero-panel.slide-out {
+/* Media should not absorb taps during swipe */
+.feat-card img,
+.feat-card picture,
+.feat-card svg {
   pointer-events: none;
 }
 
-
+/* If hero slide panels exist, never block touches once they slide away */
+.hero-panel.slide-out { pointer-events: none; }
 
 /* Card */
 .feat-card {
@@ -1556,38 +1547,38 @@ h2.chat-heading {
   overflow: hidden;
   transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
   color: inherit;
+
+  /* entrance animation initial state */
   opacity: 0;
   transform: translateX(-12px);
   will-change: opacity, transform;
 }
-
 .feat-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 16px var(--shadow);
 }
 
-/* Thumb (now an <img> inside) */
+/* Thumb (uses an <img> inside) */
 .featured-track .feat-thumb {
   width: 100%;
   position: relative;
-  aspect-ratio: 3/2; /* 1920 x 1280 */
+  aspect-ratio: 3 / 2;                 /* 1920 x 1280 */
   overflow: hidden;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
-
 .featured-track .feat-thumb > img {
   position: absolute !important;
   inset: 0 !important;
   width: 100% !important;
   height: 100% !important;
-  object-fit: contain !important;
   display: block !important;
-  object-position: center !important;
+  object-fit: contain !important;      /* fit INSIDE the card */
+  object-position: center !important;  /* center the image */
   max-width: none !important;
 }
 
-/* Subtle highlight */
+/* Soft highlight */
 .feat-thumb::after {
   content: "";
   position: absolute;
@@ -1602,8 +1593,6 @@ h2.chat-heading {
   display: grid;
   gap: .25rem;
 }
-
-/* Featured Card Title */
 .feat-title {
   font-size: .6rem;
   font-weight: 500;
@@ -1617,16 +1606,9 @@ h2.chat-heading {
   animation: feat-enter 520ms ease-out forwards;
   animation-delay: calc(var(--stagger, 70ms) * var(--i, 0));
 }
-
 @keyframes feat-enter {
-  from {
-    opacity: 0;
-    transform: translateX(-12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  from { opacity: 0; transform: translateX(-12px); }
+  to   { opacity: 1; transform: translateX(0); }
 }
 
 /* Larger on big screens */
@@ -1643,18 +1625,14 @@ h2.chat-heading {
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .featured-track {
-    scroll-behavior: auto;
-  }
+  .featured-track { scroll-behavior: auto; }
   .feat-card {
     transition: none;
     opacity: 1;
     transform: none;
     animation: none !important;
   }
-  .featured-track.animate .feat-card {
-    animation: none !important;
-  }
+  .featured-track.animate .feat-card { animation: none !important; }
 }
 
 /* Hide manual nav buttons if not needed */
