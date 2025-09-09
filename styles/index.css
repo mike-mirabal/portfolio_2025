@@ -1585,16 +1585,18 @@ h2.chat-heading {
 
 .featured-track .feat-thumb > img,
 #featuredTrack .feat-thumb > img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;                         /* <- stop zoom/crop */
-  object-position: center;
-  display: block;
-  max-width: none;
-  pointer-events: none;                        /* images don’t capture drags */
+  position: static !important;         /* override absolute if applied */
+  width: 100% !important;              /* scale to fit card */
+  height: auto !important;             /* preserve 3:2 ratio */
+  aspect-ratio: 3 / 2 !important;      /* enforce aspect ratio */
+  object-fit: cover !important;        /* crop cleanly if needed */
+  object-position: center !important;
+  display: block !important;
+  max-width: 100% !important;          /* prevent overflow */
+  pointer-events: none;
 }
+
+
 
 /* Soft highlight */
 .feat-thumb::after {
@@ -1607,9 +1609,11 @@ h2.chat-heading {
 
 /* Card text */
 .feat-text {
-  padding: 0.6rem 0.75rem 0.8rem;
+  padding: 0.6rem 0.4rem 0.6rem 0.4rem;
+  font-size: 0.8rem;
   display: grid;
   gap: 0.25rem;
+  text-align: center;
 }
 
 .feat-title {
@@ -1637,19 +1641,29 @@ h2.chat-heading {
   .featured-track .feat-card { border-radius: 18px; }
 }
 
-/* Mobile sizing + flattening */
+/* Featured Card - Mobile */
 @media (max-width: 600px) {
   .featured-track { gap: 10px; }
   .featured-track .feat-card {
-    flex-basis: 148px;
-    width: 148px;
-    min-width: 148px;
-    max-width: 148px;
-    border-radius: 14px;
+    flex-basis: 128px;
+    width: 128px;
+    min-width: 128px;
+    max-width: 128px;
+    border-radius: 12px;
     box-shadow: none;
     border: 1px solid color-mix(in srgb, var(--muted), transparent 60%);
   }
-  .feat-title { font-size: 0.7rem; }
+  .feat-title { 
+    font-size: 0.7rem;
+    padding: 0.6rem 0.4rem 0 0.4rem;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+    color: var(--text);
+    line-height: 1.2;
+   }
+ .feat-text {
+  padding: 0;
+ }
 }
 
 
