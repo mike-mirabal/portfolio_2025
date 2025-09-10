@@ -99,19 +99,16 @@
         </h1>
 
 
-<!-- FEATURED SECTION -->
-<!-- Featured strip (inside hero, between subheading and sublead) -->
+<!-- FEATURED SECTION 
 <section class="featured-wrap" aria-label="Featured Projects">
   <div class="featured-header">
     <h3 class="featured-title">Featured Projects</h3>
-    <!-- (no arrows/buttons by request) -->
   </div>
 
-  <!-- Horizontal scroll track -->
   <div id="featuredTrack" class="featured-track" tabindex="0" role="region" aria-label="Featured projects carousel">
-    <!-- JS (featured.js) will populate cards here -->
+    <!-- JS (featured.js) will populate cards here 
   </div>
-</section>
+</section> -->
 
 
 
@@ -470,7 +467,8 @@
   </div>
 </div>
 
-<!-- SCRIPTS-->
+<!-- === SCRIPTS === -->
+
 <!-- THEME INIT -->
 <script>
   (function() {
@@ -538,10 +536,11 @@
 
 <!-- CSV + project rendering -->
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js" defer></script>
-<script src="/scripts/featured.js" defer></script>
+<!-- <script src="/scripts/featured.js" defer></script> --> 
 <script src="/scripts/filters.js" defer></script>
 <script src="/scripts/project.js" defer></script>
 <!-- <script src="/scripts/perf-mobile.js" defer></script> -->
+
 
 
 <!-- Reveal-on-scroll for project cards (place immediately after project.js) -->
@@ -805,7 +804,7 @@ Answer concisely and reference specific details from the overview when relevant.
 </script>
 
 
-<!-- -->
+<!-- Show / Hide Filters Nav on About Section -->
 <script> 
   document.addEventListener('DOMContentLoaded', () => {
     const sticky = document.querySelector('.sticky-controls');
@@ -828,91 +827,90 @@ Answer concisely and reference specific details from the overview when relevant.
 </script>
 
 
-
-
-
 <!-- Microsplash -->
+<!-- Microsplash (safe, no drag listeners) -->
 <script>
 (function () {
+  // --- Utilities ---------------------------------------------------
+  function getSplash() {
+    // Handle either id="microSplash" (your top-of-body element) or id="microsplash" (styles)
+    return document.getElementById('microSplash') || document.getElementById('microsplash');
+  }
+
   function killSplash() {
-    const s = document.getElementById('microsplash');
+    const s = getSplash();
     if (!s) return;
-    // mark as gone and then fully remove after a tick
     s.classList.add('is-gone');
     s.setAttribute('aria-hidden', 'true');
-    // fully remove after transition, or after 600ms fallback
     const done = () => s.classList.add('is-removed');
     s.addEventListener('transitionend', done, { once: true });
     setTimeout(done, 600);
   }
 
-  function assertFeaturedGestures() {
+  // Prevent hero panels from ever intercepting gestures after they slide out
+  function deactivateHeroPanels() {
+    ['heroPanel1', 'heroPanel2'].forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const disable = () => {
+        el.style.pointerEvents = 'none';
+        el.setAttribute('aria-hidden', 'true');
+      };
+      el.addEventListener('transitionend', disable, { once: true });
+      // Fallback in case transitionend doesn’t fire
+      setTimeout(disable, 800);
+    });
+  }
+
+  // Only assert native, momentum horizontal scroll via CSS — no JS drag
+  function assertFeaturedStyles() {
     const track = document.getElementById('featuredTrack');
     if (!track) return;
 
-    // Hard assert: track is the only horizontal scroller here.
+    // Enforce native horizontal scrolling
     track.style.overflowX = 'auto';
     track.style.overflowY = 'hidden';
-    track.style.touchAction = 'pan-x';        // accept horizontal swipes
+    track.style.touchAction = 'pan-x';
     track.style.webkitOverflowScrolling = 'touch';
     track.style.overscrollBehaviorX = 'contain';
 
-    // If any ancestor accidentally has touch-action:none, this helps override.
-    // (This does not affect clicks on links inside the cards.)
-    track.querySelectorAll('img, picture, svg').forEach(el => {
-      el.style.pointerEvents = 'none';
-      el.style.userSelect = 'none';
-      el.style.webkitUserDrag = 'none';
-    });
-
-    // Optional: small drag-to-scroll helper that never blocks taps
-    let isDragging = false;
-    let startX = 0, startScroll = 0;
-
-    const onDown = (e) => {
-      isDragging = true;
-      startX = (e.touches ? e.touches[0].clientX : e.clientX);
-      startScroll = track.scrollLeft;
-      track.classList.add('is-dragging');
-    };
-    const onMove = (e) => {
-      if (!isDragging) return;
-      const x = (e.touches ? e.touches[0].clientX : e.clientX);
-      const dx = x - startX;
-      track.scrollLeft = startScroll - dx;
-      // Do NOT preventDefault here—keeps links tappable
-    };
-    const onUp = () => {
-      isDragging = false;
-      track.classList.remove('is-dragging');
-    };
-
-    track.addEventListener('pointerdown', onDown, { passive: true });
-    window.addEventListener('pointermove', onMove, { passive: true });
-    window.addEventListener('pointerup', onUp, { passive: true });
-    window.addEventListener('pointercancel', onUp, { passive: true });
+    // Note: Do NOT attach any drag listeners here; let the browser handle momentum scrolling.
   }
 
-  // If a splash exists and is mid-animation, wait for it; otherwise proceed.
-  const splash = document.getElementById('microsplash');
-  if (splash) {
-    // if your splash dispatches a custom event, hook it here
-    splash.addEventListener('animationend', () => {
-      killSplash();
-      assertFeaturedGestures();
-    }, { once: true });
+  // --- Init --------------------------------------------------------
+  function init() {
+    assertFeaturedStyles();
+    deactivateHeroPanels();
+  }
 
-    // also fail-safe after 1s in case no event fires
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init, { once: true });
+  } else {
+    init();
+  }
+
+  // If a splash exists, remove it and re-assert styles after its animation
+  const splash = getSplash();
+  if (splash) {
+    splash.addEventListener(
+      'animationend',
+      () => {
+        killSplash();
+        assertFeaturedStyles();
+      },
+      { once: true }
+    );
+
+    // Fail-safe in case no animation event fires
     setTimeout(() => {
       killSplash();
-      assertFeaturedGestures();
+      assertFeaturedStyles();
     }, 1000);
-  } else {
-    // no splash present, just assert gestures immediately
-    assertFeaturedGestures();
   }
 })();
 </script>
+
+
 
 </body>
 
